@@ -331,43 +331,6 @@ class _DetalleEntState extends State<DetalleEnt> {
             ),
           ),
         ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-          child: BottomNavigationBar(
-            currentIndex: _indiceBselec,
-            backgroundColor: Colors.red,
-            selectedItemColor: Colors.white,
-            unselectedItemColor: const Color.fromARGB(255, 185, 185, 185),
-            onTap: (index) {
-              setState(() {
-                _indiceBselec = index;
-              });
-            },
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.heart),
-                label: 'Favoritos',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.mapLocation),
-                label: 'Mapa',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.house),
-                label: 'Inicio',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.list),
-                label: 'Lista',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.magnifyingGlass),
-                label: 'Buscar',
-              ),
-            ],
-            type: BottomNavigationBarType.fixed,
-          ),
-        ),
       ),
     );
   }

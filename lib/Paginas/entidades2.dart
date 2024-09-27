@@ -359,52 +359,6 @@ class _EntidadesFiltradas2State extends State<EntidadesFiltradas2> {
                         ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: NavigationBar(
-                  destinations: const [
-                    NavigationDestination(
-                      icon: Icon(
-                        FontAwesomeIcons.heart,
-                      ),
-                      label: 'Favoritos',
-                    ),
-                    NavigationDestination(
-                      icon: Icon(
-                        FontAwesomeIcons.mapLocation,
-                      ),
-                      label: 'Mapa',
-                    ),
-                    NavigationDestination(
-                      icon: Icon(
-                        FontAwesomeIcons.house,
-                      ),
-                      label: 'Inicio',
-                    ),
-                    NavigationDestination(
-                      icon: Icon(
-                        FontAwesomeIcons.list,
-                      ),
-                      label: 'Lista',
-                    ),
-                    NavigationDestination(
-                      icon: Icon(
-                        FontAwesomeIcons.magnifyingGlass,
-                      ),
-                      label: 'Buscar',
-                    ),
-                  ],
-                  selectedIndex: _indiceBselec,
-                  onDestinationSelected: (int index) {
-                    setState(() {
-                      _indiceBselec = index;
-                    });
-                  },
-                  animationDuration: const Duration(milliseconds: 200),
-                  backgroundColor: const Color(0xFFFBEDED),
-                  // Etiqueta seleccionada en blanco
-                ),
-              ),
             ],
           ),
         ),

@@ -21,7 +21,45 @@ class MainApp extends StatelessWidget {
         fontFamily: 'Roboto',
         useMaterial3: true,
       ),
-      home: const SNCAPP(),
+      home: const PantallaCarga(),
+    );
+  }
+}
+
+class PantallaCarga extends StatefulWidget {
+  const PantallaCarga({super.key});
+
+  @override
+  State<PantallaCarga> createState() => _PantallaCargaState();
+}
+
+class _PantallaCargaState extends State<PantallaCarga> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const SNCAPP()));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.red,
+      body: Center(
+        child: SizedBox(
+          width: 150,
+          height: 75,
+          child: FittedBox(
+            fit: BoxFit.cover,
+            child: Image.asset(
+              'assets/images/mtclogo.png',
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
