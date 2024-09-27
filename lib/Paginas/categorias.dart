@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sncappdcv/Paginas/entidades.dart';
 import 'package:sncappdcv/Paginas/entidades2.dart';
 import 'package:sncappdcv/Widgets/cards.dart';
 /*import 'package:sncappdcv/Paginas/entidades.dart';*/
@@ -15,7 +14,6 @@ class Categorias extends StatefulWidget {
 
 class _CategoriasState extends State<Categorias> {
   int _indiceFselec = 0;
-  final int _indiceBselec = 3;
   final FocusNode _focusNode = FocusNode();
   late List<CategoriaCard> categoriasFiltradas;
   late List<CategoriaCard> todasCategorias;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sncappdcv/Paginas/entidades.dart';
 import 'package:sncappdcv/Paginas/entidades2.dart';
 import 'package:sncappdcv/Widgets/cards.dart';
 /*import 'package:sncappdcv/Paginas/entidades.dart';*/
@@ -16,7 +15,6 @@ class Categorias2 extends StatefulWidget {
 
 class _Categorias2State extends State<Categorias2> {
   int _indiceFselec = 0;
-  final int _indiceBselec = 3;
   late List<CategoriaCard> categoriasFiltradas;
   late List<CategoriaCard> todasCategorias;
   final FocusNode _focusNode = FocusNode();
