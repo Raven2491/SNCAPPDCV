@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sncappdcv/Paginas/entidades2.dart';
 import 'package:sncappdcv/Widgets/cards.dart';
-/*import 'package:sncappdcv/Paginas/entidades.dart';*/
 
 class Categorias2 extends StatefulWidget {
-  final String categoria; // Define the 'categoria' field
+  final String categoria;
 
   const Categorias2({super.key, required this.categoria});
 
@@ -17,7 +16,6 @@ class _Categorias2State extends State<Categorias2> {
   int _indiceFselec = 0;
   late List<CategoriaCard> categoriasFiltradas;
   late List<CategoriaCard> todasCategorias;
-  final FocusNode _focusNode = FocusNode();
 
   void _onSegmentChanged(int index) {
     setState(() {
@@ -104,17 +102,6 @@ class _Categorias2State extends State<Categorias2> {
     }
   }
 
-  @override
-  void dispose() {
-    _focusNode
-        .dispose(); // Asegúrate de disponerlo para evitar fugas de memoria
-    super.dispose();
-  }
-
-  void _removerFoco() {
-    _focusNode.unfocus(); // Método para quitar el foco cuando sea necesario
-  }
-
   List<CategoriaCard> aplicarFiltros() {
     List<CategoriaCard> filtradas = _indiceFselec == 0
         ? todasCategorias
@@ -128,7 +115,9 @@ class _Categorias2State extends State<Categorias2> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _removerFoco,
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.white,
@@ -202,7 +191,6 @@ class _Categorias2State extends State<Categorias2> {
                 SizedBox(
                   height: 50,
                   child: TextField(
-                    focusNode: _focusNode,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20),

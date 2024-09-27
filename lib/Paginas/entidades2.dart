@@ -14,7 +14,6 @@ class EntidadesFiltradas2 extends StatefulWidget {
 
 class _EntidadesFiltradas2State extends State<EntidadesFiltradas2> {
   int _indiceSeleccionado = 0;
-  int _indiceBselec = 3;
   String _filtroSeleccionado = 'A-Z';
   late List<EntidadesCard> entidadesFiltradas;
   late List<EntidadesCard> todasEntidades;
@@ -147,219 +146,226 @@ class _EntidadesFiltradas2State extends State<EntidadesFiltradas2> {
   Widget build(BuildContext context) {
     final List<EntidadesCard> entidadesOrdenadas = aplicarFiltros();
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Rapidito',
-                  style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold)),
-              Text(
-                '¡Tus entidades a un toque y al toque!',
-                style: TextStyle(fontSize: 14, fontFamily: 'Roboto'),
-              ),
-            ],
-          ),
+      child: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: Scaffold(
           backgroundColor: Colors.white,
-          actions: [
-            Builder(
-              builder: (context) => IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () {
-                  Scaffold.of(context).openEndDrawer();
-                },
-              ),
-            ),
-          ],
-        ),
-        endDrawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              Container(
-                height: 80,
-                color: Colors.red,
-                child: const Center(
-                  child: Text(
-                    'Entidades',
-                    textAlign: TextAlign.start,
+          appBar: AppBar(
+            title: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Rapidito',
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                    ),
-                  ),
+                        fontFamily: 'Roboto',
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold)),
+                Text(
+                  '¡Tus entidades a un toque y al toque!',
+                  style: TextStyle(fontSize: 14, fontFamily: 'Roboto'),
                 ),
-              ),
-              ListTile(
-                leading: const Icon(FontAwesomeIcons.idCard),
-                title: const Text('Licencias de conducir'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: const Icon(FontAwesomeIcons.building),
-                title: const Text('Otras entidades'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
+              ],
+            ),
+            backgroundColor: Colors.white,
+            actions: [
+              Builder(
+                builder: (context) => IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    Scaffold.of(context).openEndDrawer();
+                  },
+                ),
               ),
             ],
           ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-          child: Column(
-            children: <Widget>[
-              const SizedBox(height: 16),
-              Row(children: [
-                Expanded(
-                  child: SizedBox(
-                    height: 50,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        labelText: 'Buscar entidades...',
-                        prefixIcon: const Icon(Icons.search),
+          endDrawer: Drawer(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                Container(
+                  height: 80,
+                  color: Colors.red,
+                  child: const Center(
+                    child: Text(
+                      'Entidades',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
-                PopupMenuButton<String>(
-                  icon: const Icon(FontAwesomeIcons.arrowDownShortWide),
-                  onSelected: (String value) {
-                    setState(() {
-                      _filtroSeleccionado = value;
-                    });
-                  },
-                  itemBuilder: (BuildContext context) {
-                    return [
-                      const PopupMenuItem(
-                        value: 'A-Z',
-                        child: Text('A-Z'),
-                      ),
-                      const PopupMenuItem(
-                        value: 'Z-A',
-                        child: Text('Z-A'),
-                      ),
-                      const PopupMenuItem(
-                        value: 'Precio más bajo',
-                        child: Text('Precio más bajo'),
-                      ),
-                      const PopupMenuItem(
-                        value: 'Precio más alto',
-                        child: Text('Precio más alto'),
-                      ),
-                    ];
+                ListTile(
+                  leading: const Icon(FontAwesomeIcons.idCard),
+                  title: const Text('Licencias de conducir'),
+                  onTap: () {
+                    Navigator.pop(context);
                   },
                 ),
-              ]),
-              const SizedBox(height: 16),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: List.generate(opciones.length, (indice) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _indiceSeleccionado = indice;
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 5, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: _indiceSeleccionado == indice
-                                ? Colors.red
-                                : Colors.white,
-                            border: Border.all(
-                              color: Colors.red,
-                              width: 2,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
+                ListTile(
+                  leading: const Icon(FontAwesomeIcons.building),
+                  title: const Text('Otras entidades'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+            child: Column(
+              children: <Widget>[
+                const SizedBox(height: 16),
+                Row(children: [
+                  Expanded(
+                    child: SizedBox(
+                      height: 50,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Text(
-                            opciones[indice],
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.normal,
-                              color: _indiceSeleccionado == indice
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                          ),
+                          labelText: 'Buscar entidades...',
+                          prefixIcon: const Icon(Icons.search),
                         ),
                       ),
-                    );
-                  }),
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Entidades',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Expanded(
-                child: ListView(
-                  shrinkWrap: true,
-                  children: entidadesOrdenadas.isNotEmpty
-                      ? entidadesOrdenadas
-                          .map((entidad) => Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 5.0, horizontal: 0),
-                                child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => DetalleEnt(
-                                            razonsocial: entidad.razonsocial,
-                                            direccion: entidad.direccion,
-                                            coordenadas: entidad.coordenadas,
-                                            estado: entidad.estado,
-                                            calificacion: entidad.calificacion,
-                                            categoria: entidad.categoria,
-                                            precio: entidad.precio,
-                                            proximidad: entidad.proximidad,
-                                            descripcion: entidad.descripcion,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: entidad),
-                              ))
-                          .toList()
-                      : const [
-                          Center(
+                  const SizedBox(width: 8),
+                  PopupMenuButton<String>(
+                    icon: const Icon(FontAwesomeIcons.arrowDownShortWide),
+                    onSelected: (String value) {
+                      setState(() {
+                        _filtroSeleccionado = value;
+                      });
+                    },
+                    itemBuilder: (BuildContext context) {
+                      return [
+                        const PopupMenuItem(
+                          value: 'A-Z',
+                          child: Text('A-Z'),
+                        ),
+                        const PopupMenuItem(
+                          value: 'Z-A',
+                          child: Text('Z-A'),
+                        ),
+                        const PopupMenuItem(
+                          value: 'Precio más bajo',
+                          child: Text('Precio más bajo'),
+                        ),
+                        const PopupMenuItem(
+                          value: 'Precio más alto',
+                          child: Text('Precio más alto'),
+                        ),
+                      ];
+                    },
+                  ),
+                ]),
+                const SizedBox(height: 16),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: List.generate(opciones.length, (indice) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _indiceSeleccionado = indice;
+                            });
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: _indiceSeleccionado == indice
+                                  ? Colors.red
+                                  : Colors.white,
+                              border: Border.all(
+                                color: Colors.red,
+                                width: 2,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             child: Text(
-                              'No se encontraron entidades',
+                              opciones[indice],
                               style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                                fontWeight: FontWeight.normal,
+                                color: _indiceSeleccionado == indice
+                                    ? Colors.white
+                                    : Colors.black,
                               ),
                             ),
-                          )
-                        ],
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 16),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Entidades',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Roboto',
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Expanded(
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: entidadesOrdenadas.isNotEmpty
+                        ? entidadesOrdenadas
+                            .map((entidad) => Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 5.0, horizontal: 0),
+                                  child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => DetalleEnt(
+                                              razonsocial: entidad.razonsocial,
+                                              direccion: entidad.direccion,
+                                              coordenadas: entidad.coordenadas,
+                                              estado: entidad.estado,
+                                              calificacion:
+                                                  entidad.calificacion,
+                                              categoria: entidad.categoria,
+                                              precio: entidad.precio,
+                                              proximidad: entidad.proximidad,
+                                              descripcion: entidad.descripcion,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: entidad),
+                                ))
+                            .toList()
+                        : const [
+                            Center(
+                              child: Text(
+                                'No se encontraron entidades',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )
+                          ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

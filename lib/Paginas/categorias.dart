@@ -14,7 +14,6 @@ class Categorias extends StatefulWidget {
 
 class _CategoriasState extends State<Categorias> {
   int _indiceFselec = 0;
-  final FocusNode _focusNode = FocusNode();
   late List<CategoriaCard> categoriasFiltradas;
   late List<CategoriaCard> todasCategorias;
 
@@ -103,17 +102,6 @@ class _CategoriasState extends State<Categorias> {
     }
   }
 
-  @override
-  void dispose() {
-    _focusNode
-        .dispose(); // Asegúrate de disponerlo para evitar fugas de memoria
-    super.dispose();
-  }
-
-  void _removerFoco() {
-    _focusNode.unfocus(); // Método para quitar el foco cuando sea necesario
-  }
-
   List<CategoriaCard> aplicarFiltros() {
     List<CategoriaCard> filtradas = _indiceFselec == 0
         ? todasCategorias
@@ -127,14 +115,15 @@ class _CategoriasState extends State<Categorias> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _removerFoco,
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
       child: Column(
         children: <Widget>[
           const SizedBox(height: 16),
           SizedBox(
             height: 50,
             child: TextField(
-              focusNode: _focusNode,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),

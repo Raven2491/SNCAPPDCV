@@ -11,9 +11,9 @@ class Editorial1 extends StatefulWidget {
 }
 
 class _Editorial1State extends State<Editorial1> {
-  int _indiceBselec = 2;
   int _indiceFselec = 0;
   String _fechaActual = '';
+  String _fechaActual2 = '';
 
   @override
   void initState() {
@@ -22,15 +22,44 @@ class _Editorial1State extends State<Editorial1> {
       setState(() {
         _fechaActual = DateFormat('d \'de\' MMMM \'de\' y', 'es_ES')
             .format(DateTime.now());
+        _fechaActual2 = DateFormat('dd/MM/yyyy').format(DateTime.now());
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    double anchoPantalla = MediaQuery.of(context).size.width;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xFFFBEDED),
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Rapidito',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold)),
+              Text(
+                '¡Tus entidades a un toque y al toque!',
+                style: TextStyle(fontSize: 14, fontFamily: 'Roboto'),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.white,
+          actions: [
+            Builder(
+              builder: (context) => IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+              ),
+            ),
+          ],
+        ),
         endDrawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -76,7 +105,7 @@ class _Editorial1State extends State<Editorial1> {
                   children: [
                     Container(
                       width: double.infinity,
-                      height: 250,
+                      height: 150,
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(85.0),
@@ -98,7 +127,7 @@ class _Editorial1State extends State<Editorial1> {
                         ),
                       ),
                     ),
-                    Container(
+                    /*Container(
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.6),
                       ),
@@ -139,7 +168,7 @@ class _Editorial1State extends State<Editorial1> {
                           ),
                         ],
                       ),
-                    ),
+                    ),*/
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -157,15 +186,22 @@ class _Editorial1State extends State<Editorial1> {
                 Row(
                   children: [
                     _buildFiltros('Licencia', 0),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 5),
                     _buildFiltros('Electrónica', 1),
-                    const SizedBox(width: 10),
+                    const SizedBox(width: 5),
                     _buildFiltros('Trámites', 2),
                     Expanded(child: Container()),
-                    Text(_fechaActual, style: const TextStyle(fontSize: 12)),
+                    if (anchoPantalla > 380)
+                      Text(_fechaActual, style: const TextStyle(fontSize: 12))
+                    else
+                      Text(
+                        _fechaActual2,
+                        style: const TextStyle(fontSize: 12),
+                      ),
                   ],
                 ),
                 const SizedBox(height: 16),
+                /*Text(anchoPantalla.toString()),*/
                 const Text(
                   'En esta nota te explicamos los pasos para obtener la licencia de conducir electrónica desde tu casa o trabajo sin necesidad de ir hasta los locales de emisión ni hacer colas.',
                   textAlign: TextAlign.justify,
@@ -192,43 +228,6 @@ class _Editorial1State extends State<Editorial1> {
                     'Debes crear tu casilla electrónica del MTC para recibir las notificaciones de la entidad sobre tu trámite.'),
               ],
             ),
-          ),
-        ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5.0),
-          child: BottomNavigationBar(
-            currentIndex: _indiceBselec,
-            backgroundColor: Colors.red,
-            selectedItemColor: Colors.white,
-            unselectedItemColor: const Color.fromARGB(255, 185, 185, 185),
-            onTap: (index) {
-              setState(() {
-                _indiceBselec = index;
-              });
-            },
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.heart),
-                label: 'Favoritos',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.mapLocation),
-                label: 'Mapa',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.house),
-                label: 'Inicio',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.list),
-                label: 'Lista',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(FontAwesomeIcons.magnifyingGlass),
-                label: 'Buscar',
-              ),
-            ],
-            type: BottomNavigationBarType.fixed,
           ),
         ),
       ),

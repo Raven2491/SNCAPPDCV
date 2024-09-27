@@ -37,7 +37,6 @@ class DetalleEnt extends StatefulWidget {
 }
 
 class _DetalleEntState extends State<DetalleEnt> {
-  int _indiceBselec = 2;
   @override
   Widget build(BuildContext context) {
     return SafeArea(

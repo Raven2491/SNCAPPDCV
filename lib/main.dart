@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sncappdcv/Paginas/categorias.dart';
+import 'package:sncappdcv/Paginas/categorias2.dart';
 import 'package:sncappdcv/Paginas/entidades.dart';
 import 'package:sncappdcv/Paginas/inicio.dart';
 import 'package:sncappdcv/Paginas/mapaentidades.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(const MainApp());
 }
 
@@ -134,29 +139,31 @@ class _SNCAPPState extends State<SNCAPP> {
                   ),
                 ),
               ),
-              const ListTile(
-                leading: Icon(FontAwesomeIcons.idCard),
-                title: Text('Licencias de conducir'),
-                /*onTap: () {
+              ListTile(
+                leading: const Icon(FontAwesomeIcons.idCard),
+                title: const Text('Licencias de conducir'),
+                onTap: () {
+                  Navigator.pop(context);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const Categorias2(
                                 categoria: 'Licencias de conducir',
                               )));
-                },*/
+                },
               ),
-              const ListTile(
-                leading: Icon(FontAwesomeIcons.building),
-                title: Text('Otras entidades'),
-                /*onTap: () {
+              ListTile(
+                leading: const Icon(FontAwesomeIcons.building),
+                title: const Text('Otras entidades'),
+                onTap: () {
+                  Navigator.pop(context);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const Categorias(
+                          builder: (context) => const Categorias2(
                                 categoria: 'Otras entidades',
                               )));
-                },*/
+                },
               ),
             ],
           ),

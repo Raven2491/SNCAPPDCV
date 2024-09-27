@@ -14,11 +14,9 @@ class EntidadesFiltradas extends StatefulWidget {
 
 class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
   int _indiceSeleccionado = 0;
-  final int _indiceBselec = 3;
   String _filtroSeleccionado = 'A-Z';
   late List<EntidadesCard> entidadesFiltradas;
-  late List<EntidadesCard> todasEntidades;
-  final FocusNode _focusNode = FocusNode(); // Agrega un FocusNode
+  late List<EntidadesCard> todasEntidades; // Agrega un FocusNode
 
   final List<EntidadesCard> entidades = [
     EntidadesCard(
@@ -118,17 +116,6 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
     }
   }
 
-  @override
-  void dispose() {
-    _focusNode
-        .dispose(); // Asegúrate de disponerlo para evitar fugas de memoria
-    super.dispose();
-  }
-
-  void _removerFoco() {
-    _focusNode.unfocus(); // Método para quitar el foco cuando sea necesario
-  }
-
   List<EntidadesCard> aplicarFiltros() {
     List<EntidadesCard> filtradas = _indiceSeleccionado == 0
         ? todasEntidades
@@ -159,7 +146,9 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
   Widget build(BuildContext context) {
     final List<EntidadesCard> entidadesOrdenadas = aplicarFiltros();
     return GestureDetector(
-      onTap: _removerFoco,
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
       child: Column(
         children: <Widget>[
           const SizedBox(height: 16),
@@ -168,7 +157,6 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
               child: SizedBox(
                 height: 50,
                 child: TextField(
-                  focusNode: _focusNode,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
