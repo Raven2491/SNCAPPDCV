@@ -53,16 +53,27 @@ class _PantallaCargaState extends State<PantallaCarga> {
     return Scaffold(
       backgroundColor: Colors.red,
       body: Center(
-        child: SizedBox(
-          width: 150,
-          height: 75,
-          child: FittedBox(
-            fit: BoxFit.cover,
-            child: Image.asset(
-              'assets/images/mtclogo.png',
-              fit: BoxFit.cover,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Rapidito!',
+                style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 70,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white)),
+            SizedBox(
+              width: 150,
+              height: 75,
+              child: FittedBox(
+                fit: BoxFit.cover,
+                child: Image.asset(
+                  'assets/images/mtclogo.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:sncappdcv/Widgets/mapa.dart';
 
@@ -13,9 +14,14 @@ class MapaEntidades extends StatefulWidget {
 class _MapaEntidadesState extends State<MapaEntidades> {
   final List<String> entidades = [
     'Centros médicos',
+    'Escuelas de conductores',
     'Centros de Evaluación',
-    'Escuelas de conducción',
-    'Centros de Emision'
+    'Centros de ITV',
+    'Talleres de conversión GNV/GLP',
+    'Certificadoras GNV/GLP',
+    'Entidades verificadoras',
+    'Centros de RPC',
+    'Entidad CVC'
   ];
 
   String? selectedDepartamento;
@@ -34,13 +40,49 @@ class _MapaEntidadesState extends State<MapaEntidades> {
   String codProv = '';
   String codDist = '';
 
+  LatLng? posicionActual;
+
   @override
   void initState() {
     super.initState();
+    _determinarPosicion().then((posicion) {
+      setState(() {
+        posicionActual = LatLng(posicion.latitude, posicion.longitude);
+      });
+    });
     selectedDepartamento = null;
     selectedProvincia = null;
     selectedDistrito = null;
     _obtenerDepartamentos();
+  }
+
+  Future<Position> _determinarPosicion() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Servicio de ubicación desactivado');
+    }
+
+    permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Permiso de ubicación denegado permanentemente, abra la configuración de la aplicación para habilitarlo');
+    }
+
+    permission = await Geolocator.requestPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+
+      if (permission == LocationPermission.denied) {
+        return Future.error('Permiso de ubicación denegado');
+      }
+    }
+
+    return await Geolocator.getCurrentPosition();
   }
 
   Future<void> _obtenerDepartamentos() async {
@@ -387,11 +429,15 @@ class _MapaEntidadesState extends State<MapaEntidades> {
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              child: MapaEntidad(
-                ubicacion: LatLng(-12.058032498650281, -77.06076019022588),
-              ),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+              child: posicionActual != null
+                  ? MapaEntidad(
+                      ubicacion: posicionActual!,
+                    )
+                  : const Center(
+                      child: Text('Ubicación no disponible'),
+                    ),
             ),
           ),
           const SizedBox(

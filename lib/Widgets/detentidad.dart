@@ -5,7 +5,7 @@ import 'package:sncappdcv/Widgets/mapa.dart';
 import 'package:latlong2/latlong.dart';
 
 class DetalleEnt extends StatefulWidget {
-  final Image? imagen;
+  final String? imagen;
   final Image? logo;
   final String razonsocial;
   final String? ruc;
@@ -25,7 +25,7 @@ class DetalleEnt extends StatefulWidget {
       required this.razonsocial,
       this.ruc,
       required this.direccion,
-      this.coordenadas,
+      required this.coordenadas,
       required this.categoria,
       required this.precio,
       required this.calificacion,
@@ -42,6 +42,33 @@ class _DetalleEntState extends State<DetalleEnt> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Rapidito',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold)),
+              Text(
+                '¡Tus entidades a un toque y al toque!',
+                style: TextStyle(fontSize: 14, fontFamily: 'Roboto'),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.white.withOpacity(0.8),
+          actions: [
+            Builder(
+              builder: (context) => IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+              ),
+            ),
+          ],
+        ),
         endDrawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
@@ -86,7 +113,7 @@ class _DetalleEntState extends State<DetalleEnt> {
                   children: [
                     Container(
                       width: double.infinity,
-                      height: 250,
+                      height: 150,
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(85.0),
@@ -99,41 +126,13 @@ class _DetalleEntState extends State<DetalleEnt> {
                         child: Transform.scale(
                           scale: 1.2,
                           child: Image.asset(
-                            'assets/images/ecsal_1.jpg',
+                            'assets/images/${widget.imagen}',
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: double.infinity,
                           ),
                         ),
                       ),
-                    ),
-                    AppBar(
-                      title: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Rapidito',
-                              style: TextStyle(
-                                  fontFamily: 'Roboto',
-                                  fontSize: 30,
-                                  fontWeight: FontWeight.bold)),
-                          Text(
-                            '¡Tus entidades a un toque y al toque!',
-                            style:
-                                TextStyle(fontSize: 14, fontFamily: 'Roboto'),
-                          ),
-                        ],
-                      ),
-                      backgroundColor: Colors.white.withOpacity(0.8),
-                      actions: [
-                        Builder(
-                          builder: (context) => IconButton(
-                            icon: const Icon(Icons.menu),
-                            onPressed: () {
-                              Scaffold.of(context).openEndDrawer();
-                            },
-                          ),
-                        ),
-                      ],
                     ),
                   ],
                 ),
@@ -155,13 +154,13 @@ class _DetalleEntState extends State<DetalleEnt> {
                             offset: const Offset(0, 4),
                           )
                         ]),
-                    child: const ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    child: ClipRRect(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15.0)),
                         child: SizedBox(
                             height: 125,
                             child: MapaEntidad(
-                              ubicacion: LatLng(
-                                  -12.058032498650281, -77.06076019022588),
+                              ubicacion: widget.coordenadas!,
                             )))),
                 const SizedBox(height: 16),
                 Row(
@@ -264,7 +263,7 @@ class _DetalleEntState extends State<DetalleEnt> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
                           child: Image.asset(
-                            'assets/images/ecsal_1.jpg',
+                            'assets/images/${widget.imagen}',
                             fit: BoxFit.cover,
                             height: 100,
                             width: 40,
@@ -290,7 +289,7 @@ class _DetalleEntState extends State<DetalleEnt> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
                           child: Image.asset(
-                            'assets/images/ecsal_1.jpg',
+                            'assets/images/${widget.imagen}',
                             fit: BoxFit.cover,
                             height: 100,
                             width: 40,
@@ -316,7 +315,7 @@ class _DetalleEntState extends State<DetalleEnt> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
                           child: Image.asset(
-                            'assets/images/ecsal_1.jpg',
+                            'assets/images/${widget.imagen}',
                             fit: BoxFit.cover,
                             height: 100,
                             width: 40,

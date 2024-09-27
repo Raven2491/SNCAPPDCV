@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:sncappdcv/Widgets/cards.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sncappdcv/Widgets/detentidad.dart';
@@ -19,35 +20,38 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
   late List<EntidadesCard> todasEntidades; // Agrega un FocusNode
 
   final List<EntidadesCard> entidades = [
-    EntidadesCard(
-        imagen: Image.asset('assets/images/ecsal_1.jpg'),
+    const EntidadesCard(
+        nomimagen: 'ecsal_1.jpg',
         razonsocial: 'Brevetes Salud S.A.C',
         direccion: 'Jr. Antenor Orrego 1978',
         categoria: 'Centros médicos',
         precio: 24.0,
         calificacion: 5,
         estado: 'Con autorización',
-        proximidad: 0.08),
-    EntidadesCard(
-        imagen: Image.asset('assets/images/ecsal_1.jpg'),
+        proximidad: 0.08,
+        coordenadas: const LatLng(-12.058232, -77.060769)),
+    const EntidadesCard(
+        nomimagen: 'ecsal_1.jpg',
         razonsocial: 'Cala Center S.A.C',
         direccion: 'Jr. Antenor Orrego 1954',
         categoria: 'Centros médicos',
         precio: 22.0,
         calificacion: 5,
         estado: 'Con autorización',
-        proximidad: 1.05),
-    EntidadesCard(
-        imagen: Image.asset('assets/images/ecsal_1.jpg'),
+        proximidad: 1.05,
+        coordenadas: const LatLng(-12.081128, -77.048400)),
+    const EntidadesCard(
+        nomimagen: 'ecsal_1.jpg',
         razonsocial: 'Centro Médico Victor Manuel',
         direccion: 'Av. Naciones Unidas N° 1759',
         categoria: 'Centros médicos',
         precio: 28.0,
         calificacion: 5,
         estado: 'Con autorización',
-        proximidad: 2.23),
-    EntidadesCard(
-        imagen: Image.asset('assets/images/esc_cond.jpg'),
+        proximidad: 2.23,
+        coordenadas: const LatLng(-12.054520, -77.061687)),
+    const EntidadesCard(
+        nomimagen: 'esc_cond.jpg',
         razonsocial:
             'Escuela integral de conductores de transporte terrestre Jesus S.A.C.',
         direccion: 'Av. Alfonso Ugarte N° 1346',
@@ -55,27 +59,30 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
         precio: 26.5,
         calificacion: 4,
         estado: 'Inhabilitado',
-        proximidad: 2.5),
-    EntidadesCard(
-        imagen: Image.asset('assets/images/esc_cond.jpg'),
+        proximidad: 2.5,
+        coordenadas: const LatLng(-12.057023, -77.041969)),
+    const EntidadesCard(
+        nomimagen: 'esc_cond.jpg',
         razonsocial: 'JQJQ & Asociados S.A.C.',
         direccion: 'Jr. Breña Urb. Chacra Colorada 145',
         categoria: 'Escuelas de conductores',
         precio: 450.0,
         calificacion: 4,
         estado: 'Con autorización',
-        proximidad: 2.6),
-    EntidadesCard(
-        imagen: Image.asset('assets/images/cent_eval.jpg'),
+        proximidad: 2.6,
+        coordenadas: const LatLng(-12.059280, -77.055324)),
+    const EntidadesCard(
+        nomimagen: 'cent_eval.jpg',
         razonsocial: 'TOURING',
         direccion: 'Av. César Vallejo 638',
         categoria: 'Centros de evaluación',
         precio: 35.0,
         calificacion: 4,
         estado: 'Con autorización',
-        proximidad: 2.6),
-    EntidadesCard(
-        imagen: Image.asset('assets/images/CITV.jpg'),
+        proximidad: 2.6,
+        coordenadas: const LatLng(-12.089276, -77.038640)),
+    const EntidadesCard(
+        nomimagen: 'CITV.jpg',
         razonsocial:
             'Centro de inspecciones técnico vehiculares grupo J&J S.A.C.',
         direccion: 'Av. Ruiseñores N°361-393 sub lote A4-1',
@@ -83,7 +90,8 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
         precio: 400.0,
         calificacion: 4,
         estado: 'Con autorización',
-        proximidad: 2.6),
+        proximidad: 2.6,
+        coordenadas: const LatLng(-12.044755, -77.056625)),
   ];
 
   final List<String> opciones = [
@@ -262,22 +270,29 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
                                 vertical: 5.0, horizontal: 0),
                             child: GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => DetalleEnt(
-                                        razonsocial: entidad.razonsocial,
-                                        direccion: entidad.direccion,
-                                        coordenadas: entidad.coordenadas,
-                                        estado: entidad.estado,
-                                        calificacion: entidad.calificacion,
-                                        categoria: entidad.categoria,
-                                        precio: entidad.precio,
-                                        proximidad: entidad.proximidad,
-                                        descripcion: entidad.descripcion,
+                                  print(
+                                      'Coordenadas de la entidad: ${entidad.coordenadas}');
+                                  if (entidad.coordenadas != null) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => DetalleEnt(
+                                          imagen: entidad.nomimagen,
+                                          razonsocial: entidad.razonsocial,
+                                          direccion: entidad.direccion,
+                                          coordenadas: entidad.coordenadas!,
+                                          estado: entidad.estado,
+                                          calificacion: entidad.calificacion,
+                                          categoria: entidad.categoria,
+                                          precio: entidad.precio,
+                                          proximidad: entidad.proximidad,
+                                          descripcion: entidad.descripcion,
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  } else {
+                                    print('Error: Coordenadas son null');
+                                  }
                                 },
                                 child: entidad),
                           ))

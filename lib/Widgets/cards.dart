@@ -76,7 +76,7 @@ class CategoriaCard extends StatelessWidget {
 }
 
 class EntidadesCard extends StatelessWidget {
-  final Image? imagen;
+  final String? nomimagen;
   final Image? logo;
   final String razonsocial;
   final String? ruc;
@@ -91,7 +91,7 @@ class EntidadesCard extends StatelessWidget {
 
   const EntidadesCard({
     super.key,
-    this.imagen,
+    this.nomimagen,
     this.logo,
     required this.razonsocial,
     this.ruc,
@@ -126,7 +126,7 @@ class EntidadesCard extends StatelessWidget {
                     height: 80,
                     child: FittedBox(
                       fit: BoxFit.cover,
-                      child: imagen,
+                      child: Image.asset('assets/images/$nomimagen'),
                     )),
               ),
               const SizedBox(width: 12.0),

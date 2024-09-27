@@ -1,5 +1,6 @@
 import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sncappdcv/Editoriales/editorial1.dart';
@@ -18,8 +19,8 @@ class Inicio2 extends StatefulWidget {
 class _Inicio2State extends State<Inicio2> {
   int _indicePagina = 0;
   final PageController _pageController = PageController();
-  EntidadesCard EntDestacada = EntidadesCard(
-    imagen: Image.asset('assets/images/ecsal_1.jpg'),
+  EntidadesCard EntDestacada = const EntidadesCard(
+    nomimagen: 'ecsal_1.jpg',
     razonsocial: 'Brevetes Salud S.A.C',
     direccion: 'Jr. Antenor Orrego 1978',
     categoria: 'Licencias de conducir',
@@ -27,6 +28,7 @@ class _Inicio2State extends State<Inicio2> {
     calificacion: 5,
     estado: 'Con autorización',
     proximidad: 0.08,
+    coordenadas: const LatLng(-12.058227, -77.060768),
   );
   /*late List<EntidadesCard> _entCercanas;
   late Position _posActual;*/
@@ -35,7 +37,7 @@ class _Inicio2State extends State<Inicio2> {
   @override
   void initState() {
     super.initState();
-    _indicePagina = 0; // Reiniciar el índice en 0
+    _indicePagina = 0;
   }
 
   @override
@@ -378,6 +380,7 @@ class _Inicio2State extends State<Inicio2> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => DetalleEnt(
+                              imagen: EntDestacada.nomimagen,
                               razonsocial: EntDestacada.razonsocial,
                               direccion: EntDestacada.direccion,
                               categoria: EntDestacada.categoria,
@@ -385,6 +388,7 @@ class _Inicio2State extends State<Inicio2> {
                               calificacion: EntDestacada.calificacion,
                               estado: EntDestacada.estado,
                               proximidad: EntDestacada.proximidad,
+                              coordenadas: EntDestacada.coordenadas,
                             )));
               },
             ),

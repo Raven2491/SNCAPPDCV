@@ -20,9 +20,9 @@ class MapaEntidadState extends State<MapaEntidad> {
       return SizedBox(
         child: FlutterMap(
           mapController: _mapController,
-          options: const MapOptions(
+          options: MapOptions(
             initialZoom: 15.5,
-            initialCenter: LatLng(-12.058242, -77.060791),
+            initialCenter: widget.ubicacion,
           ),
           children: [
             TileLayer(
