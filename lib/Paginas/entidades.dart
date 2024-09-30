@@ -184,6 +184,7 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
         FocusScope.of(context).unfocus();
       },
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           const SizedBox(height: 16),
           Row(children: [

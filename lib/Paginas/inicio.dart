@@ -5,7 +5,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:sncappdcv/Editoriales/editorial1.dart';
 import 'package:sncappdcv/Paginas/categorias2.dart';
 import 'package:sncappdcv/Paginas/entidades2.dart';
-import 'package:sncappdcv/Widgets/barrabusqueda.dart';
 import 'package:sncappdcv/Widgets/cards.dart';
 import 'package:sncappdcv/Widgets/detentidad.dart';
 
@@ -49,7 +48,7 @@ class _Inicio2State extends State<Inicio2> {
   List<String> entidadesFiltradas = [];
   bool _mostrandoResultados = false;
 
-  TextEditingController _buscarController = TextEditingController();
+  final TextEditingController _buscarController = TextEditingController();
 
   @override
   void initState() {
