@@ -5,6 +5,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:sncappdcv/Editoriales/editorial1.dart';
 import 'package:sncappdcv/Paginas/categorias2.dart';
 import 'package:sncappdcv/Paginas/entidades2.dart';
+import 'package:sncappdcv/Widgets/barrabusqueda.dart';
 import 'package:sncappdcv/Widgets/cards.dart';
 import 'package:sncappdcv/Widgets/detentidad.dart';
 
@@ -33,10 +34,28 @@ class _Inicio2State extends State<Inicio2> {
   final FocusNode _focusNode = FocusNode();
   LatLng posicionActual = const LatLng(0.0, 0.0);
 
+  List<String> entidades = [
+    'Centro Médico Lima',
+    'Escuela de Conductores Arequipa',
+    'Centro de Evaluación Cusco',
+    'Centro de ITV Piura',
+    'Taller de Conversión GNV/GLP Trujillo',
+    'Certificadora GNV/GLP Tacna',
+    'Entidad Verificadora Ica',
+    'Centro de RPC Callao',
+    'Entidad CVC Huancayo'
+  ];
+
+  List<String> entidadesFiltradas = [];
+  bool _mostrandoResultados = false;
+
+  TextEditingController _buscarController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     _indicePagina = 0;
+    entidadesFiltradas = entidades;
   }
 
   @override
@@ -53,17 +72,37 @@ class _Inicio2State extends State<Inicio2> {
     }
   }
 
+  void _filtrarEntidades(String query) {
+    List<String> resultados = [];
+
+    if (query.isEmpty) {
+      resultados = entidades;
+      _mostrandoResultados = false;
+    } else {
+      resultados = entidades
+          .where(
+              (entidad) => entidad.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+      _mostrandoResultados = true;
+    }
+
+    setState(() {
+      entidadesFiltradas = resultados;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _removerFoco,
       child: SingleChildScrollView(
         child: Column(
-          children: <Widget>[
+          children: [
             const SizedBox(height: 16),
             SizedBox(
               height: 50,
               child: TextField(
+                controller: _buscarController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -71,8 +110,24 @@ class _Inicio2State extends State<Inicio2> {
                   labelText: 'Buscar entidades...',
                   prefixIcon: const Icon(Icons.search),
                 ),
+                onChanged: _filtrarEntidades,
               ),
             ),
+            const SizedBox(height: 10),
+            if (_mostrandoResultados)
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: entidadesFiltradas.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(entidadesFiltradas[index]),
+                    onTap: () {
+                      print('Seleccionaste ${entidadesFiltradas[index]}');
+                    },
+                  );
+                },
+              ),
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -199,7 +254,7 @@ class _Inicio2State extends State<Inicio2> {
                             left: 10,
                             right: 10,
                             child: Text(
-                              'Cómo tramitar tu licencia electrónica',
+                              'Cómo tramitar tu licencia de conducir electrónica',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 14,

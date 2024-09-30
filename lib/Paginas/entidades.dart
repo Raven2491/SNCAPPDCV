@@ -17,7 +17,11 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
   int _indiceSeleccionado = 0;
   String _filtroSeleccionado = 'A-Z';
   late List<EntidadesCard> entidadesFiltradas;
-  late List<EntidadesCard> todasEntidades; // Agrega un FocusNode
+  late List<EntidadesCard> todasEntidades;
+
+  List<EntidadesCard> entidadesBusqueda = [];
+  bool _mostrandoResultados = false;
+  TextEditingController _buscarController = TextEditingController();
 
   final List<EntidadesCard> entidades = [
     const EntidadesCard(
@@ -29,7 +33,7 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
         calificacion: 5,
         estado: 'Con autorización',
         proximidad: 0.08,
-        coordenadas: const LatLng(-12.058232, -77.060769)),
+        coordenadas: LatLng(-12.058232, -77.060769)),
     const EntidadesCard(
         nomimagen: 'ecsal_1.jpg',
         razonsocial: 'Cala Center S.A.C',
@@ -39,7 +43,7 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
         calificacion: 5,
         estado: 'Con autorización',
         proximidad: 1.05,
-        coordenadas: const LatLng(-12.081128, -77.048400)),
+        coordenadas: LatLng(-12.081128, -77.048400)),
     const EntidadesCard(
         nomimagen: 'ecsal_1.jpg',
         razonsocial: 'Centro Médico Victor Manuel',
@@ -49,7 +53,7 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
         calificacion: 5,
         estado: 'Con autorización',
         proximidad: 2.23,
-        coordenadas: const LatLng(-12.054520, -77.061687)),
+        coordenadas: LatLng(-12.054520, -77.061687)),
     const EntidadesCard(
         nomimagen: 'esc_cond.jpg',
         razonsocial:
@@ -60,7 +64,7 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
         calificacion: 4,
         estado: 'Inhabilitado',
         proximidad: 2.5,
-        coordenadas: const LatLng(-12.057023, -77.041969)),
+        coordenadas: LatLng(-12.057023, -77.041969)),
     const EntidadesCard(
         nomimagen: 'esc_cond.jpg',
         razonsocial: 'JQJQ & Asociados S.A.C.',
@@ -70,7 +74,7 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
         calificacion: 4,
         estado: 'Con autorización',
         proximidad: 2.6,
-        coordenadas: const LatLng(-12.059280, -77.055324)),
+        coordenadas: LatLng(-12.059280, -77.055324)),
     const EntidadesCard(
         nomimagen: 'cent_eval.jpg',
         razonsocial: 'TOURING',
@@ -80,7 +84,7 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
         calificacion: 4,
         estado: 'Con autorización',
         proximidad: 2.6,
-        coordenadas: const LatLng(-12.089276, -77.038640)),
+        coordenadas: LatLng(-12.089276, -77.038640)),
     const EntidadesCard(
         nomimagen: 'CITV.jpg',
         razonsocial:
@@ -91,7 +95,7 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
         calificacion: 4,
         estado: 'Con autorización',
         proximidad: 2.6,
-        coordenadas: const LatLng(-12.044755, -77.056625)),
+        coordenadas: LatLng(-12.044755, -77.056625)),
   ];
 
   final List<String> opciones = [
@@ -122,6 +126,28 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
     } else {
       entidadesFiltradas = todasEntidades;
     }
+
+    entidadesBusqueda = entidades;
+  }
+
+  void _filtrarEntidades(String query) {
+    List<EntidadesCard> resultados;
+
+    if (query.isEmpty) {
+      resultados = entidades;
+      _mostrandoResultados = false;
+    } else {
+      resultados = entidades
+          .where((entidad) =>
+              entidad.razonsocial.toLowerCase().contains(query.toLowerCase()) ||
+              entidad.categoria.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+      _mostrandoResultados = true;
+    }
+
+    setState(() {
+      entidadesFiltradas = resultados;
+    });
   }
 
   List<EntidadesCard> aplicarFiltros() {
@@ -165,6 +191,8 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
               child: SizedBox(
                 height: 50,
                 child: TextField(
+                  controller: _buscarController,
+                  onChanged: _filtrarEntidades,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
@@ -205,6 +233,25 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
               },
             ),
           ]),
+          const SizedBox(height: 16),
+          if (_mostrandoResultados)
+            SizedBox(
+              width: double.infinity,
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: entidadesFiltradas.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(entidadesFiltradas[index].razonsocial),
+                    onTap: () {
+                      print(
+                          'Seleccionaste ${entidadesFiltradas[index].razonsocial}');
+                    },
+                  );
+                },
+              ),
+            ),
           const SizedBox(height: 16),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
