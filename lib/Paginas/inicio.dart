@@ -29,7 +29,7 @@ class _Inicio2State extends State<Inicio2> {
     proximidad: 0.08,
     coordenadas: LatLng(-12.058227, -77.060768),
   );
-  late List<EntidadesCard> _entCercanas;
+  //late List<EntidadesCard> _entCercanas;
   final FocusNode _focusNode = FocusNode();
   LatLng posicionActual = const LatLng(0.0, 0.0);
 

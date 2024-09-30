@@ -21,7 +21,8 @@ class CategoriaCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: const Color(0xFFFBEDED),
+      //color: const Color(0xFFFBEDED),
+      color: Colors.white,
       elevation: 4.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.0),
@@ -110,7 +111,8 @@ class EntidadesCard extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: Card(
-        color: const Color(0xFFFBEDED),
+        //color: const Color(0xFFFBEDED),
+        color: Colors.white,
         elevation: 4.0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
