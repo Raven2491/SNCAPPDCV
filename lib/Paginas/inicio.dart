@@ -2,7 +2,6 @@ import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:sncappdcv/Editoriales/editorial1.dart';
 import 'package:sncappdcv/Paginas/categorias2.dart';
 import 'package:sncappdcv/Paginas/entidades2.dart';
@@ -28,11 +27,11 @@ class _Inicio2State extends State<Inicio2> {
     calificacion: 5,
     estado: 'Con autorización',
     proximidad: 0.08,
-    coordenadas: const LatLng(-12.058227, -77.060768),
+    coordenadas: LatLng(-12.058227, -77.060768),
   );
-  /*late List<EntidadesCard> _entCercanas;
-  late Position _posActual;*/
+  late List<EntidadesCard> _entCercanas;
   final FocusNode _focusNode = FocusNode();
+  LatLng posicionActual = const LatLng(0.0, 0.0);
 
   @override
   void initState() {
@@ -53,45 +52,6 @@ class _Inicio2State extends State<Inicio2> {
       currentFocus.unfocus();
     }
   }
-
-  Future<Position> _determinarPosicion() async {
-    LocationPermission permiso;
-    permiso = await Geolocator.requestPermission();
-    if (permiso == LocationPermission.denied) {
-      permiso = await Geolocator.requestPermission();
-      if (permiso == LocationPermission.denied) {
-        return Future.error('Permiso de ubicación denegado');
-      }
-    }
-    return await Geolocator.getCurrentPosition();
-  }
-
-  /*void _obtenerUbicacion() async {
-    _posActual = await _determinarPosicion();
-    print('Ubicación actual: ${_posActual.latitude}, ${_posActual.longitude}');
-  }*/
-
-  /*void _obtenerEntCercanas() async {
-    _posActual = await _determinarPosicion();
-
-    // Obtener todas? las entidades con la API y almacenar en una lista
-
-    // Calcular la distancia entre la ubicación actual y las entidades de la lista
-
-    // Ordenar la lista de entidades por proximidad
-
-    // Guardar en la lista _entCercanas aquellas entidades cuya distancia sea menor a 15 km
-
-    // Seleccionar de la lista la entidad con la proximidad menor y asignarla a EntDestacada
-  }*/
-
-  /*void _obtenerEntidadDestacada() async {
-    Position posicion = await _determinarPosicion();
-
-    // Cálculo de distancia entre dos puntos
-    double distancia = Geolocator.distanceBetween(
-        posicion.latitude, posicion.longitude, -12.058242, -77.060791);
-  }*/
 
   @override
   Widget build(BuildContext context) {

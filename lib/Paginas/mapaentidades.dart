@@ -5,7 +5,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:sncappdcv/Widgets/mapa.dart';
 
 class MapaEntidades extends StatefulWidget {
-  const MapaEntidades({super.key});
+  final LatLng posicionActual;
+  const MapaEntidades({super.key, required this.posicionActual});
 
   @override
   State<MapaEntidades> createState() => _MapaEntidadesState();
@@ -40,49 +41,13 @@ class _MapaEntidadesState extends State<MapaEntidades> {
   String codProv = '';
   String codDist = '';
 
-  LatLng? posicionActual;
-
   @override
   void initState() {
     super.initState();
-    _determinarPosicion().then((posicion) {
-      setState(() {
-        posicionActual = LatLng(posicion.latitude, posicion.longitude);
-      });
-    });
     selectedDepartamento = null;
     selectedProvincia = null;
     selectedDistrito = null;
     _obtenerDepartamentos();
-  }
-
-  Future<Position> _determinarPosicion() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Servicio de ubicación desactivado');
-    }
-
-    permission = await Geolocator.checkPermission();
-
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Permiso de ubicación denegado permanentemente, abra la configuración de la aplicación para habilitarlo');
-    }
-
-    permission = await Geolocator.requestPermission();
-
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-
-      if (permission == LocationPermission.denied) {
-        return Future.error('Permiso de ubicación denegado');
-      }
-    }
-
-    return await Geolocator.getCurrentPosition();
   }
 
   Future<void> _obtenerDepartamentos() async {
@@ -172,7 +137,7 @@ class _MapaEntidadesState extends State<MapaEntidades> {
             height: 10,
           ),
           const Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.',
+            'Con esta opción podrás visualizar las entidades cercanas a tu ubicación actual. Selecciona una entidad, elige tu ubicación y presiona el botón "Buscar".',
             textAlign: TextAlign.justify,
             style: TextStyle(fontSize: 14, fontFamily: 'Roboto'),
           ),
@@ -381,7 +346,9 @@ class _MapaEntidadesState extends State<MapaEntidades> {
               Column(
                 children: [
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      print(widget.posicionActual);
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                     ),
@@ -431,12 +398,13 @@ class _MapaEntidadesState extends State<MapaEntidades> {
             ),
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(10)),
-              child: posicionActual != null
-                  ? MapaEntidad(
-                      ubicacion: posicionActual!,
+              child: widget.posicionActual.latitude == 0 &&
+                      widget.posicionActual.longitude == 0
+                  ? const Center(
+                      child: CircularProgressIndicator(),
                     )
-                  : const Center(
-                      child: Text('Ubicación no disponible'),
+                  : MapaEntidad(
+                      ubicacion: widget.posicionActual,
                     ),
             ),
           ),

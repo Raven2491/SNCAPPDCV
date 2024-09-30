@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:sncappdcv/Paginas/categorias.dart';
 import 'package:sncappdcv/Paginas/categorias2.dart';
 import 'package:sncappdcv/Paginas/entidades.dart';
@@ -90,15 +92,60 @@ class SNCAPP extends StatefulWidget {
 class _SNCAPPState extends State<SNCAPP> {
   int _indiceBselec = 2;
 
-  final List<Widget> _paginas = [
-    const Inicio2(),
-    const MapaEntidades(),
-    const Inicio2(),
-    const Categorias(categoria: ''),
-    const EntidadesFiltradas(
-      categoria: '',
-    ),
-  ];
+  List<Widget> _paginas = [];
+
+  LatLng posicionActual = LatLng(0, 0);
+
+  @override
+  void initState() {
+    super.initState();
+    _paginas = [
+      Inicio2(),
+      MapaEntidades(
+        posicionActual: posicionActual,
+      ),
+      Inicio2(),
+      const Categorias(categoria: ''),
+      const EntidadesFiltradas(
+        categoria: '',
+      ),
+    ];
+
+    _determinarPosicion().then((posicion) {
+      setState(() {
+        posicionActual = LatLng(posicion.latitude, posicion.longitude);
+        // Actualizamos la página del mapa con la posición obtenida
+        _paginas[1] = MapaEntidades(posicionActual: posicionActual);
+      });
+    }).catchError((error) {
+      print('Error obteniendo posición: $error');
+    });
+  }
+
+  Future<Position> _determinarPosicion() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('El servicio de ubicación está deshabilitado.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Permiso de ubicación denegado.');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Los permisos de ubicación están permanentemente denegados.');
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -183,20 +230,6 @@ class _SNCAPPState extends State<SNCAPP> {
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: Column(
             children: <Widget>[
-              /*const SizedBox(height: 16),
-              SizedBox(
-                height: 50,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    labelText: 'Buscar entidades...',
-                    prefixIcon: const Icon(Icons.search),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),*/
               Expanded(
                 child: IndexedStack(
                   index: _indiceBselec,

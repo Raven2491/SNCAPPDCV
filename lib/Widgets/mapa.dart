@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -26,6 +27,7 @@ class MapaEntidadState extends State<MapaEntidad> {
           ),
           children: [
             TileLayer(
+              tileProvider: CancellableNetworkTileProvider(),
               urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
             ),
             MarkerLayer(
@@ -34,7 +36,7 @@ class MapaEntidadState extends State<MapaEntidad> {
                   child: const Icon(
                     FontAwesomeIcons.locationDot,
                     color: Colors.red,
-                    size: 25.0,
+                    size: 30.0,
                   ),
                   point: widget.ubicacion,
                 ),
