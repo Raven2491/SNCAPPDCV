@@ -170,14 +170,20 @@ class _Categorias2State extends State<Categorias2> {
                   leading: const Icon(FontAwesomeIcons.idCard),
                   title: const Text('Licencias de conducir'),
                   onTap: () {
-                    Navigator.pop(context);
+                    setState(() {
+                      _indiceFselec = opciones.indexOf('Licencias de conducir');
+                      Navigator.of(context).pop();
+                    });
                   },
                 ),
                 ListTile(
                   leading: const Icon(FontAwesomeIcons.building),
                   title: const Text('Otras entidades'),
                   onTap: () {
-                    Navigator.pop(context);
+                    setState(() {
+                      _indiceFselec = opciones.indexOf('Otras entidades');
+                      Navigator.of(context).pop();
+                    });
                   },
                 ),
               ],

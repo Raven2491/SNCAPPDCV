@@ -114,18 +114,24 @@ class _Inicio2State extends State<Inicio2> {
             ),
             const SizedBox(height: 10),
             if (_mostrandoResultados)
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: entidadesFiltradas.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(entidadesFiltradas[index]),
-                    onTap: () {
-                      print('Seleccionaste ${entidadesFiltradas[index]}');
-                    },
-                  );
-                },
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: entidadesFiltradas.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(entidadesFiltradas[index]),
+                      onTap: () {
+                        print('Seleccionaste ${entidadesFiltradas[index]}');
+                      },
+                    );
+                  },
+                ),
               ),
             const SizedBox(height: 16),
             Row(
@@ -168,9 +174,8 @@ class _Inicio2State extends State<Inicio2> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const Categorias2(
-                                  categoria: '',
-                                )));
+                            builder: (context) =>
+                                const Categorias2(categoria: '')));
                   },
                   child: Text(
                     'Categorias',

@@ -9,13 +9,13 @@ class DetalleEnt extends StatefulWidget {
   final Image? logo;
   final String razonsocial;
   final String? ruc;
-  final String direccion;
+  final String? direccion;
   final LatLng? coordenadas;
-  final String categoria;
-  final double precio;
-  final double calificacion;
-  final String estado;
-  final double proximidad;
+  final String? categoria;
+  final double? precio;
+  final double? calificacion;
+  final String? estado;
+  final double? proximidad;
   final String? descripcion;
 
   const DetalleEnt(
@@ -24,13 +24,13 @@ class DetalleEnt extends StatefulWidget {
       this.logo,
       required this.razonsocial,
       this.ruc,
-      required this.direccion,
-      required this.coordenadas,
-      required this.categoria,
-      required this.precio,
-      required this.calificacion,
-      required this.estado,
-      required this.proximidad,
+      this.direccion,
+      this.coordenadas,
+      this.categoria,
+      this.precio,
+      this.calificacion,
+      this.estado,
+      this.proximidad,
       this.descripcion});
   @override
   _DetalleEntState createState() => _DetalleEntState();
@@ -125,12 +125,21 @@ class _DetalleEntState extends State<DetalleEnt> {
                         ),
                         child: Transform.scale(
                           scale: 1.2,
-                          child: Image.asset(
-                            'assets/images/${widget.imagen}',
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
-                          ),
+                          child: widget.imagen != null
+                              ? Image.asset(
+                                  'assets/images/${widget.imagen}',
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                )
+                              : const Center(
+                                  child: Text(
+                                    'Imagen no disponible',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
                         ),
                       ),
                     ),
@@ -138,30 +147,50 @@ class _DetalleEntState extends State<DetalleEnt> {
                 ),
                 const SizedBox(height: 16),
                 DetalleEntCard(
-                    razonsocial: widget.razonsocial,
-                    ruc: widget.ruc ?? 'N/A',
-                    estado: widget.estado,
-                    logo: Image.asset('assets/images/logoBS.png')),
+                  razonsocial: widget.razonsocial,
+                  ruc: widget.ruc != null
+                      ? 'RUC: ${widget.ruc!}'
+                      : 'RUC no disponible',
+                  estado: widget.estado != null
+                      ? widget.estado!
+                      : 'Estado no disponible',
+                  logo: widget.logo != null
+                      ? widget.logo!
+                      : Image(
+                          image: AssetImage('assets/images/${widget.logo}'),
+                        ),
+                ),
                 const SizedBox(height: 16),
                 Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.35),
-                            blurRadius: 5.0,
-                            spreadRadius: 2.0,
-                            offset: const Offset(0, 4),
-                          )
-                        ]),
-                    child: ClipRRect(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(15.0)),
-                        child: SizedBox(
-                            height: 125,
-                            child: MapaEntidad(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.35),
+                        blurRadius: 5.0,
+                        spreadRadius: 2.0,
+                        offset: const Offset(0, 4),
+                      )
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(15.0)),
+                    child: SizedBox(
+                      height: 125,
+                      child: widget.coordenadas != null
+                          ? MapaEntidad(
                               ubicacion: widget.coordenadas!,
-                            )))),
+                            )
+                          : const Center(
+                              child: Text(
+                                'Ubicación no disponible',
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -175,10 +204,14 @@ class _DetalleEntState extends State<DetalleEnt> {
                           const Icon(FontAwesomeIcons.locationDot,
                               color: Colors.red, size: 40.0),
                           const SizedBox(height: 5),
-                          Text(widget.direccion,
-                              style: const TextStyle(
-                                  fontSize: 10, fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center),
+                          Text(
+                            widget.direccion != null
+                                ? widget.direccion!
+                                : 'Dirección no disponible',
+                            style: const TextStyle(
+                                fontSize: 10, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center,
+                          ),
                         ],
                       ),
                     ),
@@ -206,7 +239,9 @@ class _DetalleEntState extends State<DetalleEnt> {
                               color: Colors.red, size: 40.0),
                           const SizedBox(height: 5),
                           Text(
-                            'S/ ${widget.precio.toStringAsFixed(2)}',
+                            widget.precio != null
+                                ? 'S/. ${widget.precio!.toStringAsFixed(2)}'
+                                : 'Precio no disponible',
                             style: const TextStyle(
                                 fontSize: 10, fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
@@ -225,12 +260,14 @@ class _DetalleEntState extends State<DetalleEnt> {
                   ),
                 ),
                 const SizedBox(height: 5),
-                const SizedBox(
+                SizedBox(
                   width: double.infinity,
                   child: Text(
-                    'Centro Médico Brevete & Salud es una entidad empresarial especialista en cuidados de la salud, evaluaciones médicas y psicosomáticas para lograr la obtención de la licencia de conducir y otros sevicios generales relacionados con el bienestar fisico de cada integrante de la sociedad.',
+                    widget.descripcion != null
+                        ? widget.descripcion!
+                        : 'Centro Médico Brevete & Salud es una entidad empresarial especialista en cuidados de la salud, evaluaciones médicas y psicosomáticas para lograr la obtención de la licencia de conducir y otros sevicios generales relacionados con el bienestar fisico de cada integrante de la sociedad.',
                     textAlign: TextAlign.justify,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14,
                     ),
                   ),
@@ -262,12 +299,21 @@ class _DetalleEntState extends State<DetalleEnt> {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
-                          child: Image.asset(
-                            'assets/images/${widget.imagen}',
-                            fit: BoxFit.cover,
-                            height: 100,
-                            width: 40,
-                          ),
+                          child: widget.imagen != null
+                              ? Image.asset(
+                                  'assets/images/${widget.imagen}',
+                                  fit: BoxFit.cover,
+                                  height: 100,
+                                  width: 40,
+                                )
+                              : const Center(
+                                  child: Text(
+                                    'Imagen no disponible',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
                         ),
                       ),
                     ),
@@ -288,12 +334,21 @@ class _DetalleEntState extends State<DetalleEnt> {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
-                          child: Image.asset(
-                            'assets/images/${widget.imagen}',
-                            fit: BoxFit.cover,
-                            height: 100,
-                            width: 40,
-                          ),
+                          child: widget.imagen != null
+                              ? Image.asset(
+                                  'assets/images/${widget.imagen}',
+                                  fit: BoxFit.cover,
+                                  height: 100,
+                                  width: 40,
+                                )
+                              : const Center(
+                                  child: Text(
+                                    'Imagen no disponible',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
                         ),
                       ),
                     ),
@@ -314,12 +369,21 @@ class _DetalleEntState extends State<DetalleEnt> {
                         ),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
-                          child: Image.asset(
-                            'assets/images/${widget.imagen}',
-                            fit: BoxFit.cover,
-                            height: 100,
-                            width: 40,
-                          ),
+                          child: widget.imagen != null
+                              ? Image.asset(
+                                  'assets/images/${widget.imagen}',
+                                  fit: BoxFit.cover,
+                                  height: 100,
+                                  width: 40,
+                                )
+                              : const Center(
+                                  child: Text(
+                                    'Imagen no disponible',
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
                         ),
                       ),
                     ),

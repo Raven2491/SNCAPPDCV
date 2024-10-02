@@ -21,7 +21,7 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
 
   List<EntidadesCard> entidadesBusqueda = [];
   bool _mostrandoResultados = false;
-  TextEditingController _buscarController = TextEditingController();
+  final TextEditingController _buscarController = TextEditingController();
 
   final List<EntidadesCard> entidades = [
     const EntidadesCard(
@@ -236,8 +236,13 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
           ]),
           const SizedBox(height: 16),
           if (_mostrandoResultados)
-            SizedBox(
+            Container(
               width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: Colors.grey[300]!),
+              ),
               child: ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -246,6 +251,14 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
                   return ListTile(
                     title: Text(entidadesFiltradas[index].razonsocial),
                     onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetalleEnt(
+                              razonsocial:
+                                  entidadesFiltradas[index].razonsocial),
+                        ),
+                      );
                       print(
                           'Seleccionaste ${entidadesFiltradas[index].razonsocial}');
                     },
