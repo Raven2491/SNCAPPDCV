@@ -13,7 +13,7 @@ class Entidades extends StatefulWidget {
   _EntidadesState createState() => _EntidadesState();
 }
 
-class _EntidadesState extends State<Entidades> with RouteAware {
+class _EntidadesState extends State<Entidades> {
   int _indiceSeleccionado = 0;
   String _filtroSeleccionado = 'A-Z';
   late List<EntidadesCard> entidadesFiltradas;
@@ -127,14 +127,6 @@ class _EntidadesState extends State<Entidades> with RouteAware {
         : todasEntidades;
 
     entidadesBusqueda = entidades;
-  }
-
-  @override
-  void didPopNext() {
-    super.didPopNext();
-    _buscarController.clear();
-    _focusNode.unfocus();
-    _filtrarYOrdenarEntidades(''); // Vuelve a mostrar todos los resultados
   }
 
   void _filtrarYOrdenarEntidades(String query) {
