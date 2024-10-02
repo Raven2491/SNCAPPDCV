@@ -94,17 +94,17 @@ class _SNCAPPState extends State<SNCAPP> {
 
   List<Widget> _paginas = [];
 
-  LatLng posicionActual = LatLng(0, 0);
+  LatLng posicionActual = const LatLng(0, 0);
 
   @override
   void initState() {
     super.initState();
     _paginas = [
-      Inicio2(),
+      const Inicio2(),
       MapaEntidades(
         posicionActual: posicionActual,
       ),
-      Inicio2(),
+      const Inicio2(),
       const Categorias(categoria: ''),
       const EntidadesFiltradas(
         categoria: '',
@@ -156,7 +156,7 @@ class _SNCAPPState extends State<SNCAPP> {
           title: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Rapidito',
+              Text('Rapidito!',
                   style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 30,

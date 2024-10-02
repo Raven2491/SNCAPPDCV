@@ -147,19 +147,20 @@ class _DetalleEntState extends State<DetalleEnt> {
                 ),
                 const SizedBox(height: 16),
                 DetalleEntCard(
-                  razonsocial: widget.razonsocial,
-                  ruc: widget.ruc != null
-                      ? 'RUC: ${widget.ruc!}'
-                      : 'RUC no disponible',
-                  estado: widget.estado != null
-                      ? widget.estado!
-                      : 'Estado no disponible',
-                  logo: widget.logo != null
-                      ? widget.logo!
-                      : Image(
-                          image: AssetImage('assets/images/${widget.logo}'),
-                        ),
-                ),
+                    razonsocial: widget.razonsocial,
+                    ruc: widget.ruc != null
+                        ? 'RUC: ${widget.ruc!}'
+                        : 'RUC no disponible',
+                    estado: widget.estado != null
+                        ? widget.estado!
+                        : 'Estado no disponible',
+                    logo: widget.logo != null
+                        ? Image.asset(
+                            'assets/images/${widget.imagen}',
+                          )
+                        : Image.asset(
+                            'assets/images/${widget.imagen}',
+                          )),
                 const SizedBox(height: 16),
                 Container(
                   decoration: BoxDecoration(

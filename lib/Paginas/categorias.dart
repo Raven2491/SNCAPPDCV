@@ -17,6 +17,10 @@ class _CategoriasState extends State<Categorias> {
   late List<CategoriaCard> categoriasFiltradas;
   late List<CategoriaCard> todasCategorias;
 
+  List<CategoriaCard> categoriaBusqueda = [];
+  bool _mostrandoResultados = false;
+  final TextEditingController _buscarController = TextEditingController();
+
   void _onSegmentChanged(int index) {
     setState(() {
       _indiceFselec = index;
@@ -102,6 +106,26 @@ class _CategoriasState extends State<Categorias> {
     }
   }
 
+  void _filtrarEntidades(String query) {
+    List<CategoriaCard> resultados;
+
+    if (query.isEmpty) {
+      resultados = todasCategorias;
+      _mostrandoResultados = false;
+    } else {
+      resultados = todasCategorias
+          .where((categoria) =>
+              categoria.entidad.toLowerCase().contains(query.toLowerCase()) ||
+              categoria.tipo.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+      _mostrandoResultados = true;
+    }
+
+    setState(() {
+      categoriasFiltradas = resultados;
+    });
+  }
+
   List<CategoriaCard> aplicarFiltros() {
     List<CategoriaCard> filtradas = _indiceFselec == 0
         ? todasCategorias
@@ -124,6 +148,8 @@ class _CategoriasState extends State<Categorias> {
           SizedBox(
             height: 50,
             child: TextField(
+              controller: _buscarController,
+              onChanged: _filtrarEntidades,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
@@ -133,6 +159,35 @@ class _CategoriasState extends State<Categorias> {
               ),
             ),
           ),
+          if (_mostrandoResultados)
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: Colors.grey[300]!),
+              ),
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: categoriasFiltradas.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(categoriasFiltradas[index].entidad),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EntidadesFiltradas2(
+                            categoria: categoriasFiltradas[index].entidad,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
           const SizedBox(height: 16),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
