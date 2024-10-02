@@ -65,8 +65,8 @@ class _PantallaCargaState extends State<PantallaCarga> {
                     fontWeight: FontWeight.bold,
                     color: Colors.white)),
             SizedBox(
-              width: 150,
-              height: 75,
+              width: 110,
+              height: 55,
               child: FittedBox(
                 fit: BoxFit.cover,
                 child: Image.asset(
@@ -106,8 +106,8 @@ class _SNCAPPState extends State<SNCAPP> {
       ),
       const Inicio2(),
       const Categorias(categoria: ''),
-      const EntidadesFiltradas(
-        categoria: '',
+      const Entidades(
+        categoria: 'Todas',
       ),
     ];
 

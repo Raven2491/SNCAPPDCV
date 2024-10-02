@@ -4,16 +4,16 @@ import 'package:sncappdcv/Widgets/cards.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sncappdcv/Widgets/detentidad.dart';
 
-class EntidadesFiltradas2 extends StatefulWidget {
+class Entidades2 extends StatefulWidget {
   final String categoria;
 
-  const EntidadesFiltradas2({super.key, required this.categoria});
+  const Entidades2({super.key, required this.categoria});
 
   @override
-  _EntidadesFiltradas2State createState() => _EntidadesFiltradas2State();
+  _Entidades2State createState() => _Entidades2State();
 }
 
-class _EntidadesFiltradas2State extends State<EntidadesFiltradas2> {
+class _Entidades2State extends State<Entidades2> {
   int _indiceSeleccionado = 0;
   String _filtroSeleccionado = 'A-Z';
   late List<EntidadesCard> entidadesFiltradas;
@@ -29,7 +29,7 @@ class _EntidadesFiltradas2State extends State<EntidadesFiltradas2> {
         calificacion: 5,
         estado: 'Con autorización',
         proximidad: 0.08,
-        coordenadas: const LatLng(-12.058232, -77.060769)),
+        coordenadas: LatLng(-12.058232, -77.060769)),
     const EntidadesCard(
         nomimagen: 'ecsal_1.jpg',
         razonsocial: 'Cala Center S.A.C',
@@ -39,7 +39,7 @@ class _EntidadesFiltradas2State extends State<EntidadesFiltradas2> {
         calificacion: 5,
         estado: 'Con autorización',
         proximidad: 1.05,
-        coordenadas: const LatLng(-12.081128, -77.048400)),
+        coordenadas: LatLng(-12.081128, -77.048400)),
     const EntidadesCard(
         nomimagen: 'ecsal_1.jpg',
         razonsocial: 'Centro Médico Victor Manuel',
@@ -49,7 +49,7 @@ class _EntidadesFiltradas2State extends State<EntidadesFiltradas2> {
         calificacion: 5,
         estado: 'Con autorización',
         proximidad: 2.23,
-        coordenadas: const LatLng(-12.054520, -77.061687)),
+        coordenadas: LatLng(-12.054520, -77.061687)),
     const EntidadesCard(
         nomimagen: 'esc_cond.jpg',
         razonsocial:
@@ -60,7 +60,7 @@ class _EntidadesFiltradas2State extends State<EntidadesFiltradas2> {
         calificacion: 4,
         estado: 'Inhabilitado',
         proximidad: 2.5,
-        coordenadas: const LatLng(-12.057023, -77.041969)),
+        coordenadas: LatLng(-12.057023, -77.041969)),
     const EntidadesCard(
         nomimagen: 'esc_cond.jpg',
         razonsocial: 'JQJQ & Asociados S.A.C.',
@@ -70,7 +70,7 @@ class _EntidadesFiltradas2State extends State<EntidadesFiltradas2> {
         calificacion: 4,
         estado: 'Con autorización',
         proximidad: 2.6,
-        coordenadas: const LatLng(-12.059280, -77.055324)),
+        coordenadas: LatLng(-12.059280, -77.055324)),
     const EntidadesCard(
         nomimagen: 'cent_eval.jpg',
         razonsocial: 'TOURING',
@@ -80,7 +80,7 @@ class _EntidadesFiltradas2State extends State<EntidadesFiltradas2> {
         calificacion: 4,
         estado: 'Con autorización',
         proximidad: 2.6,
-        coordenadas: const LatLng(-12.089276, -77.038640)),
+        coordenadas: LatLng(-12.089276, -77.038640)),
     const EntidadesCard(
         nomimagen: 'CITV.jpg',
         razonsocial:
@@ -91,7 +91,7 @@ class _EntidadesFiltradas2State extends State<EntidadesFiltradas2> {
         calificacion: 4,
         estado: 'Con autorización',
         proximidad: 2.6,
-        coordenadas: const LatLng(-12.044755, -77.056625)),
+        coordenadas: LatLng(-12.044755, -77.056625)),
   ];
 
   final List<String> opciones = [

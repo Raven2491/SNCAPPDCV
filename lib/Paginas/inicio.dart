@@ -198,7 +198,7 @@ class _Inicio2State extends State<Inicio2> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const EntidadesFiltradas2(
+                            builder: (context) => const Entidades2(
                                   categoria: '',
                                 )));
                   },
@@ -363,7 +363,7 @@ class _Inicio2State extends State<Inicio2> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EntidadesFiltradas2(
+                                builder: (context) => Entidades2(
                                   categoria: category.entidad,
                                 ),
                               ),

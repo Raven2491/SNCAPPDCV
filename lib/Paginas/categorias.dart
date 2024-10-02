@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sncappdcv/Paginas/entidades2.dart';
 import 'package:sncappdcv/Widgets/cards.dart';
-/*import 'package:sncappdcv/Paginas/entidades.dart';*/
 
 class Categorias extends StatefulWidget {
-  final String categoria; // Define the 'categoria' field
+  final String categoria;
 
   const Categorias({super.key, required this.categoria});
 
@@ -178,7 +177,7 @@ class _CategoriasState extends State<Categorias> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => EntidadesFiltradas2(
+                          builder: (context) => Entidades2(
                             categoria: categoriasFiltradas[index].entidad,
                           ),
                         ),
@@ -250,8 +249,8 @@ class _CategoriasState extends State<Categorias> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => EntidadesFiltradas2(
-                              categoria: categoriaCard.entidad),
+                          builder: (context) =>
+                              Entidades2(categoria: categoriaCard.entidad),
                         ),
                       );
                     },

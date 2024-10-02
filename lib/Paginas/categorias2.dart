@@ -251,7 +251,7 @@ class _Categorias2State extends State<Categorias2> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EntidadesFiltradas2(
+                                builder: (context) => Entidades2(
                                     categoria:
                                         categoriasFiltradas[index].entidad),
                               ),
@@ -324,7 +324,7 @@ class _Categorias2State extends State<Categorias2> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EntidadesFiltradas2(
+                                builder: (context) => Entidades2(
                                     categoria: categoriaCard.entidad),
                               ),
                             );

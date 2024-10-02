@@ -4,24 +4,25 @@ import 'package:sncappdcv/Widgets/cards.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sncappdcv/Widgets/detentidad.dart';
 
-class EntidadesFiltradas extends StatefulWidget {
+class Entidades extends StatefulWidget {
   final String categoria;
 
-  const EntidadesFiltradas({super.key, required this.categoria});
+  const Entidades({super.key, required this.categoria});
 
   @override
-  _EntidadesFiltradasState createState() => _EntidadesFiltradasState();
+  _EntidadesState createState() => _EntidadesState();
 }
 
-class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
+class _EntidadesState extends State<Entidades> with RouteAware {
   int _indiceSeleccionado = 0;
   String _filtroSeleccionado = 'A-Z';
   late List<EntidadesCard> entidadesFiltradas;
   late List<EntidadesCard> todasEntidades;
 
   List<EntidadesCard> entidadesBusqueda = [];
-  bool _mostrandoResultados = false;
+
   final TextEditingController _buscarController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
   final List<EntidadesCard> entidades = [
     const EntidadesCard(
@@ -119,30 +120,60 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
     if (_indiceSeleccionado == -1) _indiceSeleccionado = 0;
 
     todasEntidades = entidades;
-    if (widget.categoria != 'Todas') {
-      entidadesFiltradas = entidades
-          .where((entidad) => entidad.categoria == widget.categoria)
-          .toList();
-    } else {
-      entidadesFiltradas = todasEntidades;
-    }
+    entidadesFiltradas = widget.categoria != 'Todas'
+        ? entidades
+            .where((entidad) => entidad.categoria == widget.categoria)
+            .toList()
+        : todasEntidades;
 
     entidadesBusqueda = entidades;
   }
 
-  void _filtrarEntidades(String query) {
+  @override
+  void didPopNext() {
+    super.didPopNext();
+    _buscarController.clear();
+    _focusNode.unfocus();
+    _filtrarYOrdenarEntidades(''); // Vuelve a mostrar todos los resultados
+  }
+
+  void _filtrarYOrdenarEntidades(String query) {
     List<EntidadesCard> resultados;
 
     if (query.isEmpty) {
-      resultados = entidades;
-      _mostrandoResultados = false;
+      resultados = _indiceSeleccionado == 0
+          ? todasEntidades
+          : todasEntidades
+              .where((entidad) =>
+                  entidad.categoria == opciones[_indiceSeleccionado])
+              .toList();
     } else {
-      resultados = entidades
+      resultados = todasEntidades
           .where((entidad) =>
-              entidad.razonsocial.toLowerCase().contains(query.toLowerCase()) ||
-              entidad.categoria.toLowerCase().contains(query.toLowerCase()))
+              (entidad.razonsocial
+                      .toLowerCase()
+                      .contains(query.toLowerCase()) ||
+                  entidad.categoria
+                      .toLowerCase()
+                      .contains(query.toLowerCase())) &&
+              (_indiceSeleccionado == 0 ||
+                  entidad.categoria == opciones[_indiceSeleccionado]))
           .toList();
-      _mostrandoResultados = true;
+    }
+
+    switch (_filtroSeleccionado) {
+      case 'A-Z':
+        resultados.sort((a, b) => a.razonsocial.compareTo(b.razonsocial));
+        break;
+      case 'Z-A':
+        resultados.sort((a, b) => b.razonsocial.compareTo(a.razonsocial));
+        break;
+      case 'Precio más bajo':
+        resultados.sort((a, b) => a.precio.compareTo(b.precio));
+        break;
+      case 'Precio más alto':
+        resultados.sort((a, b) => b.precio.compareTo(a.precio));
+        break;
     }
 
     setState(() {
@@ -150,35 +181,8 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
     });
   }
 
-  List<EntidadesCard> aplicarFiltros() {
-    List<EntidadesCard> filtradas = _indiceSeleccionado == 0
-        ? todasEntidades
-        : todasEntidades
-            .where(
-                (entidad) => entidad.categoria == opciones[_indiceSeleccionado])
-            .toList();
-
-    switch (_filtroSeleccionado) {
-      case 'A-Z':
-        filtradas.sort((a, b) => a.razonsocial.compareTo(b.razonsocial));
-        break;
-      case 'Z-A':
-        filtradas.sort((a, b) => b.razonsocial.compareTo(a.razonsocial));
-        break;
-      case 'Precio más bajo':
-        filtradas.sort((a, b) => a.precio.compareTo(b.precio));
-        break;
-      case 'Precio más alto':
-        filtradas.sort((a, b) => b.precio.compareTo(a.precio));
-        break;
-    }
-
-    return filtradas;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final List<EntidadesCard> entidadesOrdenadas = aplicarFiltros();
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -193,7 +197,10 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
                 height: 50,
                 child: TextField(
                   controller: _buscarController,
-                  onChanged: _filtrarEntidades,
+                  focusNode: _focusNode,
+                  onChanged: (query) {
+                    _filtrarYOrdenarEntidades(query);
+                  },
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
@@ -210,6 +217,7 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
               onSelected: (String value) {
                 setState(() {
                   _filtroSeleccionado = value;
+                  _filtrarYOrdenarEntidades(_buscarController.text);
                 });
               },
               itemBuilder: (BuildContext context) {
@@ -235,55 +243,25 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
             ),
           ]),
           const SizedBox(height: 16),
-          if (_mostrandoResultados)
-            Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Colors.grey[300]!),
-              ),
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: entidadesFiltradas.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(entidadesFiltradas[index].razonsocial),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DetalleEnt(
-                              razonsocial:
-                                  entidadesFiltradas[index].razonsocial),
-                        ),
-                      );
-                      print(
-                          'Seleccionaste ${entidadesFiltradas[index].razonsocial}');
-                    },
-                  );
-                },
-              ),
-            ),
-          const SizedBox(height: 16),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: List.generate(opciones.length, (indice) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
                   child: GestureDetector(
                     onTap: () {
                       setState(() {
                         _indiceSeleccionado = indice;
+                        _filtrarYOrdenarEntidades(_buscarController.text);
                       });
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 5, vertical: 2),
                       decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
                         color: _indiceSeleccionado == indice
                             ? Colors.red
                             : Colors.white,
@@ -291,16 +269,14 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
                           color: Colors.red,
                           width: 2,
                         ),
-                        borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
                         opciones[indice],
                         style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.normal,
                           color: _indiceSeleccionado == indice
                               ? Colors.white
                               : Colors.black,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -322,55 +298,35 @@ class _EntidadesFiltradasState extends State<EntidadesFiltradas> {
           ),
           const SizedBox(height: 8),
           Expanded(
-            child: ListView(
-              shrinkWrap: true,
-              children: entidadesOrdenadas.isNotEmpty
-                  ? entidadesOrdenadas
-                      .map((entidad) => Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 5.0, horizontal: 0),
-                            child: GestureDetector(
-                                onTap: () {
-                                  print(
-                                      'Coordenadas de la entidad: ${entidad.coordenadas}');
-                                  if (entidad.coordenadas != null) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => DetalleEnt(
-                                          imagen: entidad.nomimagen,
-                                          razonsocial: entidad.razonsocial,
-                                          direccion: entidad.direccion,
-                                          coordenadas: entidad.coordenadas!,
-                                          estado: entidad.estado,
-                                          calificacion: entidad.calificacion,
-                                          categoria: entidad.categoria,
-                                          precio: entidad.precio,
-                                          proximidad: entidad.proximidad,
-                                          descripcion: entidad.descripcion,
-                                        ),
-                                      ),
-                                    );
-                                  } else {
-                                    print('Error: Coordenadas son null');
-                                  }
-                                },
-                                child: entidad),
-                          ))
-                      .toList()
-                  : const [
-                      Center(
-                        child: Text(
-                          'No se encontraron entidades',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+            child: ListView.builder(
+              itemCount: entidadesFiltradas.length,
+              itemBuilder: (BuildContext context, int index) {
+                final entidad = entidadesFiltradas[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetalleEnt(
+                          imagen: entidad.nomimagen,
+                          razonsocial: entidad.razonsocial,
+                          direccion: entidad.direccion,
+                          coordenadas: entidad.coordenadas!,
+                          estado: entidad.estado,
+                          calificacion: entidad.calificacion,
+                          categoria: entidad.categoria,
+                          precio: entidad.precio,
+                          proximidad: entidad.proximidad,
+                          descripcion: entidad.descripcion,
                         ),
-                      )
-                    ],
+                      ),
+                    );
+                  },
+                  child: entidad,
+                );
+              },
             ),
-          )
+          ),
         ],
       ),
     );
