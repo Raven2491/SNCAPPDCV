@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sncappdcv/Paginas/favoritos.dart';
 import 'package:sncappdcv/Widgets/cards.dart';
 import 'package:sncappdcv/Widgets/mapa.dart';
 import 'package:latlong2/latlong.dart';
@@ -37,6 +38,32 @@ class DetalleEnt extends StatefulWidget {
 }
 
 class _DetalleEntState extends State<DetalleEnt> {
+  List<String> favoritos = [];
+
+  // Método para guardar la tarjeta en favoritos
+  void agregarAFavoritos() async {
+    final FavoritosManager manager = FavoritosManager();
+
+    // Crear una representación de la tarjeta que quieres guardar
+    final tarjetaFavorita =
+        '${widget.razonsocial}|${widget.ruc}|${widget.estado}|${widget.imagen}';
+
+    List<String>? favoritosActuales = await manager.obtenerFavoritos() ?? [];
+
+    if (!favoritosActuales.contains(tarjetaFavorita)) {
+      favoritosActuales.add(tarjetaFavorita); // Agregar si no es favorito
+    }
+
+    await manager.guardarFavoritos(favoritosActuales);
+    setState(() {
+      favoritos = favoritosActuales;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Entidad añadida a favoritos')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -161,6 +188,10 @@ class _DetalleEntState extends State<DetalleEnt> {
                         : Image.asset(
                             'assets/images/${widget.imagen}',
                           )),
+                ElevatedButton(
+                  onPressed: agregarAFavoritos,
+                  child: const Text('Agregar a Favoritos'),
+                ),
                 const SizedBox(height: 16),
                 Container(
                   decoration: BoxDecoration(

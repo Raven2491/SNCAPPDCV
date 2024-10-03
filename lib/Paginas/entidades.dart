@@ -268,7 +268,6 @@ class _EntidadesState extends State<Entidades> {
                           color: _indiceSeleccionado == indice
                               ? Colors.white
                               : Colors.black,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
@@ -283,7 +282,7 @@ class _EntidadesState extends State<Entidades> {
             child: Text(
               'Entidades',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
             ),
