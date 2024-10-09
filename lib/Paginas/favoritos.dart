@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoritosManager {
@@ -16,48 +17,96 @@ class FavoritosManager {
 }
 
 class PaginaFavoritos extends StatelessWidget {
-  const PaginaFavoritos();
+  const PaginaFavoritos({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Favoritos'),
-      ),
-      body: FutureBuilder<List<String>?>(
-        future: FavoritosManager().obtenerFavoritos(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+    return FutureBuilder<List<String>?>(
+      future: FavoritosManager().obtenerFavoritos(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No hay favoritos aún.'));
-          }
-
-          List<String> favoritos = snapshot.data!;
-
-          return ListView.builder(
-            itemCount: favoritos.length,
-            itemBuilder: (context, index) {
-              String favorito = favoritos[index];
-              List<String> partes = favorito.split('|');
-
-              return ListTile(
-                title: Text(partes[0]), // Razón social
-                subtitle: Text('RUC: ${partes[1]}'), // RUC
-                trailing: partes[2] == 'Con autorización'
-                    ? const Icon(Icons.check_circle, color: Colors.green)
-                    : const Icon(Icons.cancel, color: Colors.red),
-                onTap: () {
-                  // Aquí puedes implementar la acción que quieres al tocar el favorito
-                  // Por ejemplo, navegar a la página de detalles de esa entidad
-                },
-              );
-            },
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(
+            child: Text(
+              'No hay favoritos aún.',
+              style: TextStyle(fontSize: 16),
+            ),
           );
-        },
-      ),
+        }
+
+        List<String> favoritos = snapshot.data!;
+
+        return Column(children: [
+          const SizedBox(
+            height: 10,
+          ),
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Favoritos',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: favoritos.length,
+              itemBuilder: (context, index) {
+                String favorito = favoritos[index];
+                List<String> partes = favorito.split('|');
+                return Column(children: [
+                  Card(
+                    child: ListTile(
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: SizedBox(
+                          child: FittedBox(
+                            child: Image.asset('assets/images/${partes[0]}',
+                                width: 80, height: 80, fit: BoxFit.cover),
+                          ),
+                        ),
+                      ),
+                      title: Text(
+                        partes[1],
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(children: [
+                              const Icon(Icons.star,
+                                  color: Colors.amber, size: 16.0),
+                              Text(partes[4])
+                            ]),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Row(children: [
+                              const Icon(
+                                FontAwesomeIcons.locationDot,
+                                size: 16.0,
+                                color: Colors.red,
+                              ),
+                              Text('${partes[5]} km')
+                            ])
+                          ]),
+                      trailing: partes[3] == 'Con autorización'
+                          ? const Icon(Icons.check_circle, color: Colors.green)
+                          : const Icon(Icons.cancel, color: Colors.red),
+                      onTap: () {},
+                    ),
+                  ),
+                ]);
+              },
+            ),
+          ),
+        ]);
+      },
     );
   }
 }

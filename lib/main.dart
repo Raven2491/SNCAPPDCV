@@ -160,7 +160,7 @@ class _SNCAPPState extends State<SNCAPP> {
               Text('Rapidito!',
                   style: TextStyle(
                       fontFamily: 'Roboto',
-                      fontSize: 30,
+                      fontSize: 32,
                       fontWeight: FontWeight.bold)),
               Text(
                 '¡Tus entidades a un toque y al toque!',

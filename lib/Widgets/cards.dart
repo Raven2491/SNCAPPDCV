@@ -78,7 +78,7 @@ class CategoriaCard extends StatelessWidget {
 
 class EntidadesCard extends StatelessWidget {
   final String? nomimagen;
-  final Image? logo;
+  final Image? nomlogo;
   final String razonsocial;
   final String? ruc;
   final String direccion;
@@ -93,7 +93,7 @@ class EntidadesCard extends StatelessWidget {
   const EntidadesCard({
     super.key,
     this.nomimagen,
-    this.logo,
+    this.nomlogo,
     required this.razonsocial,
     this.ruc,
     required this.direccion,

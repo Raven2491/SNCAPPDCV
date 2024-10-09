@@ -45,8 +45,8 @@ class _DetalleEntState extends State<DetalleEnt> {
     final FavoritosManager manager = FavoritosManager();
 
     // Crear una representación de la tarjeta que quieres guardar
-    final tarjetaFavorita =
-        '${widget.razonsocial}|${widget.ruc}|${widget.estado}|${widget.imagen}';
+    final String tarjetaFavorita =
+        '${widget.imagen}|${widget.razonsocial}|${widget.direccion}|${widget.estado}|${widget.calificacion}|${widget.proximidad}';
 
     List<String>? favoritosActuales = await manager.obtenerFavoritos() ?? [];
 
