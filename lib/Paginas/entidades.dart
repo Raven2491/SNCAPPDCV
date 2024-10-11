@@ -289,6 +289,10 @@ class _EntidadesState extends State<Entidades> {
             ),
           ),
           const SizedBox(height: 8),
+          if (entidadesFiltradas.isEmpty)
+            const Center(
+              child: Text('No se encontraron entidades'),
+            ),
           Expanded(
             child: ListView.builder(
               itemCount: entidadesFiltradas.length,

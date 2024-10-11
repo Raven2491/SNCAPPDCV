@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -165,13 +166,17 @@ class EntidadesCard extends StatelessWidget {
                     const SizedBox(height: 4.0),
                     Row(
                       children: [
-                        const Icon(Icons.star, color: Colors.amber, size: 16.0),
-                        Text(
-                          calificacion.toString(),
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            color: Colors.grey[600],
-                          ),
+                        RatingBarIndicator(
+                          rating: calificacion,
+                          itemCount: 5,
+                          itemSize: 15.0,
+                          direction: Axis.horizontal,
+                          itemBuilder: (context, _) {
+                            return const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            );
+                          },
                         ),
                       ],
                     ),

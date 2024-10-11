@@ -224,6 +224,13 @@ class _SNCAPPState extends State<SNCAPP> {
                               )));
                 },
               ),
+              /*ListTile(
+                leading: const Icon(FontAwesomeIcons.clockRotateLeft),
+                title: const Text('Historial de entidades'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),*/
             ],
           ),
         ),

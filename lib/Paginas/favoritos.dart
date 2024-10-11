@@ -167,7 +167,7 @@ class _PaginaFavoritosState extends State<PaginaFavoritos> {
                                   Row(children: [
                                     const Icon(
                                       FontAwesomeIcons.locationDot,
-                                      size: 20.0,
+                                      size: 16.0,
                                       color: Colors.red,
                                     ),
                                     const SizedBox(width: 2.5),
@@ -190,8 +190,8 @@ class _PaginaFavoritosState extends State<PaginaFavoritos> {
                                       : const Icon(Icons.cancel,
                                           color: Colors.red),
                                   IconButton(
-                                    icon:
-                                        const Icon(FontAwesomeIcons.heartCrack),
+                                    icon: const Icon(FontAwesomeIcons.trashCan),
+                                    tooltip: 'Quitar de favoritos',
                                     onPressed: () {
                                       _quitarFavorito(favorito);
                                     },

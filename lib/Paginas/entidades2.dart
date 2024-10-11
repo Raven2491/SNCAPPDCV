@@ -241,6 +241,13 @@ class _Entidades2State extends State<Entidades2> {
                     Navigator.pop(context);
                   },
                 ),
+                ListTile(
+                  leading: const Icon(FontAwesomeIcons.building),
+                  title: const Text('Historial de entidades'),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
               ],
             ),
           ),
@@ -357,6 +364,16 @@ class _Entidades2State extends State<Entidades2> {
                   ),
                 ),
                 const SizedBox(height: 8),
+                if (entidadesFiltradas.isEmpty)
+                  const Center(
+                    child: Text(
+                      'No se encontraron entidades',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: 'Roboto',
+                      ),
+                    ),
+                  ),
                 Expanded(
                   child: ListView.builder(
                     itemCount: entidadesFiltradas.length,
