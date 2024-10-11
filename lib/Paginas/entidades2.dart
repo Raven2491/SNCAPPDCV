@@ -19,6 +19,11 @@ class _Entidades2State extends State<Entidades2> {
   late List<EntidadesCard> entidadesFiltradas;
   late List<EntidadesCard> todasEntidades;
 
+  List<EntidadesCard> entidadesBusqueda = [];
+
+  final TextEditingController _buscarController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
+
   final List<EntidadesCard> entidades = [
     const EntidadesCard(
         nomimagen: 'ecsal_1.jpg',
@@ -115,44 +120,61 @@ class _Entidades2State extends State<Entidades2> {
     if (_indiceSeleccionado == -1) _indiceSeleccionado = 0;
 
     todasEntidades = entidades;
-    if (widget.categoria != 'Todas') {
-      entidadesFiltradas = entidades
-          .where((entidad) => entidad.categoria == widget.categoria)
-          .toList();
-    } else {
-      entidadesFiltradas = todasEntidades;
-    }
+    entidadesFiltradas = widget.categoria != 'Todas'
+        ? entidades
+            .where((entidad) => entidad.categoria == widget.categoria)
+            .toList()
+        : todasEntidades;
+
+    entidadesBusqueda = entidades;
   }
 
-  List<EntidadesCard> aplicarFiltros() {
-    List<EntidadesCard> filtradas = _indiceSeleccionado == 0
-        ? todasEntidades
-        : todasEntidades
-            .where(
-                (entidad) => entidad.categoria == opciones[_indiceSeleccionado])
-            .toList();
+  void _filtrarYOrdenarEntidades(String query) {
+    List<EntidadesCard> resultados;
+
+    if (query.isEmpty) {
+      resultados = _indiceSeleccionado == 0
+          ? todasEntidades
+          : todasEntidades
+              .where((entidad) =>
+                  entidad.categoria == opciones[_indiceSeleccionado])
+              .toList();
+    } else {
+      resultados = todasEntidades
+          .where((entidad) =>
+              (entidad.razonsocial
+                      .toLowerCase()
+                      .contains(query.toLowerCase()) ||
+                  entidad.categoria
+                      .toLowerCase()
+                      .contains(query.toLowerCase())) &&
+              (_indiceSeleccionado == 0 ||
+                  entidad.categoria == opciones[_indiceSeleccionado]))
+          .toList();
+    }
 
     switch (_filtroSeleccionado) {
       case 'A-Z':
-        filtradas.sort((a, b) => a.razonsocial.compareTo(b.razonsocial));
+        resultados.sort((a, b) => a.razonsocial.compareTo(b.razonsocial));
         break;
       case 'Z-A':
-        filtradas.sort((a, b) => b.razonsocial.compareTo(a.razonsocial));
+        resultados.sort((a, b) => b.razonsocial.compareTo(a.razonsocial));
         break;
       case 'Precio más bajo':
-        filtradas.sort((a, b) => a.precio.compareTo(b.precio));
+        resultados.sort((a, b) => a.precio.compareTo(b.precio));
         break;
       case 'Precio más alto':
-        filtradas.sort((a, b) => b.precio.compareTo(a.precio));
+        resultados.sort((a, b) => b.precio.compareTo(a.precio));
         break;
     }
 
-    return filtradas;
+    setState(() {
+      entidadesFiltradas = resultados;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<EntidadesCard> entidadesOrdenadas = aplicarFiltros();
     return SafeArea(
       child: GestureDetector(
         onTap: () {
@@ -232,6 +254,11 @@ class _Entidades2State extends State<Entidades2> {
                     child: SizedBox(
                       height: 50,
                       child: TextField(
+                        controller: _buscarController,
+                        focusNode: _focusNode,
+                        onChanged: (query) {
+                          _filtrarYOrdenarEntidades(query);
+                        },
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
@@ -248,6 +275,7 @@ class _Entidades2State extends State<Entidades2> {
                     onSelected: (String value) {
                       setState(() {
                         _filtroSeleccionado = value;
+                        _filtrarYOrdenarEntidades(_buscarController.text);
                       });
                     },
                     itemBuilder: (BuildContext context) {
@@ -284,6 +312,7 @@ class _Entidades2State extends State<Entidades2> {
                           onTap: () {
                             setState(() {
                               _indiceSeleccionado = indice;
+                              _filtrarYOrdenarEntidades(_buscarController.text);
                             });
                           },
                           child: Container(
@@ -329,48 +358,34 @@ class _Entidades2State extends State<Entidades2> {
                 ),
                 const SizedBox(height: 8),
                 Expanded(
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: entidadesOrdenadas.isNotEmpty
-                        ? entidadesOrdenadas
-                            .map((entidad) => Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 5.0, horizontal: 0),
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => DetalleEnt(
-                                              imagen: entidad.nomimagen,
-                                              razonsocial: entidad.razonsocial,
-                                              direccion: entidad.direccion,
-                                              coordenadas: entidad.coordenadas,
-                                              estado: entidad.estado,
-                                              calificacion:
-                                                  entidad.calificacion,
-                                              categoria: entidad.categoria,
-                                              precio: entidad.precio,
-                                              proximidad: entidad.proximidad,
-                                              descripcion: entidad.descripcion,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: entidad),
-                                ))
-                            .toList()
-                        : const [
-                            Center(
-                              child: Text(
-                                'No se encontraron entidades',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                  child: ListView.builder(
+                    itemCount: entidadesFiltradas.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final entidad = entidadesFiltradas[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetalleEnt(
+                                imagen: entidad.nomimagen,
+                                razonsocial: entidad.razonsocial,
+                                ruc: '20476105175',
+                                direccion: entidad.direccion,
+                                coordenadas: entidad.coordenadas!,
+                                estado: entidad.estado,
+                                calificacion: entidad.calificacion,
+                                categoria: entidad.categoria,
+                                precio: entidad.precio,
+                                proximidad: entidad.proximidad,
+                                descripcion: entidad.descripcion,
                               ),
-                            )
-                          ],
+                            ),
+                          );
+                        },
+                        child: entidad,
+                      );
+                    },
                   ),
                 ),
               ],

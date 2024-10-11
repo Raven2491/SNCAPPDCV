@@ -17,7 +17,6 @@ class FavoritosManager {
   }
 
   Future<void> quitarFavorito(String favorito) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? favoritos = await obtenerFavoritos();
 
     if (favoritos != null) {
