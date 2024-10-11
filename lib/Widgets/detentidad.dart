@@ -44,7 +44,6 @@ class _DetalleEntState extends State<DetalleEnt> {
   void agregarAFavoritos() async {
     final FavoritosManager manager = FavoritosManager();
 
-    // Crear una representación de la tarjeta que quieres guardar
     final String tarjetaFavorita =
         '${widget.imagen}|${widget.razonsocial}|${widget.direccion}|${widget.estado}|${widget.calificacion}|${widget.proximidad}';
 
@@ -60,7 +59,10 @@ class _DetalleEntState extends State<DetalleEnt> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Entidad añadida a favoritos')),
+      const SnackBar(
+        content: Text('Entidad añadida a favoritos'),
+        duration: Duration(seconds: 1),
+      ),
     );
   }
 
@@ -153,11 +155,14 @@ class _DetalleEntState extends State<DetalleEnt> {
                         child: Transform.scale(
                           scale: 1.2,
                           child: widget.imagen != null
-                              ? Image.asset(
-                                  'assets/images/${widget.imagen}',
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  height: double.infinity,
+                              ? Opacity(
+                                  opacity: 0.75,
+                                  child: Image.asset(
+                                    'assets/images/${widget.imagen}',
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: double.infinity,
+                                  ),
                                 )
                               : const Center(
                                   child: Text(
@@ -170,6 +175,17 @@ class _DetalleEntState extends State<DetalleEnt> {
                         ),
                       ),
                     ),
+                    Positioned(
+                        top: 2.5,
+                        right: 2.5,
+                        child: IconButton(
+                          icon: const Icon(FontAwesomeIcons.solidHeart),
+                          color: Colors.red,
+                          iconSize: 25,
+                          onPressed: () {
+                            agregarAFavoritos();
+                          },
+                        )),
                   ],
                 ),
                 const SizedBox(height: 16),
@@ -188,10 +204,6 @@ class _DetalleEntState extends State<DetalleEnt> {
                         : Image.asset(
                             'assets/images/${widget.imagen}',
                           )),
-                ElevatedButton(
-                  onPressed: agregarAFavoritos,
-                  child: const Text('Agregar a Favoritos'),
-                ),
                 const SizedBox(height: 16),
                 Container(
                   decoration: BoxDecoration(

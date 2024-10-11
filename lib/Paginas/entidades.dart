@@ -265,6 +265,7 @@ class _EntidadesState extends State<Entidades> {
                       child: Text(
                         opciones[indice],
                         style: TextStyle(
+                          fontSize: 13,
                           color: _indiceSeleccionado == indice
                               ? Colors.white
                               : Colors.black,
@@ -301,6 +302,7 @@ class _EntidadesState extends State<Entidades> {
                         builder: (context) => DetalleEnt(
                           imagen: entidad.nomimagen,
                           razonsocial: entidad.razonsocial,
+                          ruc: '20476105175',
                           direccion: entidad.direccion,
                           coordenadas: entidad.coordenadas!,
                           estado: entidad.estado,
