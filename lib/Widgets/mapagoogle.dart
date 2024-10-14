@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+//import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart' as gmaps;
 import 'package:latlong2/latlong.dart' as latlng;
 
@@ -13,8 +13,6 @@ class MapaEntidadGoogle extends StatefulWidget {
 }
 
 class MapaEntidadGoogleState extends State<MapaEntidadGoogle> {
-  late gmaps.GoogleMapController _mapController;
-
   @override
   Widget build(BuildContext context) {
     // Convertir LatLng de latlong2 a LatLng de google_maps_flutter
@@ -23,9 +21,7 @@ class MapaEntidadGoogleState extends State<MapaEntidadGoogle> {
 
     return Scaffold(
       body: gmaps.GoogleMap(
-        onMapCreated: (gmaps.GoogleMapController controller) {
-          _mapController = controller;
-        },
+        onMapCreated: (gmaps.GoogleMapController controller) {},
         initialCameraPosition: gmaps.CameraPosition(
           target: googleMapLatLng,
           zoom: 15.5,
