@@ -4,15 +4,15 @@ import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_ti
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong2/latlong.dart';
 
-class MapaEntidad extends StatefulWidget {
+class MapaEntidadOpStr extends StatefulWidget {
   final LatLng ubicacion;
-  const MapaEntidad({super.key, required this.ubicacion});
+  const MapaEntidadOpStr({super.key, required this.ubicacion});
 
   @override
-  State<MapaEntidad> createState() => MapaEntidadState();
+  State<MapaEntidadOpStr> createState() => MapaEntidadOpStrState();
 }
 
-class MapaEntidadState extends State<MapaEntidad> {
+class MapaEntidadOpStrState extends State<MapaEntidadOpStr> {
   final MapController _mapController = MapController();
 
   @override

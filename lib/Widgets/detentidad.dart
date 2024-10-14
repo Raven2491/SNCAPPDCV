@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sncappdcv/Paginas/favoritos.dart';
 import 'package:sncappdcv/Widgets/cards.dart';
-import 'package:sncappdcv/Widgets/mapa.dart';
+import 'package:sncappdcv/Widgets/mapagoogle.dart';
+import 'package:sncappdcv/Widgets/mapaopstr.dart';
 import 'package:latlong2/latlong.dart';
 
 class DetalleEnt extends StatefulWidget {
@@ -265,7 +266,7 @@ class _DetalleEntState extends State<DetalleEnt> {
                     child: SizedBox(
                       height: 125,
                       child: widget.coordenadas != null
-                          ? MapaEntidad(
+                          ? MapaEntidadOpStr(
                               ubicacion: widget.coordenadas!,
                             )
                           : const Center(

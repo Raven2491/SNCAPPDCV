@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:sncappdcv/Widgets/mapa.dart';
+import 'package:sncappdcv/Widgets/mapagoogle.dart';
+import 'package:sncappdcv/Widgets/mapaopstr.dart';
 
 class MapaEntidades extends StatefulWidget {
   final LatLng posicionActual;
@@ -402,7 +403,7 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
-                  : MapaEntidad(
+                  : MapaEntidadOpStr(
                       ubicacion: widget.posicionActual,
                     ),
             ),
