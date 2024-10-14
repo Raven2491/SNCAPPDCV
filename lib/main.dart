@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
@@ -154,18 +155,21 @@ class _SNCAPPState extends State<SNCAPP> {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: const Column(
+          title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Rapidito!',
-                  style: TextStyle(
-                      fontFamily: 'Roboto',
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold)),
-              Text(
+              const Text('Rapidito!',
+                      style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold))
+                  .animate()
+                  .fadeIn(duration: 800.ms)
+                  .scale(),
+              const Text(
                 '¡Tus entidades a un toque y al toque!',
                 style: TextStyle(fontSize: 14, fontFamily: 'Roboto'),
-              ),
+              ).animate().fadeIn(duration: 800.ms, delay: 500.ms).scale(),
             ],
           ),
           backgroundColor: Colors.white,
@@ -234,18 +238,31 @@ class _SNCAPPState extends State<SNCAPP> {
             ],
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: IndexedStack(
-                  index: _indiceBselec,
-                  children: _paginas,
-                ),
+        body: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            /*return FadeTransition(
+              opacity: animation,
+              child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: Column(children: [Expanded(child: child)])),
+            );*/
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(1, 0),
+                end: Offset.zero,
+              ).animate(animation),
+              child: FadeTransition(
+                opacity: animation,
+                child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Column(children: [Expanded(child: child)])),
               ),
-            ],
-          ),
+            );
+          },
+          child: _paginas[_indiceBselec],
         ),
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5.0),

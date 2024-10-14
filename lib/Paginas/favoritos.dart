@@ -71,32 +71,21 @@ class _PaginaFavoritosState extends State<PaginaFavoritos> {
     return _favoritos == null
         ? const Center(child: CircularProgressIndicator())
         : _favoritos!.isEmpty
-            ? Center(
+            ? const Center(
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         'No hay favoritos aún.',
                         style: TextStyle(fontSize: 16),
                       ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      IconButton(
-                          onPressed: _cargarFavoritos,
-                          icon: const Icon(FontAwesomeIcons.rotateRight)),
-                      const Text(
-                        'Actualizar',
-                        style: TextStyle(fontSize: 14, fontFamily: 'Roboto'),
-                      )
                     ]),
               )
             : Column(
                 children: [
                   const SizedBox(height: 10),
-                  Row(children: [
-                    const Align(
-                      //meter un row con un icono y un texto para recargar la pagina
+                  const Row(children: [
+                    Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Favoritos',
@@ -106,12 +95,6 @@ class _PaginaFavoritosState extends State<PaginaFavoritos> {
                         ),
                       ),
                     ),
-                    IconButton(
-                        onPressed: _cargarFavoritos,
-                        icon: const Icon(
-                          FontAwesomeIcons.rotateRight,
-                          size: 18,
-                        )),
                   ]),
                   Expanded(
                     child: ListView.builder(
