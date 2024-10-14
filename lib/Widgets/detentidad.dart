@@ -43,7 +43,7 @@ class _DetalleEntState extends State<DetalleEnt> {
   @override
   void initState() {
     super.initState();
-    _cargarFavoritos(); // Cargar los favoritos al inicio
+    _cargarFavoritos();
   }
 
   Future<void> _cargarFavoritos() async {
@@ -51,16 +51,15 @@ class _DetalleEntState extends State<DetalleEnt> {
     List<String>? favoritosActuales = await manager.obtenerFavoritos() ?? [];
 
     setState(() {
-      favoritos = favoritosActuales; // Actualiza el estado con los favoritos
+      favoritos = favoritosActuales;
     });
   }
 
-  // Método para guardar la tarjeta en favoritos
   void agregarAFavoritos() async {
     final FavoritosManager manager = FavoritosManager();
 
     final String tarjetaFavorita =
-        '${widget.imagen}|${widget.razonsocial}|${widget.direccion}|${widget.estado}|${widget.calificacion}|${widget.proximidad}';
+        '${widget.imagen}|${widget.razonsocial}|${widget.direccion}|${widget.estado}|${widget.calificacion}|${widget.proximidad}|${widget.descripcion}|${widget.precio}|${widget.categoria}|${widget.ruc}|${widget.coordenadas}|${widget.logo}';
 
     // Comprobar si la tarjeta ya está en favoritos
     if (!favoritos.contains(tarjetaFavorita)) {
@@ -191,13 +190,12 @@ class _DetalleEntState extends State<DetalleEnt> {
                       child: Builder(
                         builder: (context) {
                           final entfavorita = favoritos.contains(
-                              '${widget.imagen}|${widget.razonsocial}|${widget.direccion}|${widget.estado}|${widget.calificacion}|${widget.proximidad}');
-
+                              '${widget.imagen}|${widget.razonsocial}|${widget.direccion}|${widget.estado}|${widget.calificacion}|${widget.proximidad}|${widget.descripcion}|${widget.precio}|${widget.categoria}|${widget.ruc}|${widget.coordenadas}|${widget.logo}');
                           Icon icon;
                           if (entfavorita) {
                             icon = const Icon(
                               FontAwesomeIcons.solidHeart,
-                              color: Colors.red,
+                              color: Colors.redAccent,
                               size: 25,
                             );
                           } else {
@@ -207,10 +205,26 @@ class _DetalleEntState extends State<DetalleEnt> {
                               size: 25,
                             );
                           }
-
-                          return IconButton(
-                            icon: icon,
-                            onPressed: entfavorita ? null : agregarAFavoritos,
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.35),
+                                  blurRadius: 5.0,
+                                  spreadRadius: 2.0,
+                                  offset: const Offset(0, 4),
+                                )
+                              ],
+                            ),
+                            child: Center(
+                              child: IconButton(
+                                icon: icon,
+                                onPressed:
+                                    entfavorita ? null : agregarAFavoritos,
+                              ),
+                            ),
                           );
                         },
                       ),

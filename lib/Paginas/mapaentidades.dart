@@ -175,7 +175,7 @@ class _MapaEntidadesState extends State<MapaEntidades> {
             isExpanded: true,
           ),
           const SizedBox(
-            height: 5,
+            height: 10,
           ),
           const Align(
             alignment: Alignment.centerLeft,
@@ -406,9 +406,6 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                       ubicacion: widget.posicionActual,
                     ),
             ),
-          ),
-          const SizedBox(
-            height: 10,
           ),
         ],
       ),
