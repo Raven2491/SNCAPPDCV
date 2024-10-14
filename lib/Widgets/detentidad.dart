@@ -40,6 +40,21 @@ class DetalleEnt extends StatefulWidget {
 class _DetalleEntState extends State<DetalleEnt> {
   List<String> favoritos = [];
 
+  @override
+  void initState() {
+    super.initState();
+    _cargarFavoritos(); // Cargar los favoritos al inicio
+  }
+
+  Future<void> _cargarFavoritos() async {
+    final FavoritosManager manager = FavoritosManager();
+    List<String>? favoritosActuales = await manager.obtenerFavoritos() ?? [];
+
+    setState(() {
+      favoritos = favoritosActuales; // Actualiza el estado con los favoritos
+    });
+  }
+
   // Método para guardar la tarjeta en favoritos
   void agregarAFavoritos() async {
     final FavoritosManager manager = FavoritosManager();
@@ -47,23 +62,18 @@ class _DetalleEntState extends State<DetalleEnt> {
     final String tarjetaFavorita =
         '${widget.imagen}|${widget.razonsocial}|${widget.direccion}|${widget.estado}|${widget.calificacion}|${widget.proximidad}';
 
-    List<String>? favoritosActuales = await manager.obtenerFavoritos() ?? [];
-
-    if (!favoritosActuales.contains(tarjetaFavorita)) {
-      favoritosActuales.add(tarjetaFavorita); // Agregar si no es favorito
+    // Comprobar si la tarjeta ya está en favoritos
+    if (!favoritos.contains(tarjetaFavorita)) {
+      favoritos.add(tarjetaFavorita); // Agregar si no es favorito
+      await manager.guardarFavoritos(favoritos);
+      setState(() {}); // Actualizar la interfaz
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Entidad añadida a favoritos'),
+          duration: Duration(seconds: 1),
+        ),
+      );
     }
-
-    await manager.guardarFavoritos(favoritosActuales);
-    setState(() {
-      favoritos = favoritosActuales;
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Entidad añadida a favoritos'),
-        duration: Duration(seconds: 1),
-      ),
-    );
   }
 
   @override
@@ -176,16 +186,35 @@ class _DetalleEntState extends State<DetalleEnt> {
                       ),
                     ),
                     Positioned(
-                        top: 2.5,
-                        right: 2.5,
-                        child: IconButton(
-                          icon: const Icon(FontAwesomeIcons.solidHeart),
-                          color: Colors.red,
-                          iconSize: 25,
-                          onPressed: () {
-                            agregarAFavoritos();
-                          },
-                        )),
+                      top: 2.5,
+                      right: 2.5,
+                      child: Builder(
+                        builder: (context) {
+                          final entfavorita = favoritos.contains(
+                              '${widget.imagen}|${widget.razonsocial}|${widget.direccion}|${widget.estado}|${widget.calificacion}|${widget.proximidad}');
+
+                          Icon icon;
+                          if (entfavorita) {
+                            icon = const Icon(
+                              FontAwesomeIcons.solidHeart,
+                              color: Colors.red,
+                              size: 25,
+                            );
+                          } else {
+                            icon = const Icon(
+                              FontAwesomeIcons.heart,
+                              color: Colors.black,
+                              size: 25,
+                            );
+                          }
+
+                          return IconButton(
+                            icon: icon,
+                            onPressed: entfavorita ? null : agregarAFavoritos,
+                          );
+                        },
+                      ),
+                    )
                   ],
                 ),
                 const SizedBox(height: 16),

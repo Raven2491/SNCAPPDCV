@@ -241,13 +241,6 @@ class _SNCAPPState extends State<SNCAPP> {
         body: AnimatedSwitcher(
           duration: const Duration(milliseconds: 500),
           transitionBuilder: (Widget child, Animation<double> animation) {
-            /*return FadeTransition(
-              opacity: animation,
-              child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Column(children: [Expanded(child: child)])),
-            );*/
             return SlideTransition(
               position: Tween<Offset>(
                 begin: const Offset(1, 0),
