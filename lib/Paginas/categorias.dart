@@ -248,9 +248,23 @@ class _CategoriasState extends State<Categorias> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              Entidades2(categoria: categoriaCard.entidad),
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  Entidades2(categoria: categoriaCard.entidad),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            var begin = const Offset(1.0, 0.0);
+                            var end = Offset.zero;
+
+                            var tween = Tween(begin: begin, end: end);
+
+                            return SlideTransition(
+                              position: animation.drive(tween),
+                              child: FadeTransition(
+                                  opacity: animation, child: child),
+                            );
+                          },
                         ),
                       );
                     },

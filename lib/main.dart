@@ -253,13 +253,10 @@ class _SNCAPPState extends State<SNCAPP> {
                 begin: const Offset(1, 0),
                 end: Offset.zero,
               ).animate(animation),
-              child: FadeTransition(
-                opacity: animation,
-                child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: Column(children: [Expanded(child: child)])),
-              ),
+              child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: Column(children: [Expanded(child: child)])),
             );
           },
           child: _paginas[_indiceBselec],

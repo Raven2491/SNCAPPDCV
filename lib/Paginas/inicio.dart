@@ -173,9 +173,27 @@ class _Inicio2State extends State<Inicio2> {
                     });
                     Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const Categorias2(categoria: '')));
+                        PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    const Categorias2(
+                                      categoria: '',
+                                    ),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              var begin = const Offset(1, 0);
+                              var end = Offset.zero;
+
+                              var tween = Tween(begin: begin, end: end);
+
+                              return SlideTransition(
+                                position: animation.drive(tween),
+                                child: FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                ),
+                              );
+                            }));
                   },
                   child: Text(
                     'Categorias',
@@ -197,10 +215,31 @@ class _Inicio2State extends State<Inicio2> {
                     });
                     Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const Entidades2(
-                                  categoria: '',
-                                )));
+                        PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    const Entidades2(
+                                      categoria: '',
+                                    ),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              var begin = const Offset(1, 0);
+                              var end = Offset.zero;
+                              var curve = Curves.ease;
+
+                              var tween = Tween(begin: begin, end: end)
+                                  .chain(CurveTween(curve: curve));
+
+                              var fadeTween = Tween(begin: 0.0, end: 1.0);
+
+                              return SlideTransition(
+                                position: animation.drive(tween),
+                                child: FadeTransition(
+                                  opacity: animation.drive(fadeTween),
+                                  child: child,
+                                ),
+                              );
+                            }));
                   },
                   child: Text(
                     'Entidades',
@@ -230,8 +269,22 @@ class _Inicio2State extends State<Inicio2> {
                   return GestureDetector(
                     onTap: () => Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => const Editorial1(),
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            const Editorial1(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          var begin = const Offset(1, 0);
+                          var end = Offset.zero;
+
+                          var tween = Tween(begin: begin, end: end);
+
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: FadeTransition(
+                                opacity: animation, child: child),
+                          );
+                        },
                       ),
                     ),
                     child: Container(
@@ -362,10 +415,25 @@ class _Inicio2State extends State<Inicio2> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => Entidades2(
+                              PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                        Entidades2(
                                   categoria: category.entidad,
                                 ),
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  var begin = const Offset(1, 0);
+                                  var end = Offset.zero;
+
+                                  var tween = Tween(begin: begin, end: end);
+
+                                  return SlideTransition(
+                                    position: animation.drive(tween),
+                                    child: FadeTransition(
+                                        opacity: animation, child: child),
+                                  );
+                                },
                               ),
                             );
                           },
@@ -397,8 +465,9 @@ class _Inicio2State extends State<Inicio2> {
               onTap: () {
                 Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => DetalleEnt(
+                    PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            DetalleEnt(
                               imagen: EntDestacada.nomimagen,
                               razonsocial: EntDestacada.razonsocial,
                               direccion: EntDestacada.direccion,
@@ -408,7 +477,20 @@ class _Inicio2State extends State<Inicio2> {
                               estado: EntDestacada.estado,
                               proximidad: EntDestacada.proximidad,
                               coordenadas: EntDestacada.coordenadas,
-                            )));
+                            ),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          var begin = const Offset(1, 0);
+                          var end = Offset.zero;
+
+                          var tween = Tween(begin: begin, end: end);
+
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: FadeTransition(
+                                opacity: animation, child: child),
+                          );
+                        }));
               },
             ),
             const SizedBox(height: 16),

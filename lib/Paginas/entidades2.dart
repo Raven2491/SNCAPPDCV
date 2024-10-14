@@ -383,8 +383,10 @@ class _Entidades2State extends State<Entidades2> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => DetalleEnt(
+                            PageRouteBuilder(
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) =>
+                                      DetalleEnt(
                                 imagen: entidad.nomimagen,
                                 razonsocial: entidad.razonsocial,
                                 ruc: '20476105175',
@@ -397,6 +399,19 @@ class _Entidades2State extends State<Entidades2> {
                                 proximidad: entidad.proximidad,
                                 descripcion: entidad.descripcion,
                               ),
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                var begin = const Offset(1, 0);
+                                var end = Offset.zero;
+
+                                var tween = Tween(begin: begin, end: end);
+
+                                return SlideTransition(
+                                  position: animation.drive(tween),
+                                  child: FadeTransition(
+                                      opacity: animation, child: child),
+                                );
+                              },
                             ),
                           );
                         },
