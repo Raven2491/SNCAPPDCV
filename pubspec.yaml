@@ -23,6 +23,7 @@ dependencies:
   cloud_firestore: ^5.4.2
   shared_preferences: ^2.3.2
   flutter_rating_bar: ^4.0.1
+  google_maps_flutter: ^2.9.0
 
 dev_dependencies:
   flutter_test:
