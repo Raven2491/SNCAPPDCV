@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sncappdcv/Widgets/detentidad.dart';
 
 class FavoritosManager {
   static const String _favoritosKey = 'favoritos';
@@ -102,6 +104,15 @@ class _PaginaFavoritosState extends State<PaginaFavoritos> {
                       itemBuilder: (context, index) {
                         String favorito = _favoritos![index];
                         List<String> partes = favorito.split('|');
+                        String coordenadasLimpiadas = partes[10]
+                            .replaceAll('LatLng(latitude:', '')
+                            .replaceAll('longitude:', '')
+                            .replaceAll(')', '');
+                        List<String> coordpartes =
+                            coordenadasLimpiadas.split(',');
+
+                        double lat = double.parse(coordpartes[0]);
+                        double lon = double.parse(coordpartes[1]);
                         return Column(children: [
                           Card(
                             child: ListTile(
@@ -181,7 +192,28 @@ class _PaginaFavoritosState extends State<PaginaFavoritos> {
                                   ),
                                 ],
                               ),
-                              onTap: () {},
+                              onTap: () {
+                                print(_favoritos![0]);
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetalleEnt(
+                                      imagen: partes![0],
+                                      razonsocial: partes![1],
+                                      ruc: partes![9],
+                                      direccion: partes![2],
+                                      coordenadas: LatLng(lat, lon),
+                                      estado: partes![3],
+                                      calificacion: double.parse(partes![4]),
+                                      categoria: partes![8],
+                                      precio: double.parse(partes![7]),
+                                      proximidad: double.parse(partes![5]),
+                                      descripcion: partes![6],
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ]);

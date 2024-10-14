@@ -34,7 +34,9 @@ class _EntidadesState extends State<Entidades> {
         calificacion: 5,
         estado: 'Con autorización',
         proximidad: 0.08,
-        coordenadas: LatLng(-12.058232, -77.060769)),
+        coordenadas: LatLng(-12.058232, -77.060769),
+        descripcion:
+            'Centro médico especializado en la evaluación de conductores para la obtención de licencias de conducir.'),
     const EntidadesCard(
         nomimagen: 'ecsal_1.jpg',
         razonsocial: 'Cala Center S.A.C',
@@ -44,7 +46,9 @@ class _EntidadesState extends State<Entidades> {
         calificacion: 5,
         estado: 'Con autorización',
         proximidad: 1.05,
-        coordenadas: LatLng(-12.081128, -77.048400)),
+        coordenadas: LatLng(-12.081128, -77.048400),
+        descripcion:
+            'Centro médico especializado en la evaluación de conductores para la obtención de licencias de conducir.'),
     const EntidadesCard(
         nomimagen: 'ecsal_1.jpg',
         razonsocial: 'Centro Médico Victor Manuel',
@@ -54,7 +58,9 @@ class _EntidadesState extends State<Entidades> {
         calificacion: 5,
         estado: 'Con autorización',
         proximidad: 2.23,
-        coordenadas: LatLng(-12.054520, -77.061687)),
+        coordenadas: LatLng(-12.054520, -77.061687),
+        descripcion:
+            'Centro médico especializado en la evaluación de conductores para la obtención de licencias de conducir.'),
     const EntidadesCard(
         nomimagen: 'esc_cond.jpg',
         razonsocial:
@@ -65,7 +71,9 @@ class _EntidadesState extends State<Entidades> {
         calificacion: 4,
         estado: 'Inhabilitado',
         proximidad: 2.5,
-        coordenadas: LatLng(-12.057023, -77.041969)),
+        coordenadas: LatLng(-12.057023, -77.041969),
+        descripcion:
+            'Escuela de conductores especializada en la formación de conductores profesionales.'),
     const EntidadesCard(
         nomimagen: 'esc_cond.jpg',
         razonsocial: 'JQJQ & Asociados S.A.C.',
@@ -75,7 +83,9 @@ class _EntidadesState extends State<Entidades> {
         calificacion: 4,
         estado: 'Con autorización',
         proximidad: 2.6,
-        coordenadas: LatLng(-12.059280, -77.055324)),
+        coordenadas: LatLng(-12.059280, -77.055324),
+        descripcion:
+            'Escuela de conductores especializada en la formación de conductores profesionales.'),
     const EntidadesCard(
         nomimagen: 'cent_eval.jpg',
         razonsocial: 'TOURING',
@@ -85,7 +95,9 @@ class _EntidadesState extends State<Entidades> {
         calificacion: 4,
         estado: 'Con autorización',
         proximidad: 2.6,
-        coordenadas: LatLng(-12.089276, -77.038640)),
+        coordenadas: LatLng(-12.089276, -77.038640),
+        descripcion:
+            'Centro de evaluación de conductores para la obtención de licencias de conducir.'),
     const EntidadesCard(
         nomimagen: 'CITV.jpg',
         razonsocial:
@@ -96,7 +108,9 @@ class _EntidadesState extends State<Entidades> {
         calificacion: 4,
         estado: 'Con autorización',
         proximidad: 2.6,
-        coordenadas: LatLng(-12.044755, -77.056625)),
+        coordenadas: LatLng(-12.044755, -77.056625),
+        descripcion:
+            'Centro de inspecciones técnico vehiculares para la obtención de certificados de revisión técnica vehicular.'),
   ];
 
   final List<String> opciones = [
