@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:sncappdcv/Widgets/mapagoogle.dart';
+//import 'package:sncappdcv/Widgets/mapagoogle.dart';
 import 'package:sncappdcv/Widgets/mapaopstr.dart';
 
 class MapaEntidades extends StatefulWidget {
@@ -47,10 +47,10 @@ class _MapaEntidadesState extends State<MapaEntidades> {
     selectedDepartamento = null;
     selectedProvincia = null;
     selectedDistrito = null;
-    _obtenerDepartamentos();
+    //_obtenerDepartamentos();
   }
 
-  Future<void> _obtenerDepartamentos() async {
+  /* Future<void> _obtenerDepartamentos() async {
     try {
       CollectionReference depart =
           FirebaseFirestore.instance.collection('Departamentos');
@@ -67,9 +67,9 @@ class _MapaEntidadesState extends State<MapaEntidades> {
     } catch (e) {
       print("Error al obtener datos: ${e.toString()}");
     }
-  }
+  }*/
 
-  Future<void> _obtenerProvincias(String departamento) async {
+  /*Future<void> _obtenerProvincias(String departamento) async {
     try {
       CollectionReference prov = FirebaseFirestore.instance
           .collection('Departamentos')
@@ -89,9 +89,9 @@ class _MapaEntidadesState extends State<MapaEntidades> {
     } catch (e) {
       print("Error al obtener datos: $e");
     }
-  }
+  }*/
 
-  Future<void> _obtenerDistritos(String departamento, String provincia) async {
+  /*Future<void> _obtenerDistritos(String departamento, String provincia) async {
     try {
       CollectionReference dist = FirebaseFirestore.instance
           .collection('Departamentos')
@@ -113,7 +113,7 @@ class _MapaEntidadesState extends State<MapaEntidades> {
     } catch (e) {
       print("Error al obtener datos: $e");
     }
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +214,7 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                           selectedDistrito = null;
 
                           if (codDep.isNotEmpty) {
-                            _obtenerProvincias(codDep);
+                            //_obtenerProvincias(codDep);
                           }
 
                           print(codDep);
@@ -265,7 +265,7 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                           selectedDistrito = null;
                           distritos = [];
                           if (codProv.isNotEmpty) {
-                            _obtenerDistritos(codDep, codProv);
+                            //_obtenerDistritos(codDep, codProv);
                           }
                           print(codProv);
                         });

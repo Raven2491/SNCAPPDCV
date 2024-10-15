@@ -193,8 +193,6 @@ class _PaginaFavoritosState extends State<PaginaFavoritos> {
                                 ],
                               ),
                               onTap: () {
-                                print(_favoritos![0]);
-
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
