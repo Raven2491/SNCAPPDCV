@@ -184,10 +184,11 @@ class _MapaEntidadesState extends State<MapaEntidades> {
     }
   }
 
-  Future<void> _obtenerEcsales(String distrito) async {
+  Future<void> _obtenerEcsales(
+      String departamento, String provincia, String distrito) async {
     try {
       final String url =
-          'https://endpoint2-blond.vercel.app/ecsales?distrito=$distrito';
+          'https://endpoint2-blond.vercel.app/ecsales?dep=$departamento&prov=$provincia&dist=$distrito';
 
       final response = await http.get(Uri.parse(url));
 
@@ -448,8 +449,30 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      print(selectedDistrito);
-                      _obtenerEcsales(selectedDistrito!);
+                      if (selectedDepartamento == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            duration: Duration(seconds: 1),
+                            content: Text(
+                                'Debe seleccionar un departamento para realizar la búsqueda.'),
+                          ),
+                        );
+                        return;
+                      }
+                      String provincia = '';
+                      String distrito = '';
+
+                      if (selectedProvincia != null) {
+                        provincia = selectedProvincia!;
+                      }
+
+                      if (selectedDistrito != null) {
+                        distrito = selectedDistrito!;
+                      }
+                      print(
+                          '$selectedDepartamento $selectedProvincia $selectedDistrito');
+                      _obtenerEcsales(
+                          selectedDepartamento!, provincia, distrito!);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
