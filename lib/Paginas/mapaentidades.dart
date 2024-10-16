@@ -1,5 +1,7 @@
 //import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 //import 'package:sncappdcv/Widgets/mapagoogle.dart';
 import 'package:sncappdcv/Widgets/mapaopstr.dart';
@@ -25,9 +27,11 @@ class _MapaEntidadesState extends State<MapaEntidades> {
     'Entidad CVC'
   ];
 
+  String? selectedEntidad;
   String? selectedDepartamento;
   String? selectedProvincia;
   String? selectedDistrito;
+  String? selectedEcsal;
 
   int indDep = 0;
   int indProv = 0;
@@ -36,18 +40,22 @@ class _MapaEntidadesState extends State<MapaEntidades> {
   List<String> departamentos = [];
   List<String> provincias = [];
   List<String> distritos = [];
+  List<String> ecsales = [];
 
   String codDep = '';
   String codProv = '';
   String codDist = '';
 
+  bool departamentosCargado = false;
+
   @override
   void initState() {
     super.initState();
+    selectedEntidad = null;
     selectedDepartamento = null;
     selectedProvincia = null;
     selectedDistrito = null;
-    //_obtenerDepartamentos();
+    _obtenerDepartamentos();
   }
 
   /* Future<void> _obtenerDepartamentos() async {
@@ -115,6 +123,90 @@ class _MapaEntidadesState extends State<MapaEntidades> {
     }
   }*/
 
+  Future<void> _obtenerDepartamentos() async {
+    try {
+      const String url = 'https://endpoint2-blond.vercel.app/dep';
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> departList = json.decode(response.body);
+        setState(() {
+          departamentos = departList
+              .map((item) => item['nombre'].toString().toUpperCase())
+              .toList();
+        });
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error al obtener los departamentos, $e');
+    }
+  }
+
+  Future<void> _obtenerProvincias(String idDep) async {
+    try {
+      final String url = 'https://endpoint2-blond.vercel.app/prov?idDep=$idDep';
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> provList = json.decode(response.body);
+        setState(() {
+          provincias = provList
+              .map((item) => item['nombre'].toString().toUpperCase())
+              .toList();
+        });
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error al obtener las provincias, $e');
+    }
+  }
+
+  Future<void> _obtenerDistritos(String idDep, String idProv) async {
+    try {
+      final String url =
+          'https://endpoint2-blond.vercel.app/dist?idDep=$idDep&idProv=$idProv';
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> distList = json.decode(response.body);
+        setState(() {
+          distritos = distList
+              .map((item) => item['nombre'].toString().toUpperCase())
+              .toList();
+        });
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error al obtener las provincias, $e');
+    }
+  }
+
+  Future<void> _obtenerEcsales(String distrito) async {
+    try {
+      final String url =
+          'https://endpoint2-blond.vercel.app/ecsales?distrito=$distrito';
+
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> ecsaleslist = json.decode(response.body);
+        print(ecsaleslist);
+        setState(() {
+          ecsales = ecsaleslist
+              .map((item) => item['razonsocial'].toString().toUpperCase())
+              .toList();
+        });
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error al obtener las ecsales, $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -155,7 +247,12 @@ class _MapaEntidadesState extends State<MapaEntidades> {
             ),
           ),
           DropdownButtonFormField<String>(
-            onChanged: (value) {},
+            onChanged: (value) {
+              setState(() {
+                selectedEntidad = value;
+                departamentosCargado = value != null;
+              });
+            },
             decoration: InputDecoration(
               isDense: true,
               border: OutlineInputBorder(
@@ -195,32 +292,36 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                   children: [
                     DropdownButtonFormField<String>(
                       value: selectedDepartamento,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedDepartamento = value;
-                          indDep =
-                              departamentos.indexOf(selectedDepartamento!) + 1;
+                      onChanged: departamentosCargado
+                          ? (value) {
+                              setState(() {
+                                selectedDepartamento = value;
+                                indDep = departamentos
+                                        .indexOf(selectedDepartamento!) +
+                                    1;
 
-                          if (selectedDepartamento == null) {
-                            codDep = '';
-                          } else {
-                            codDep =
-                                (indDep < 10) ? '0$indDep' : indDep.toString();
-                          }
+                                if (selectedDepartamento == null) {
+                                  codDep = '';
+                                } else {
+                                  codDep = (indDep < 10)
+                                      ? '0$indDep'
+                                      : indDep.toString();
+                                }
 
-                          provincias = [];
-                          selectedProvincia = null;
-                          distritos = [];
-                          selectedDistrito = null;
+                                provincias = [];
+                                selectedProvincia = null;
+                                distritos = [];
+                                selectedDistrito = null;
 
-                          if (codDep.isNotEmpty) {
-                            //_obtenerProvincias(codDep);
-                          }
+                                if (codDep.isNotEmpty) {
+                                  _obtenerProvincias(codDep);
+                                }
 
-                          print(codDep);
-                          print(selectedDepartamento);
-                        });
-                      },
+                                //print(codDep);
+                                //print(selectedDepartamento);
+                              });
+                            }
+                          : null,
                       decoration: InputDecoration(
                         isDense: true,
                         border: OutlineInputBorder(
@@ -228,7 +329,7 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                           borderSide: const BorderSide(color: Colors.grey),
                         ),
                       ),
-                      items: departamentos.map((String value) {
+                      items: (departamentos.cast<String>()).map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value,
@@ -265,9 +366,9 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                           selectedDistrito = null;
                           distritos = [];
                           if (codProv.isNotEmpty) {
-                            //_obtenerDistritos(codDep, codProv);
+                            _obtenerDistritos(codDep, codProv);
                           }
-                          print(codProv);
+                          //print(codProv);
                         });
                       },
                       decoration: InputDecoration(
@@ -277,7 +378,7 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                           borderSide: const BorderSide(color: Colors.grey),
                         ),
                       ),
-                      items: provincias.map((String value) {
+                      items: (provincias.cast<String>()).map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value,
@@ -311,7 +412,7 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                                 : '$codProv$indDist';
                           }
 
-                          print(codDist);
+                          //print(codDist);
                         });
                       },
                       decoration: InputDecoration(
@@ -321,7 +422,7 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                           borderSide: const BorderSide(color: Colors.grey),
                         ),
                       ),
-                      items: distritos.map((String value) {
+                      items: (distritos.cast<String>()).map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value,
@@ -347,7 +448,8 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      print(widget.posicionActual);
+                      print(selectedDistrito);
+                      _obtenerEcsales(selectedDistrito!);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
