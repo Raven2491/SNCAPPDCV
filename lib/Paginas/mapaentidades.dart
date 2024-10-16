@@ -194,11 +194,11 @@ class _MapaEntidadesState extends State<MapaEntidades> {
 
       if (response.statusCode == 200) {
         final List<dynamic> ecsaleslist = json.decode(response.body);
-        print(ecsaleslist);
         setState(() {
           ecsales = ecsaleslist
               .map((item) => item['razonsocial'].toString().toUpperCase())
               .toList();
+          print(ecsaleslist);
         });
       } else {
         print('Error: ${response.statusCode}');
@@ -240,7 +240,7 @@ class _MapaEntidadesState extends State<MapaEntidades> {
           const Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Entidades cercanas:',
+              'Seleccione una entidad:',
               style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -497,6 +497,7 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                         codDep = '';
                         codProv = '';
                         codDist = '';
+                        ecsales = [];
                       });
                     },
                     style: ElevatedButton.styleFrom(
@@ -509,6 +510,61 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                   ),
                 ],
               ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Column(
+            children: [
+              if (ecsales.isNotEmpty) ...[
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Establecimientos encontrados:',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Roboto'),
+                  ),
+                ),
+                DropdownButtonFormField<String>(
+                  onChanged: (value) {
+                    setState(() {
+                      selectedEcsal = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    isDense: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(color: Colors.grey),
+                    ),
+                  ),
+                  items: ecsales.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  hint: const Text(
+                    "Seleccione un establecimiento",
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  isExpanded: true,
+                ),
+              ] else ...[
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'No se encontraron establecimientos',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Roboto'),
+                  ),
+                ),
+              ]
             ],
           ),
           const SizedBox(
@@ -532,6 +588,9 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                       ubicacion: widget.posicionActual,
                     ),
             ),
+          ),
+          const SizedBox(
+            height: 10,
           ),
         ],
       ),
