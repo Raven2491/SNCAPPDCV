@@ -478,10 +478,11 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                       if (selectedDistrito != null) {
                         distrito = selectedDistrito!;
                       }
+                      ecsales = [];
                       print(
                           '$selectedDepartamento $selectedProvincia $selectedDistrito');
                       _obtenerEcsales(
-                          selectedDepartamento!, provincia, distrito!);
+                          selectedDepartamento!, provincia, distrito);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
