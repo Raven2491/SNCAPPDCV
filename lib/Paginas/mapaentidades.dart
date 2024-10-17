@@ -1,9 +1,7 @@
-//import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
-//import 'package:sncappdcv/Widgets/mapagoogle.dart';
 import 'package:sncappdcv/Widgets/mapaopstr.dart';
 
 class MapaEntidades extends StatefulWidget {
@@ -40,7 +38,8 @@ class _MapaEntidadesState extends State<MapaEntidades> {
   List<String> departamentos = [];
   List<String> provincias = [];
   List<String> distritos = [];
-  List<String> ecsales = [];
+  List<String> ecsalesnom = [];
+  List<LatLng> ecsalespos = [];
 
   String codDep = '';
   String codProv = '';
@@ -57,71 +56,6 @@ class _MapaEntidadesState extends State<MapaEntidades> {
     selectedDistrito = null;
     _obtenerDepartamentos();
   }
-
-  /* Future<void> _obtenerDepartamentos() async {
-    try {
-      CollectionReference depart =
-          FirebaseFirestore.instance.collection('Departamentos');
-
-      QuerySnapshot departSnapshot = await depart.get();
-
-      List<String> departList = departSnapshot.docs
-          .map((doc) => (doc['nombre'] as String).toUpperCase())
-          .toList();
-
-      setState(() {
-        departamentos = departList;
-      });
-    } catch (e) {
-      print("Error al obtener datos: ${e.toString()}");
-    }
-  }*/
-
-  /*Future<void> _obtenerProvincias(String departamento) async {
-    try {
-      CollectionReference prov = FirebaseFirestore.instance
-          .collection('Departamentos')
-          .doc(departamento)
-          .collection('Provincias');
-
-      QuerySnapshot provSnapshot = await prov.get();
-
-      List<String> provList = provSnapshot.docs
-          .map((doc) => (doc['nombre'] as String).toUpperCase())
-          .toList();
-
-      setState(() {
-        provincias = provList;
-        selectedProvincia = null;
-      });
-    } catch (e) {
-      print("Error al obtener datos: $e");
-    }
-  }*/
-
-  /*Future<void> _obtenerDistritos(String departamento, String provincia) async {
-    try {
-      CollectionReference dist = FirebaseFirestore.instance
-          .collection('Departamentos')
-          .doc(departamento)
-          .collection('Provincias')
-          .doc(provincia)
-          .collection('Distritos');
-
-      QuerySnapshot distSnapshot = await dist.get();
-
-      List<String> distList = distSnapshot.docs
-          .map((doc) => (doc['nombre'] as String).toUpperCase())
-          .toList();
-
-      setState(() {
-        distritos = distList;
-        selectedDistrito = null;
-      });
-    } catch (e) {
-      print("Error al obtener datos: $e");
-    }
-  }*/
 
   Future<void> _obtenerDepartamentos() async {
     try {
@@ -195,11 +129,11 @@ class _MapaEntidadesState extends State<MapaEntidades> {
       if (response.statusCode == 200) {
         final List<dynamic> ecsaleslist = json.decode(response.body);
         setState(() {
-          ecsales = ecsaleslist
+          ecsalesnom = ecsaleslist
               .map((item) => item['razonsocial'].toString().toUpperCase())
               .toList();
-          print(ecsaleslist);
-          if (ecsales.isEmpty) {
+          //print(ecsaleslist);
+          if (ecsalesnom.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
                 duration: Duration(seconds: 1),
@@ -214,6 +148,31 @@ class _MapaEntidadesState extends State<MapaEntidades> {
       }
     } catch (e) {
       print('Error al obtener las ecsales, $e');
+    }
+  }
+
+  Future<void> _ubicarEcsal(String nomecsal) async {
+    try {
+      String url =
+          'https://endpoint2-blond.vercel.app/ubicar?nomEcsal=$nomecsal';
+
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> ecsalpos = json.decode(response.body);
+        setState(() {
+          //print(ecsalpos);
+          ecsalespos = ecsalpos
+              .map((item) => LatLng(double.parse(item['Latitud']),
+                  double.parse(item['Longitud'])))
+              .toList();
+          print(ecsalespos);
+        });
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error al ubicar la ecsal, $e');
     }
   }
 
@@ -478,7 +437,7 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                       if (selectedDistrito != null) {
                         distrito = selectedDistrito!;
                       }
-                      ecsales = [];
+                      ecsalesnom = [];
                       print(
                           '$selectedDepartamento $selectedProvincia $selectedDistrito');
                       _obtenerEcsales(
@@ -507,7 +466,8 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                         codDep = '';
                         codProv = '';
                         codDist = '';
-                        ecsales = [];
+                        ecsalesnom = [];
+                        ecsalespos = [];
                       });
                     },
                     style: ElevatedButton.styleFrom(
@@ -527,7 +487,7 @@ class _MapaEntidadesState extends State<MapaEntidades> {
           ),
           Column(
             children: [
-              if (ecsales.isNotEmpty) ...[
+              if (ecsalesnom.isNotEmpty) ...[
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -551,10 +511,14 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                       borderSide: const BorderSide(color: Colors.grey),
                     ),
                   ),
-                  items: ecsales.map((String value) {
+                  items: ecsalesnom.map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
+                      onTap: () {
+                        print(value);
+                        _ubicarEcsal(value);
+                      },
                     );
                   }).toList(),
                   hint: const Text(
@@ -578,18 +542,32 @@ class _MapaEntidadesState extends State<MapaEntidades> {
             ),
             child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(10)),
-              child: widget.posicionActual.latitude == 0 &&
-                      widget.posicionActual.longitude == 0
-                  ? const Center(
-                      child: CircularProgressIndicator(),
+              child: ecsalespos.isNotEmpty
+                  ? MapaEntidadOpStr(
+                      ubicacion: ecsalespos.first,
                     )
-                  : MapaEntidadOpStr(
-                      ubicacion: widget.posicionActual,
-                    ),
+                  : widget.posicionActual.latitude == 0 &&
+                          widget.posicionActual.longitude == 0
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : MapaEntidadOpStr(
+                          ubicacion: widget.posicionActual,
+                        ),
             ),
           ),
           const SizedBox(
             height: 10,
+          ),
+          ElevatedButton(
+            onPressed: selectedEcsal != null ? () {} : null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+            ),
+            child: const Text(
+              'Más información',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),

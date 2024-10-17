@@ -16,6 +16,14 @@ class MapaEntidadOpStrState extends State<MapaEntidadOpStr> {
   final MapController _mapController = MapController();
 
   @override
+  void didUpdateWidget(MapaEntidadOpStr oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.ubicacion != oldWidget.ubicacion) {
+      _mapController.move(widget.ubicacion, 16);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (contents, constraints) {
       return SizedBox(
