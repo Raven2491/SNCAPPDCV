@@ -199,6 +199,15 @@ class _MapaEntidadesState extends State<MapaEntidades> {
               .map((item) => item['razonsocial'].toString().toUpperCase())
               .toList();
           print(ecsaleslist);
+          if (ecsales.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                duration: Duration(seconds: 1),
+                content: Text(
+                    'No se encontraron establecimientos en la ubicación seleccionada.'),
+              ),
+            );
+          }
         });
       } else {
         print('Error: ${response.statusCode}');
@@ -552,17 +561,6 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                     style: TextStyle(fontSize: 14),
                   ),
                   isExpanded: true,
-                ),
-              ] else ...[
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'No se encontraron establecimientos',
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto'),
-                  ),
                 ),
               ]
             ],
