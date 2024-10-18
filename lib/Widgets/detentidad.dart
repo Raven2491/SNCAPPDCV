@@ -63,7 +63,7 @@ class _DetalleEntState extends State<DetalleEnt> {
     final FavoritosManager manager = FavoritosManager();
 
     final String tarjetaFavorita =
-        '${widget.imagen}|${widget.razonsocial}|${widget.direccion}|${widget.estado}|${widget.calificacion}|${widget.proximidad}|${widget.descripcion}|${widget.precio}|${widget.categoria}|${widget.ruc}|${widget.coordenadas}|${widget.logo}';
+        '${widget.imagen}|${widget.razonsocial}|${widget.direccion}|${widget.estado}|$ratingnuevo|${widget.proximidad}|${widget.descripcion}|${widget.precio}|${widget.categoria}|${widget.ruc}|${widget.coordenadas}|${widget.logo}';
 
     // Comprobar si la tarjeta ya está en favoritos
     if (!favoritos.contains(tarjetaFavorita)) {

@@ -43,13 +43,124 @@ class PantallaCarga extends StatefulWidget {
 }
 
 class _PantallaCargaState extends State<PantallaCarga> {
+  LatLng? posicionActual;
+
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const SNCAPP()));
-    });
+    _obtenerUbicacion();
+  }
+
+  Future<void> _obtenerUbicacion() async {
+    try {
+      Position position = await _determinarPosicion();
+      setState(() {
+        posicionActual = LatLng(position.latitude, position.longitude);
+      });
+      _navegarAPantallaPrincipal();
+    } catch (e) {
+      print('Error al obtener la ubicación: $e');
+      if (e.toString() != 'El servicio de ubicación está deshabilitado.') {
+        _mostrarDialogoError();
+      }
+    }
+  }
+
+  Future<Position> _determinarPosicion() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Verifica si el servicio de ubicación está habilitado
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      bool habilitarGPS = await _mostrarDialogoHabilitarGPS();
+      if (habilitarGPS) {
+        await Geolocator.openLocationSettings();
+        // Espera un momento para que el usuario habilite el GPS
+        await Future.delayed(const Duration(seconds: 5));
+        serviceEnabled = await Geolocator.isLocationServiceEnabled();
+        if (!serviceEnabled) {
+          return Future.error('El servicio de ubicación está deshabilitado.');
+        }
+      } else {
+        SystemNavigator.pop();
+      }
+    }
+
+    // Verifica y solicita permisos de ubicación
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Permiso de ubicación denegado.');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Los permisos de ubicación están permanentemente denegados.');
+    }
+
+    // Obtiene la posición actual del dispositivo
+    return await Geolocator.getCurrentPosition();
+  }
+
+  Future<bool> _mostrarDialogoHabilitarGPS() async {
+    return await showDialog<bool>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Habilitar GPS'),
+              content:
+                  const Text('El GPS está deshabilitado. ¿Desea habilitarlo?'),
+              actions: [
+                TextButton(
+                  child: const Text('No'),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                TextButton(
+                  child: const Text('Sí'),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
+  }
+
+  void _navegarAPantallaPrincipal() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SNCAPP(posicionActual: posicionActual!),
+      ),
+    );
+  }
+
+  void _mostrarDialogoError() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: const Text('No se pudo obtener la ubicación.'),
+          actions: [
+            TextButton(
+              child: const Text('Reintentar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _obtenerUbicacion();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -85,7 +196,9 @@ class _PantallaCargaState extends State<PantallaCarga> {
 }
 
 class SNCAPP extends StatefulWidget {
-  const SNCAPP({super.key});
+  final LatLng posicionActual;
+
+  const SNCAPP({super.key, required this.posicionActual});
 
   @override
   State<SNCAPP> createState() => _SNCAPPState();
@@ -94,9 +207,7 @@ class SNCAPP extends StatefulWidget {
 class _SNCAPPState extends State<SNCAPP> {
   int _indiceBselec = 2;
 
-  List<Widget> _paginas = [];
-
-  LatLng posicionActual = const LatLng(0, 0);
+  late List<Widget> _paginas;
 
   @override
   void initState() {
@@ -104,7 +215,7 @@ class _SNCAPPState extends State<SNCAPP> {
     _paginas = [
       const PaginaFavoritos(),
       MapaEntidades(
-        posicionActual: posicionActual,
+        posicionActual: widget.posicionActual,
       ),
       const Inicio2(),
       const Categorias(categoria: ''),
@@ -112,82 +223,6 @@ class _SNCAPPState extends State<SNCAPP> {
         categoria: 'Todas',
       ),
     ];
-
-    _verificarYSolicitarPermisos();
-  }
-
-  void _verificarYSolicitarPermisos() async {
-    try {
-      Position position = await _determinarPosicion();
-      setState(() {
-        posicionActual = LatLng(position.latitude, position.longitude);
-        _paginas[1] = MapaEntidades(posicionActual: posicionActual);
-      });
-    } catch (e) {
-      // Maneja el error o muestra un mensaje indicando que no se puede obtener la ubicación
-      print('Error al obtener la ubicación: $e');
-      _habilitarUbicacion();
-    }
-  }
-
-  Future<Position> _determinarPosicion() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Verifica si el servicio de ubicación está habilitado
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('El servicio de ubicación está deshabilitado.');
-    }
-
-    // Verifica y solicita permisos de ubicación
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Permiso de ubicación denegado.');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Los permisos de ubicación están permanentemente denegados.');
-    }
-
-    // Obtiene la posición actual del dispositivo
-    return await Geolocator.getCurrentPosition();
-  }
-
-  Future<void> _habilitarUbicacion() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      // Mostrar un diálogo para que el usuario habilite el servicio de ubicación
-      await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Servicio de ubicación desactivado'),
-            content:
-                const Text('Por favor, habilita el servicio de ubicación.'),
-            actions: [
-              TextButton(
-                child: const Text('Cancelar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                child: const Text('Abrir Configuración'),
-                onPressed: () {
-                  Geolocator.openLocationSettings();
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
   }
 
   @override
