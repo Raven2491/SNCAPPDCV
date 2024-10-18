@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
+import 'package:sncappdcv/Widgets/detentidad.dart';
 import 'package:sncappdcv/Widgets/mapaopstr.dart';
 
 class MapaEntidades extends StatefulWidget {
@@ -46,6 +47,19 @@ class _MapaEntidadesState extends State<MapaEntidades> {
   String codDist = '';
 
   bool departamentosCargado = false;
+
+  String? nomimagen;
+  Image? nomlogo;
+  late String razonsocial;
+  late String ruc;
+  late String direccion;
+  LatLng? coordenadas;
+  String? categoria;
+  double? precio;
+  double? calificacion;
+  late String estado;
+  double? proximidad;
+  String? descripcion;
 
   @override
   void initState() {
@@ -133,6 +147,19 @@ class _MapaEntidadesState extends State<MapaEntidades> {
               .map((item) => item['razonsocial'].toString().toUpperCase())
               .toList();
           //print(ecsaleslist);
+          razonsocial = ecsaleslist[0]['razonsocial'];
+          ruc = ecsaleslist[0]['ruc'];
+          direccion = ecsaleslist[0]['direccion'];
+          coordenadas = LatLng(double.parse(ecsaleslist[0]['Latitud']),
+              double.parse(ecsaleslist[0]['Longitud']));
+          print(coordenadas);
+          /*categoria = ecsaleslist[0]['categoria'];
+          precio = double.parse(ecsaleslist[0]['precio']);
+          calificacion = double.parse(ecsaleslist[0]['calificacion']);
+          estado = ecsaleslist[0]['estado'];
+          proximidad = double.parse(ecsaleslist[0]['proximidad']);
+          descripcion = ecsaleslist[0]['descripcion'];*/
+
           if (ecsalesnom.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
@@ -560,7 +587,28 @@ class _MapaEntidadesState extends State<MapaEntidades> {
             height: 10,
           ),
           ElevatedButton(
-            onPressed: selectedEcsal != null ? () {} : null,
+            onPressed: selectedEcsal != null
+                ? () {
+                    Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    DetalleEnt(
+                                      //imagen: entidad.nomimagen,
+                                      razonsocial: razonsocial,
+                                      ruc: ruc,
+                                      direccion: direccion,
+                                      coordenadas: coordenadas,
+                                      estado: estado,
+                                      //calificacion: entidad.calificacion,
+                                      //categoria: entidad.categoria,
+                                      //precio: entidad.precio,
+                                      //proximidad: entidad.proximidad,
+                                      /*descripcion: entidad.descripcion,*/
+                                    )));
+                  }
+                : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
             ),
