@@ -113,26 +113,34 @@ class _SNCAPPState extends State<SNCAPP> {
       ),
     ];
 
-    _determinarPosicion().then((posicion) {
+    _verificarYSolicitarPermisos();
+  }
+
+  void _verificarYSolicitarPermisos() async {
+    try {
+      Position position = await _determinarPosicion();
       setState(() {
-        posicionActual = LatLng(posicion.latitude, posicion.longitude);
-        // Actualizamos la página del mapa con la posición obtenida
+        posicionActual = LatLng(position.latitude, position.longitude);
         _paginas[1] = MapaEntidades(posicionActual: posicionActual);
       });
-    }).catchError((error) {
-      print('Error obteniendo posición: $error');
-    });
+    } catch (e) {
+      // Maneja el error o muestra un mensaje indicando que no se puede obtener la ubicación
+      print('Error al obtener la ubicación: $e');
+      _habilitarUbicacion();
+    }
   }
 
   Future<Position> _determinarPosicion() async {
     bool serviceEnabled;
     LocationPermission permission;
 
+    // Verifica si el servicio de ubicación está habilitado
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return Future.error('El servicio de ubicación está deshabilitado.');
     }
 
+    // Verifica y solicita permisos de ubicación
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
@@ -146,7 +154,40 @@ class _SNCAPPState extends State<SNCAPP> {
           'Los permisos de ubicación están permanentemente denegados.');
     }
 
+    // Obtiene la posición actual del dispositivo
     return await Geolocator.getCurrentPosition();
+  }
+
+  Future<void> _habilitarUbicacion() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Mostrar un diálogo para que el usuario habilite el servicio de ubicación
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Servicio de ubicación desactivado'),
+            content:
+                const Text('Por favor, habilita el servicio de ubicación.'),
+            actions: [
+              TextButton(
+                child: const Text('Cancelar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('Abrir Configuración'),
+                onPressed: () {
+                  Geolocator.openLocationSettings();
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -228,13 +269,6 @@ class _SNCAPPState extends State<SNCAPP> {
                               )));
                 },
               ),
-              /*ListTile(
-                leading: const Icon(FontAwesomeIcons.clockRotateLeft),
-                title: const Text('Historial de entidades'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),*/
             ],
           ),
         ),
@@ -297,7 +331,6 @@ class _SNCAPPState extends State<SNCAPP> {
             },
             animationDuration: const Duration(milliseconds: 200),
             backgroundColor: Colors.grey[200],
-            // Etiqueta seleccionada en blanco
           ),
         ),
       ),

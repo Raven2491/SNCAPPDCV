@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sncappdcv/Paginas/favoritos.dart';
 import 'package:sncappdcv/Widgets/cards.dart';
-import 'package:sncappdcv/Widgets/mapagoogle.dart';
+//import 'package:sncappdcv/Widgets/mapagoogle.dart';
 import 'package:sncappdcv/Widgets/mapaopstr.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class DetalleEnt extends StatefulWidget {
   final String? imagen;
@@ -40,10 +41,12 @@ class DetalleEnt extends StatefulWidget {
 
 class _DetalleEntState extends State<DetalleEnt> {
   List<String> favoritos = [];
+  late double ratingnuevo;
 
   @override
   void initState() {
     super.initState();
+    ratingnuevo = widget.calificacion ?? 0.0;
     _cargarFavoritos();
   }
 
@@ -74,6 +77,12 @@ class _DetalleEntState extends State<DetalleEnt> {
         ),
       );
     }
+  }
+
+  void _actualizarRating(double rating) {
+    setState(() {
+      ratingnuevo = (rating + (widget.calificacion ?? 0.0)) / 2;
+    });
   }
 
   @override
@@ -477,6 +486,45 @@ class _DetalleEntState extends State<DetalleEnt> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 16),
+                Column(children: [
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Valóralos',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    RatingBar.builder(
+                      initialRating: widget.calificacion ?? 0.0,
+                      minRating: 0,
+                      direction: Axis.horizontal,
+                      allowHalfRating: false,
+                      itemCount: 5,
+                      itemSize: 30,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+                        _actualizarRating(rating);
+                        print(rating);
+                        print(ratingnuevo);
+                      },
+                    ),
+                    Text(
+                      '(${ratingnuevo.toStringAsFixed(1)})',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ]),
+                ]),
               ],
             ),
           ),
