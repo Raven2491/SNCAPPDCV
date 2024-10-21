@@ -50,16 +50,16 @@ class _MapaEntidadesState extends State<MapaEntidades> {
 
   String? nomimagen;
   Image? nomlogo;
-  late String razonsocial;
-  late String ruc;
-  late String direccion;
+  String razonsocial = '';
+  String ruc = '';
+  String? direccion = '';
   LatLng? coordenadas;
   String? categoria;
   double? precio;
   double? calificacion;
-  late String estado;
+  String estado = '';
   double? proximidad;
-  String? descripcion;
+  String descripcion = '';
 
   @override
   void initState() {
@@ -146,19 +146,6 @@ class _MapaEntidadesState extends State<MapaEntidades> {
           ecsalesnom = ecsaleslist
               .map((item) => item['razonsocial'].toString().toUpperCase())
               .toList();
-          //print(ecsaleslist);
-          razonsocial = ecsaleslist[0]['razonsocial'];
-          ruc = ecsaleslist[0]['ruc'];
-          direccion = ecsaleslist[0]['direccion'];
-          coordenadas = LatLng(double.parse(ecsaleslist[0]['Latitud']),
-              double.parse(ecsaleslist[0]['Longitud']));
-          print(coordenadas);
-          /*categoria = ecsaleslist[0]['categoria'];
-          precio = double.parse(ecsaleslist[0]['precio']);
-          calificacion = double.parse(ecsaleslist[0]['calificacion']);
-          estado = ecsaleslist[0]['estado'];
-          proximidad = double.parse(ecsaleslist[0]['proximidad']);
-          descripcion = ecsaleslist[0]['descripcion'];*/
 
           if (ecsalesnom.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -200,6 +187,42 @@ class _MapaEntidadesState extends State<MapaEntidades> {
       }
     } catch (e) {
       print('Error al ubicar la ecsal, $e');
+    }
+  }
+
+  Future<void> _mostrarEcsal(String nomecsal) async {
+    try {
+      String url =
+          'https://endpoint2-blond.vercel.app/infoEcsal?nomEcsal=$nomecsal';
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> ecsalinfo = json.decode(response.body);
+
+        if (ecsalinfo.isNotEmpty) {
+          setState(() {
+            razonsocial = ecsalinfo[0]['razonsocial'];
+            ruc = ecsalinfo[0]['ruc'];
+            direccion = ecsalinfo[0]['direccion'];
+            coordenadas = LatLng(double.parse(ecsalinfo[0]['Latitud']),
+                double.parse(ecsalinfo[0]['Longitud']));
+            estado = ecsalinfo[0]['estado'];
+            descripcion = ecsalinfo[0]['descripcion'];
+
+            print(razonsocial);
+            print(ruc);
+            print(direccion);
+            print(estado);
+            print(descripcion);
+          });
+        } else {
+          print('No se encontró información de la entidad');
+        }
+      } else {
+        print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error al obtener la información de la ecsal, $e');
     }
   }
 
@@ -312,7 +335,6 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                                 if (codDep.isNotEmpty) {
                                   _obtenerProvincias(codDep);
                                 }
-
                                 //print(codDep);
                                 //print(selectedDepartamento);
                               });
@@ -588,7 +610,8 @@ class _MapaEntidadesState extends State<MapaEntidades> {
           ),
           ElevatedButton(
             onPressed: selectedEcsal != null
-                ? () {
+                ? () async {
+                    await _mostrarEcsal(selectedEcsal!);
                     Navigator.push(
                         context,
                         PageRouteBuilder(
@@ -604,8 +627,8 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                                       //calificacion: entidad.calificacion,
                                       //categoria: entidad.categoria,
                                       //precio: entidad.precio,
-                                      //proximidad: entidad.proximidad,
-                                      /*descripcion: entidad.descripcion,*/
+                                      //proximidad: ,
+                                      descripcion: descripcion,
                                     )));
                   }
                 : null,
@@ -617,6 +640,11 @@ class _MapaEntidadesState extends State<MapaEntidades> {
               style: TextStyle(color: Colors.white),
             ),
           ),
+          ElevatedButton(
+              onPressed: selectedEcsal != null
+                  ? () => _mostrarEcsal(selectedEcsal!)
+                  : null,
+              child: const Text('Mostrar')),
         ],
       ),
     );

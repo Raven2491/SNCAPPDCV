@@ -10,6 +10,7 @@ import 'package:sncappdcv/Paginas/entidades.dart';
 import 'package:sncappdcv/Paginas/favoritos.dart';
 import 'package:sncappdcv/Paginas/inicio.dart';
 import 'package:sncappdcv/Paginas/mapaentidades.dart';
+import 'package:sncappdcv/Paginas/mapaentidades2.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -214,9 +215,10 @@ class _SNCAPPState extends State<SNCAPP> {
     super.initState();
     _paginas = [
       const PaginaFavoritos(),
-      MapaEntidades(
+      /*MapaEntidades(
         posicionActual: widget.posicionActual,
-      ),
+      ),*/
+      MapaEntidades2(posicionActual: widget.posicionActual),
       const Inicio2(),
       const Categorias(categoria: ''),
       const Entidades(
