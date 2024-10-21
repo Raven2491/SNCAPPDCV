@@ -1,16 +1,18 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:http/http.dart' as http;
 import 'package:sncappdcv/Paginas/categorias.dart';
 import 'package:sncappdcv/Paginas/categorias2.dart';
 import 'package:sncappdcv/Paginas/entidades.dart';
 import 'package:sncappdcv/Paginas/favoritos.dart';
 import 'package:sncappdcv/Paginas/inicio.dart';
-import 'package:sncappdcv/Paginas/mapaentidades.dart';
 import 'package:sncappdcv/Paginas/mapaentidades2.dart';
+import 'package:sncappdcv/Widgets/entidades.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -198,7 +200,6 @@ class _PantallaCargaState extends State<PantallaCarga> {
 
 class SNCAPP extends StatefulWidget {
   final LatLng posicionActual;
-
   const SNCAPP({super.key, required this.posicionActual});
 
   @override
@@ -213,6 +214,11 @@ class _SNCAPPState extends State<SNCAPP> {
   @override
   void initState() {
     super.initState();
+    obtenerEntidades().then((entidades) {
+      print('Numero de entidades cargadas: ${entidades.length}');
+    }).catchError((e) {
+      print('Error al cargar entidades: $e');
+    });
     _paginas = [
       const PaginaFavoritos(),
       /*MapaEntidades(
@@ -225,6 +231,24 @@ class _SNCAPPState extends State<SNCAPP> {
         categoria: 'Todas',
       ),
     ];
+  }
+
+  Future<List<Entidad>> obtenerEntidades() async {
+    const String url = 'https://endpoint2-blond.vercel.app/entidades';
+    final response = await http.get(Uri.parse(url));
+    try {
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        print('Datos obtenidos: $data');
+        return data.map((json) => Entidad.fromJson(json)).toList();
+      } else {
+        print('Error al obtener datos: ${response.statusCode}');
+        throw Exception('Error al cargar datos');
+      }
+    } catch (e) {
+      print('Excepción atrapada: $e');
+      throw Exception('Excepción al obtener los datos');
+    }
   }
 
   @override

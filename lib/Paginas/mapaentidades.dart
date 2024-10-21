@@ -208,12 +208,6 @@ class _MapaEntidadesState extends State<MapaEntidades> {
                 double.parse(ecsalinfo[0]['Longitud']));
             estado = ecsalinfo[0]['estado'];
             descripcion = ecsalinfo[0]['descripcion'];
-
-            print(razonsocial);
-            print(ruc);
-            print(direccion);
-            print(estado);
-            print(descripcion);
           });
         } else {
           print('No se encontró información de la entidad');
