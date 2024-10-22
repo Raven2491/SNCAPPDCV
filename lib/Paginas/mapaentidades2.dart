@@ -5,6 +5,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:sncappdcv/Widgets/entidades.dart';
 import 'package:sncappdcv/Widgets/mapaopstr.dart';
+import 'package:sncappdcv/Widgets/mapaopstr2.dart';
 
 class MapaEntidades2 extends StatefulWidget {
   final LatLng posicionActual;
@@ -191,9 +192,9 @@ class _MapaEntidades2State extends State<MapaEntidades2> {
                             ? const Center(
                                 child: CircularProgressIndicator(),
                               )
-                            : MapaEntidadOpStr(
+                            : MapaEntidadOpStr2(
                                 ubicacion: widget.posicionActual,
-                              ),
+                                entidad: entidades),
                   ),
                 ),
               ),

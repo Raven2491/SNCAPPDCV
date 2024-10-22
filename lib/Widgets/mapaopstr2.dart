@@ -3,20 +3,23 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:sncappdcv/Widgets/entidades.dart';
 
-class MapaEntidadOpStr extends StatefulWidget {
+class MapaEntidadOpStr2 extends StatefulWidget {
   final LatLng ubicacion;
-  const MapaEntidadOpStr({super.key, required this.ubicacion});
+  final List<Entidad> entidad;
+  const MapaEntidadOpStr2(
+      {super.key, required this.ubicacion, required this.entidad});
 
   @override
-  State<MapaEntidadOpStr> createState() => MapaEntidadOpStrState();
+  State<MapaEntidadOpStr2> createState() => MapaEntidadOpStr2State();
 }
 
-class MapaEntidadOpStrState extends State<MapaEntidadOpStr> {
+class MapaEntidadOpStr2State extends State<MapaEntidadOpStr2> {
   final MapController _mapController = MapController();
 
   @override
-  void didUpdateWidget(MapaEntidadOpStr oldWidget) {
+  void didUpdateWidget(MapaEntidadOpStr2 oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.ubicacion != oldWidget.ubicacion) {
       _mapController.move(widget.ubicacion, 16);
@@ -48,6 +51,16 @@ class MapaEntidadOpStrState extends State<MapaEntidadOpStr> {
                   ),
                   point: widget.ubicacion,
                 ),
+                for (var entidad in widget.entidad)
+                  Marker(
+                    child: const Icon(
+                      FontAwesomeIcons.locationDot,
+                      color: Colors.red,
+                      size: 30.0,
+                    ),
+                    point: LatLng(double.parse(entidad.latitud),
+                        double.parse(entidad.longitud)),
+                  ),
               ],
             ),
           ],
