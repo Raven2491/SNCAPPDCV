@@ -89,7 +89,7 @@ class _EntidadesState extends State<Entidades> {
     const EntidadesCard(
         nomimagen: 'cent_eval.jpg',
         razonsocial: 'TOURING',
-        direccion: 'Av. César Vallejo 638',
+        direccion: 'Av. Trinidad Moran Nro. 698',
         categoria: 'Centros de evaluación',
         precio: 35.0,
         calificacion: 4,
@@ -101,14 +101,14 @@ class _EntidadesState extends State<Entidades> {
     const EntidadesCard(
         nomimagen: 'CITV.jpg',
         razonsocial:
-            'Centro de inspecciones técnico vehiculares grupo J&J S.A.C.',
-        direccion: 'Av. Ruiseñores N°361-393 sub lote A4-1',
+            'CENTRO DE INSPECCIONES TECNICO VEHICULARES J&L SOCIEDAD ANÓNIMA CERRADA - C.I.T.V GRUPO J&L S.A.C',
+        direccion: 'Av. Republica de Argentina Nro. 1153',
         categoria: 'Centros de ITV',
         precio: 400.0,
         calificacion: 4,
         estado: 'Con autorización',
         proximidad: 2.6,
-        coordenadas: LatLng(-12.044755, -77.056625),
+        coordenadas: LatLng(-12.051056, -77.129542),
         descripcion:
             'Centro de inspecciones técnico vehiculares para la obtención de certificados de revisión técnica vehicular.'),
   ];

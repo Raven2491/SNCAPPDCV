@@ -239,7 +239,7 @@ class _SNCAPPState extends State<SNCAPP> {
     try {
       if (response.statusCode == 200) {
         List<dynamic> data = json.decode(response.body);
-        print('Datos obtenidos: $data');
+        //print('Datos obtenidos: $data');
         return data.map((json) => Entidad.fromJson(json)).toList();
       } else {
         print('Error al obtener datos: ${response.statusCode}');
