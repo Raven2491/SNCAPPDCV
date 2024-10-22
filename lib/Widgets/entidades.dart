@@ -1,36 +1,36 @@
 class Entidad {
-  final String? distrito;
-  final String? ruc;
-  final String? razonsocial;
-  final String? direccion;
-  final String? departamento;
-  final String? provincia;
-  final String? estado;
-  final String? latitud;
-  final String? longitud;
-  final String? distancia;
-  final String? calificacion;
-  final String? categoria;
-  final String? descripcion;
-  final String? precio;
-  final String? imagen;
+  final String distrito;
+  final String ruc;
+  final String razonsocial;
+  final String direccion;
+  final String departamento;
+  final String provincia;
+  final String estado;
+  final String latitud;
+  final String longitud;
+  final String calificacion;
+  final String categoria;
+  final String descripcion;
+  final String precio;
+  final String imagen;
+  double? proximidad;
 
   Entidad(
-      {this.distrito,
-      this.ruc,
-      this.razonsocial,
-      this.direccion,
-      this.departamento,
-      this.provincia,
-      this.estado,
-      this.latitud,
-      this.longitud,
-      this.distancia,
-      this.calificacion,
-      this.categoria,
-      this.descripcion,
-      this.precio,
-      this.imagen});
+      {required this.distrito,
+      required this.ruc,
+      required this.razonsocial,
+      required this.direccion,
+      required this.departamento,
+      required this.provincia,
+      required this.estado,
+      required this.latitud,
+      required this.longitud,
+      required this.calificacion,
+      required this.categoria,
+      required this.descripcion,
+      required this.precio,
+      required this.imagen,
+      this.proximidad});
 
   factory Entidad.fromJson(Map<String, dynamic> json) {
     return Entidad(
@@ -43,11 +43,10 @@ class Entidad {
         estado: json['estado'],
         latitud: json['latitud'],
         longitud: json['longitud'],
-        distancia: json['distancia'],
         calificacion: json['calificacion'],
         categoria: json['categoria'],
         descripcion: json['descripcion'],
-        precio: json['precio'],
-        imagen: json['nomimagen']);
+        precio: json['precio'] ?? '',
+        imagen: json['nomimagen'] ?? '');
   }
 }
