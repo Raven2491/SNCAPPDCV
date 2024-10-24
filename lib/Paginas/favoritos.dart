@@ -178,7 +178,7 @@ class _PaginaFavoritosState extends State<PaginaFavoritos> {
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  partes[3] == 'Con autorización'
+                                  partes[3] == 'CON AUTORIZACION'
                                       ? const Icon(Icons.check_circle,
                                           color: Colors.green)
                                       : const Icon(Icons.cancel,

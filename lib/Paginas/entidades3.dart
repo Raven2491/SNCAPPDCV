@@ -24,6 +24,7 @@ class _Entidades3State extends State<Entidades3> {
   late List<Entidad> todasEntidades = [];
 
   List<Entidad> entidadesBusqueda = [];
+  bool _cargandoEntidades = true;
 
   final TextEditingController _buscarController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
@@ -81,6 +82,7 @@ class _Entidades3State extends State<Entidades3> {
                 .toList()
             : entidades;
         entidadesBusqueda = entidades;
+        _cargandoEntidades = false;
       });
     });
   }
@@ -246,66 +248,72 @@ class _Entidades3State extends State<Entidades3> {
             ),
           ),
           const SizedBox(height: 8),
-          if (entidadesFiltradas.isEmpty)
+          if (_cargandoEntidades)
+            const Center(
+              child: CircularProgressIndicator(),
+            )
+          else if (entidadesFiltradas.isEmpty)
             const Center(
               child: Text('No se encontraron entidades'),
-            ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: entidadesFiltradas.length,
-              itemBuilder: (BuildContext context, int index) {
-                final entidad = entidadesFiltradas[index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation, secondaryAnimation) =>
-                            DetalleEnt(
-                          imagen: entidad.imagen,
-                          razonsocial: entidad.razonsocial,
-                          ruc: entidad.ruc,
-                          direccion: entidad.direccion,
-                          coordenadas: LatLng(double.parse(entidad.latitud),
-                              double.parse(entidad.longitud)),
-                          estado: entidad.estado,
-                          calificacion: double.tryParse(
-                            entidad.calificacion,
+            )
+          else
+            Expanded(
+              child: ListView.builder(
+                itemCount: entidadesFiltradas.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final entidad = entidadesFiltradas[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  DetalleEnt(
+                            imagen: entidad.imagen,
+                            razonsocial: entidad.razonsocial,
+                            ruc: entidad.ruc,
+                            direccion: entidad.direccion,
+                            coordenadas: LatLng(double.parse(entidad.latitud),
+                                double.parse(entidad.longitud)),
+                            estado: entidad.estado,
+                            calificacion: double.tryParse(
+                              entidad.calificacion,
+                            ),
+                            categoria: entidad.categoria,
+                            precio: double.tryParse(
+                              entidad.precio,
+                            ),
+                            proximidad: entidad.proximidad,
+                            descripcion: entidad.descripcion,
                           ),
-                          categoria: entidad.categoria,
-                          precio: double.tryParse(
-                            entidad.imagen,
-                          ),
-                          proximidad: entidad.proximidad,
-                          descripcion: entidad.descripcion,
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            const begin = Offset(1.0, 0.0);
+                            const end = Offset.zero;
+                            var tween = Tween(begin: begin, end: end);
+                            return SlideTransition(
+                              position: animation.drive(tween),
+                              child: child,
+                            );
+                          },
                         ),
-                        transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) {
-                          const begin = Offset(1.0, 0.0);
-                          const end = Offset.zero;
-                          var tween = Tween(begin: begin, end: end);
-                          return SlideTransition(
-                            position: animation.drive(tween),
-                            child: child,
-                          );
-                        },
-                      ),
-                    );
-                  },
-                  child: EntidadesCard(
-                    nomimagen: entidad.imagen,
-                    calificacion: 5,
-                    razonsocial: entidad.razonsocial,
-                    direccion: entidad.direccion,
-                    categoria: entidad.categoria,
-                    precio: double.tryParse(entidad.precio) ?? 0.0,
-                    estado: entidad.estado,
-                    proximidad: 0.08,
-                  ),
-                );
-              },
+                      );
+                    },
+                    child: EntidadesCard(
+                      nomimagen: entidad.imagen,
+                      calificacion: 5,
+                      razonsocial: entidad.razonsocial,
+                      direccion: entidad.direccion,
+                      categoria: entidad.categoria,
+                      precio: double.tryParse(entidad.precio) ?? 0.0,
+                      estado: entidad.estado,
+                      proximidad: 0.08,
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
         ],
       ),
     );

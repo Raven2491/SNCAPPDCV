@@ -214,12 +214,7 @@ class _MapaEntidades2State extends State<MapaEntidades2> {
                 child: const Text('Busqueda avanzada',
                     style: TextStyle(color: Colors.white)),
               ),
-              /*Text(
-                  'La posición actual es latitud : ${widget.posicionActual.latitude} y longitud : ${widget.posicionActual.longitude}'),*/
               const SizedBox(height: 5),
-              /*for (var entidad in entidadesfiltradas)
-                Text(
-                    'La proximidad de la entidad ${entidad.razonsocial} es ${entidad.proximidad?.toStringAsFixed(2)} km'),*/
             ]);
           } else {
             return const Center(
