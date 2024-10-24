@@ -7,6 +7,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:sncappdcv/Paginas/categorias.dart';
 import 'package:sncappdcv/Paginas/categorias2.dart';
 import 'package:sncappdcv/Paginas/entidades.dart';
+import 'package:sncappdcv/Paginas/entidades3.dart';
 import 'package:sncappdcv/Paginas/favoritos.dart';
 import 'package:sncappdcv/Paginas/inicio.dart';
 import 'package:sncappdcv/Paginas/mapaentidades2.dart';
@@ -219,7 +220,10 @@ class _SNCAPPState extends State<SNCAPP> {
       MapaEntidades2(posicionActual: widget.posicionActual),
       const Inicio2(),
       const Categorias(categoria: ''),
-      const Entidades(
+      /*const Entidades(
+        categoria: 'Todas',
+      ),*/
+      const Entidades3(
         categoria: 'Todas',
       ),
     ];

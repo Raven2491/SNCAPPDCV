@@ -47,6 +47,6 @@ class Entidad {
         categoria: json['categoria'],
         descripcion: json['descripcion'],
         precio: json['precio'] ?? '',
-        imagen: json['nomimagen'] ?? '');
+        imagen: json['imagen'] ?? '');
   }
 }

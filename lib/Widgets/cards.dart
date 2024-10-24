@@ -186,7 +186,7 @@ class EntidadesCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  if (estado == 'Con autorización')
+                  if (estado == 'CON AUTORIZACION')
                     Image.asset('assets/images/puntoverde.png',
                         width: 20, height: 20, fit: BoxFit.cover)
                   else
@@ -287,7 +287,7 @@ class DetalleEntCard extends StatelessWidget {
                 ],
               ),
             ),
-            if (estado == 'Con autorización')
+            if (estado == 'CON AUTORIZACION')
               Image.asset('assets/images/puntoverde.png',
                   width: 25, height: 25, fit: BoxFit.cover)
             else

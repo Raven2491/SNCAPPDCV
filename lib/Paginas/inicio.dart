@@ -25,7 +25,7 @@ class _Inicio2State extends State<Inicio2> {
     categoria: 'Licencias de conducir',
     precio: 24.00,
     calificacion: 5,
-    estado: 'Con autorización',
+    estado: 'CON AUTORIZACION',
     proximidad: 0.08,
     coordenadas: LatLng(-12.058227, -77.060768),
   );
