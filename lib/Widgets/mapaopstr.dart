@@ -43,7 +43,7 @@ class MapaEntidadOpStrState extends State<MapaEntidadOpStr> {
                 Marker(
                   child: const Icon(
                     FontAwesomeIcons.locationDot,
-                    color: Colors.blue,
+                    color: Color.fromARGB(255, 224, 42, 42),
                     size: 30.0,
                   ),
                   point: widget.ubicacion,

@@ -29,11 +29,11 @@ class _Entidades3State extends State<Entidades3> {
   final FocusNode _focusNode = FocusNode();
 
   final List<String> opciones = [
-    'TODAS',
-    'CENTRO MEDICO',
-    'ESCUELA DE CONDUCTORES',
-    'CENTRO DE EVALUACION',
-    'CENTRO DE ITV',
+    'Todos',
+    'Centro medico',
+    'Escuela de conductores',
+    'Centro de evaluacion',
+    'Centro de ITV',
     'Taller de conversion GNV/GLP',
     'Certificadora GNV/GLP',
     'Entidad verificadora',
@@ -93,7 +93,8 @@ class _Entidades3State extends State<Entidades3> {
           ? todasEntidades
           : todasEntidades
               .where((entidad) =>
-                  entidad.categoria == opciones[_indiceSeleccionado])
+                  entidad.categoria ==
+                  opciones[_indiceSeleccionado].toUpperCase())
               .toList();
     } else {
       resultados = todasEntidades

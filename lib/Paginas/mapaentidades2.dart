@@ -199,6 +199,21 @@ class _MapaEntidades2State extends State<MapaEntidades2> {
                 ),
               ),
               const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MapaEntidades2(
+                                posicionActual: widget.posicionActual,
+                              )));
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                child: const Text('Busqueda avanzada',
+                    style: TextStyle(color: Colors.white)),
+              ),
               /*Text(
                   'La posición actual es latitud : ${widget.posicionActual.latitude} y longitud : ${widget.posicionActual.longitude}'),*/
               const SizedBox(height: 5),

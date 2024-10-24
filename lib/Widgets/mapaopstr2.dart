@@ -29,72 +29,70 @@ class MapaEntidadOpStr2State extends State<MapaEntidadOpStr2> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (contents, constraints) {
-      return SizedBox(
-        child: FlutterMap(
-          mapController: _mapController,
-          options: MapOptions(
-            initialZoom: 15.5,
-            initialCenter: widget.ubicacion,
-          ),
-          children: [
-            TileLayer(
-              tileProvider: CancellableNetworkTileProvider(),
-              urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
-            ),
-            MarkerLayer(markers: [
-              Marker(
-                child: const Icon(
-                  FontAwesomeIcons.locationDot,
-                  color: Colors.blue,
-                  size: 30.0,
-                ),
-                point: widget.ubicacion,
-              ),
-              for (var entidad in widget.entidad) ...[
-                if (entidad.categoria == 'CENTRO MEDICO')
-                  Marker(
-                    child: const Icon(
-                      FontAwesomeIcons.houseMedical,
-                      color: Colors.red,
-                      size: 30.0,
-                    ),
-                    point: LatLng(double.parse(entidad.latitud),
-                        double.parse(entidad.longitud)),
-                  )
-                else if (entidad.categoria == 'ESCUELA DE CONDUCTORES')
-                  Marker(
-                    child: const Icon(
-                      FontAwesomeIcons.car,
-                      color: Colors.red,
-                      size: 30.0,
-                    ),
-                    point: LatLng(double.parse(entidad.latitud),
-                        double.parse(entidad.longitud)),
-                  )
-                else if (entidad.categoria == 'CENTRO DE EVALUACION')
-                  Marker(
-                    child: const Icon(
-                      FontAwesomeIcons.clipboardCheck,
-                      color: Colors.red,
-                      size: 30.0,
-                    ),
-                    point: LatLng(double.parse(entidad.latitud),
-                        double.parse(entidad.longitud)),
-                  )
-                else if (entidad.categoria == 'CENTRO DE ITV')
-                  Marker(
-                    child: const Icon(
-                      FontAwesomeIcons.toolbox,
-                      color: Colors.red,
-                      size: 30.0,
-                    ),
-                    point: LatLng(double.parse(entidad.latitud),
-                        double.parse(entidad.longitud)),
-                  )
-              ],
-            ]),
-          ],
+      return FlutterMap(
+        mapController: _mapController,
+        options: MapOptions(
+          initialZoom: 15.5,
+          initialCenter: widget.ubicacion,
         ),
+        children: [
+          TileLayer(
+            tileProvider: CancellableNetworkTileProvider(),
+            urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+          ),
+          MarkerLayer(markers: [
+            Marker(
+              child: const Icon(
+                FontAwesomeIcons.locationDot,
+                color: Color.fromARGB(255, 224, 42, 42),
+                size: 30.0,
+              ),
+              point: widget.ubicacion,
+            ),
+            for (var entidad in widget.entidad) ...[
+              if (entidad.categoria == 'CENTRO MEDICO')
+                Marker(
+                  child: const Icon(
+                    FontAwesomeIcons.houseMedical,
+                    color: Color.fromARGB(255, 224, 42, 42),
+                    size: 30.0,
+                  ),
+                  point: LatLng(double.parse(entidad.latitud),
+                      double.parse(entidad.longitud)),
+                )
+              else if (entidad.categoria == 'ESCUELA DE CONDUCTORES')
+                Marker(
+                  child: const Icon(
+                    FontAwesomeIcons.car,
+                    color: Color.fromARGB(255, 224, 42, 42),
+                    size: 30.0,
+                  ),
+                  point: LatLng(double.parse(entidad.latitud),
+                      double.parse(entidad.longitud)),
+                )
+              else if (entidad.categoria == 'CENTRO DE EVALUACION')
+                Marker(
+                  child: const Icon(
+                    FontAwesomeIcons.clipboardCheck,
+                    color: Color.fromARGB(255, 224, 42, 42),
+                    size: 30.0,
+                  ),
+                  point: LatLng(double.parse(entidad.latitud),
+                      double.parse(entidad.longitud)),
+                )
+              else if (entidad.categoria == 'CENTRO DE ITV')
+                Marker(
+                  child: const Icon(
+                    FontAwesomeIcons.toolbox,
+                    color: Color.fromARGB(255, 224, 42, 42),
+                    size: 30.0,
+                  ),
+                  point: LatLng(double.parse(entidad.latitud),
+                      double.parse(entidad.longitud)),
+                )
+            ],
+          ]),
+        ],
       );
     });
   }
