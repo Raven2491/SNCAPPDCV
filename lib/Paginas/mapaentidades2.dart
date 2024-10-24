@@ -74,7 +74,7 @@ class _MapaEntidades2State extends State<MapaEntidades2> {
   Future<List<Entidad>> filtrarEntidades() async {
     entidadesfiltradas.clear();
     for (var entidad in entidades) {
-      if (entidad.proximidad! <= 1) {
+      if (entidad.proximidad! >= 0) {
         entidadesfiltradas.add(entidad);
       }
     }
@@ -202,9 +202,9 @@ class _MapaEntidades2State extends State<MapaEntidades2> {
               /*Text(
                   'La posición actual es latitud : ${widget.posicionActual.latitude} y longitud : ${widget.posicionActual.longitude}'),*/
               const SizedBox(height: 5),
-              for (var entidad in entidadesfiltradas)
+              /*for (var entidad in entidadesfiltradas)
                 Text(
-                    'La proximidad de la entidad ${entidad.razonsocial} es ${entidad.proximidad?.toStringAsFixed(2)} km'),
+                    'La proximidad de la entidad ${entidad.razonsocial} es ${entidad.proximidad?.toStringAsFixed(2)} km'),*/
             ]);
           } else {
             return const Center(
