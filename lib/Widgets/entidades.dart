@@ -1,10 +1,10 @@
 class Entidad {
-  final String distrito;
+  final String? distrito;
   final String ruc;
   final String razonsocial;
   final String direccion;
-  final String departamento;
-  final String provincia;
+  final String? departamento;
+  final String? provincia;
   final String estado;
   final String latitud;
   final String longitud;
@@ -16,12 +16,12 @@ class Entidad {
   double? proximidad;
 
   Entidad(
-      {required this.distrito,
+      {this.distrito,
       required this.ruc,
       required this.razonsocial,
       required this.direccion,
-      required this.departamento,
-      required this.provincia,
+      this.departamento,
+      this.provincia,
       required this.estado,
       required this.latitud,
       required this.longitud,

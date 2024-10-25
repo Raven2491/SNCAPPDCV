@@ -77,6 +77,7 @@ class _DetalleEntState extends State<DetalleEnt> {
         ),
       );
     }
+    print(tarjetaFavorita);
   }
 
   void _actualizarRating(double rating) {
