@@ -40,6 +40,8 @@ class DetalleEnt extends StatefulWidget {
 }
 
 class _DetalleEntState extends State<DetalleEnt> {
+  double calificacion = 5.0;
+  double proximidad = 0.0;
   List<String> favoritos = [];
   late double ratingnuevo;
 
@@ -53,7 +55,6 @@ class _DetalleEntState extends State<DetalleEnt> {
   Future<void> _cargarFavoritos() async {
     final FavoritosManager manager = FavoritosManager();
     List<String>? favoritosActuales = await manager.obtenerFavoritos() ?? [];
-
     setState(() {
       favoritos = favoritosActuales;
     });
@@ -63,7 +64,7 @@ class _DetalleEntState extends State<DetalleEnt> {
     final FavoritosManager manager = FavoritosManager();
 
     final String tarjetaFavorita =
-        '${widget.imagen}|${widget.razonsocial}|${widget.direccion}|${widget.estado}|$ratingnuevo|${widget.proximidad}|${widget.descripcion}|${widget.precio}|${widget.categoria}|${widget.ruc}|${widget.coordenadas}|${widget.logo}';
+        '${widget.imagen}|${widget.razonsocial}|${widget.direccion}|${widget.estado}|$ratingnuevo|$proximidad|${widget.precio}|${widget.categoria}|${widget.ruc}|${widget.coordenadas}';
 
     // Comprobar si la tarjeta ya está en favoritos
     if (!favoritos.contains(tarjetaFavorita)) {
@@ -201,7 +202,7 @@ class _DetalleEntState extends State<DetalleEnt> {
                       child: Builder(
                         builder: (context) {
                           final entfavorita = favoritos.contains(
-                              '${widget.imagen}|${widget.razonsocial}|${widget.direccion}|${widget.estado}|${widget.calificacion}|${widget.proximidad}|${widget.descripcion}|${widget.precio}|${widget.categoria}|${widget.ruc}|${widget.coordenadas}|${widget.logo}');
+                              '${widget.imagen}|${widget.razonsocial}|${widget.direccion}|${widget.estado}|$ratingnuevo|$proximidad|${widget.precio}|${widget.categoria}|${widget.ruc}|${widget.coordenadas}');
                           Icon icon;
                           if (entfavorita) {
                             icon = const Icon(

@@ -90,7 +90,7 @@ class _PaginaFavoritosState extends State<PaginaFavoritos> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Favoritos',
+                        'Tus entidades favoritas',
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
@@ -104,7 +104,7 @@ class _PaginaFavoritosState extends State<PaginaFavoritos> {
                       itemBuilder: (context, index) {
                         String favorito = _favoritos![index];
                         List<String> partes = favorito.split('|');
-                        String coordenadasLimpiadas = partes[10]
+                        String coordenadasLimpiadas = partes[9]
                             .replaceAll('LatLng(latitude:', '')
                             .replaceAll('longitude:', '')
                             .replaceAll(')', '');
@@ -202,11 +202,10 @@ class _PaginaFavoritosState extends State<PaginaFavoritos> {
                                       direccion: partes[2],
                                       estado: partes[3],
                                       calificacion: double.parse(partes[4]),
-                                      proximidad: double.parse(partes[5]),
-                                      descripcion: partes[6],
-                                      precio: double.parse(partes[7]),
-                                      categoria: partes[8],
-                                      ruc: partes[9],
+                                      proximidad: 0.08,
+                                      precio: double.parse(partes[6]),
+                                      categoria: partes[7],
+                                      ruc: partes[8],
                                       coordenadas: LatLng(lat, lon),
                                     ),
                                   ),
