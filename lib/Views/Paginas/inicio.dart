@@ -2,11 +2,12 @@ import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:sncappdcv/Editoriales/editorial1.dart';
-import 'package:sncappdcv/Paginas/categorias2.dart';
-import 'package:sncappdcv/Paginas/entidades2.dart';
-import 'package:sncappdcv/Widgets/cards.dart';
-import 'package:sncappdcv/Widgets/detentidad.dart';
+import 'package:sncappdcv/Views/Editoriales/editorial1.dart';
+import 'package:sncappdcv/Views/Paginas/categorias2.dart';
+import 'package:sncappdcv/Views/Paginas/entidades2.dart';
+import 'package:sncappdcv/Views/Widgets/cards.dart';
+import 'package:sncappdcv/Views/Widgets/detentidad.dart';
+import 'package:sncappdcv/Views/entidades_view.dart';
 
 class Inicio2 extends StatefulWidget {
   const Inicio2({super.key});
@@ -494,6 +495,14 @@ class _Inicio2State extends State<Inicio2> {
               },
             ),
             const SizedBox(height: 16),
+            FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const EntidadesView()));
+                },
+                child: const Icon(Icons.fork_right)),
           ],
         ),
       ),

@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
-import 'package:sncappdcv/Widgets/entidades.dart';
-import 'package:sncappdcv/Widgets/cards.dart';
+import 'package:sncappdcv/Models/entidades.dart';
+import 'package:sncappdcv/Views/Widgets/cards.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sncappdcv/Widgets/detentidad.dart';
+import 'package:sncappdcv/Views/Widgets/detentidad.dart';
 
 class Entidades3 extends StatefulWidget {
   final String categoria;

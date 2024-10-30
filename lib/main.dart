@@ -4,13 +4,14 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:sncappdcv/Paginas/categorias.dart';
-import 'package:sncappdcv/Paginas/categorias2.dart';
-import 'package:sncappdcv/Paginas/entidades.dart';
-import 'package:sncappdcv/Paginas/entidades3.dart';
-import 'package:sncappdcv/Paginas/favoritos.dart';
-import 'package:sncappdcv/Paginas/inicio.dart';
-import 'package:sncappdcv/Paginas/mapaentidades2.dart';
+import 'package:provider/provider.dart';
+import 'package:sncappdcv/ViewModels/entidad_vm.dart';
+import 'package:sncappdcv/Views/Paginas/categorias.dart';
+import 'package:sncappdcv/Views/Paginas/categorias2.dart';
+import 'package:sncappdcv/Views/Paginas/entidades3.dart';
+import 'package:sncappdcv/Views/Paginas/favoritos.dart';
+import 'package:sncappdcv/Views/Paginas/inicio.dart';
+import 'package:sncappdcv/Views/Paginas/mapaentidades2.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,14 +25,17 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-        fontFamily: 'Roboto',
-        useMaterial3: true,
+    return ChangeNotifierProvider(
+      create: (context) => EntidadViewModel()..cargarEntidades(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+          fontFamily: 'Roboto',
+          useMaterial3: true,
+        ),
+        home: const PantallaCarga(),
       ),
-      home: const PantallaCarga(),
     );
   }
 }

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:sncappdcv/Widgets/entidades.dart';
-import 'package:sncappdcv/Widgets/mapaopstr.dart';
-import 'package:sncappdcv/Widgets/mapaopstr2.dart';
+import 'package:sncappdcv/Models/entidades.dart';
+import 'package:sncappdcv/Views/Widgets/mapaopstr.dart';
+import 'package:sncappdcv/Views/Widgets/mapaopstr2.dart';
 
 class MapaEntidades2 extends StatefulWidget {
   final LatLng posicionActual;
