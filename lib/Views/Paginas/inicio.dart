@@ -495,14 +495,14 @@ class _Inicio2State extends State<Inicio2> {
               },
             ),
             const SizedBox(height: 16),
-            FloatingActionButton(
+            /*FloatingActionButton(
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => const EntidadesView()));
                 },
-                child: const Icon(Icons.fork_right)),
+                child: const Icon(Icons.fork_right)),*/
           ],
         ),
       ),

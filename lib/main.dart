@@ -5,10 +5,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
-import 'package:sncappdcv/ViewModels/entidad_vm.dart';
+import 'package:sncappdcv/ViewModels/entidades_vm.dart';
 import 'package:sncappdcv/Views/Paginas/categorias.dart';
 import 'package:sncappdcv/Views/Paginas/categorias2.dart';
 import 'package:sncappdcv/Views/Paginas/entidades3.dart';
+import 'package:sncappdcv/Views/Paginas/entidades4.dart';
 import 'package:sncappdcv/Views/Paginas/favoritos.dart';
 import 'package:sncappdcv/Views/Paginas/inicio.dart';
 import 'package:sncappdcv/Views/Paginas/mapaentidades2.dart';
@@ -25,17 +26,14 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => EntidadViewModel()..cargarEntidades(),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-          fontFamily: 'Roboto',
-          useMaterial3: true,
-        ),
-        home: const PantallaCarga(),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+        fontFamily: 'Roboto',
+        useMaterial3: true,
       ),
+      home: const PantallaCarga(),
     );
   }
 }
@@ -224,10 +222,10 @@ class _SNCAPPState extends State<SNCAPP> {
       MapaEntidades2(posicionActual: widget.posicionActual),
       const Inicio2(),
       const Categorias(categoria: ''),
-      /*const Entidades(
+      /*const Entidades3(
         categoria: 'Todas',
       ),*/
-      const Entidades3(
+      Entidades4(
         categoria: 'Todas',
       ),
     ];
