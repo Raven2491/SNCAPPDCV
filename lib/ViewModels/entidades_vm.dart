@@ -42,13 +42,45 @@ class EntidadesVM extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Método para actualizar la categoría seleccionada
+  void actualizarCategoria(int indice) {
+    indiceSeleccionado = indice;
+    filtrarYOrdenarEntidades(''); // Reaplica el filtro al cambiar la categoría
+  }
+
+  // Método para actualizar el filtro de ordenación
+  void actualizarFiltroOrden(String filtro) {
+    filtroSeleccionado = filtro;
+    filtrarYOrdenarEntidades(
+        ''); // Aplica ordenación sin cambiar el texto de búsqueda
+  }
+
+  // Método para filtrar y ordenar entidades
   void filtrarYOrdenarEntidades(String query) {
-    List<Entidad> resultados = query.isEmpty
-        ? todasEntidades
-        : todasEntidades
-            .where((entidad) =>
-                entidad.razonsocial.toLowerCase().contains(query.toLowerCase()))
-            .toList();
+    List<Entidad> resultados;
+
+    if (query.isEmpty) {
+      resultados = indiceSeleccionado == 0
+          ? todasEntidades
+          : todasEntidades
+              .where((entidad) =>
+                  entidad.categoria.toLowerCase() ==
+                  opciones[indiceSeleccionado].toLowerCase())
+              .toList();
+    } else {
+      resultados = todasEntidades
+          .where((entidad) =>
+              (entidad.razonsocial
+                      .toLowerCase()
+                      .contains(query.toLowerCase()) ||
+                  entidad.categoria
+                      .toLowerCase()
+                      .contains(query.toLowerCase())) &&
+              (indiceSeleccionado == 0 ||
+                  entidad.categoria.toLowerCase() ==
+                      opciones[indiceSeleccionado].toLowerCase()))
+          .toList();
+    }
 
     // Ordenar resultados
     switch (filtroSeleccionado) {
@@ -67,11 +99,6 @@ class EntidadesVM extends ChangeNotifier {
     }
 
     entidadesFiltradas = resultados;
-    notifyListeners();
-  }
-
-  void cambiarFiltroSeleccionado(String nuevoFiltro) {
-    filtroSeleccionado = nuevoFiltro;
     notifyListeners();
   }
 }

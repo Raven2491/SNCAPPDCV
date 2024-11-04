@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
-import 'package:sncappdcv/Models/entidades.dart';
 import 'package:sncappdcv/ViewModels/entidades_vm.dart';
 import 'package:sncappdcv/Views/Widgets/cards.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sncappdcv/Views/Widgets/detentidad.dart';
 
 class Entidades4 extends StatelessWidget {
   final String categoria;
@@ -64,7 +65,7 @@ class Entidades4 extends StatelessWidget {
                     PopupMenuButton<String>(
                       icon: const Icon(FontAwesomeIcons.arrowDownShortWide),
                       onSelected: (String value) {
-                        viewModel.filtrarYOrdenarEntidades(value);
+                        viewModel.actualizarFiltroOrden(value);
                       },
                       itemBuilder: (BuildContext context) {
                         return [
@@ -99,7 +100,7 @@ class Entidades4 extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         child: GestureDetector(
                           onTap: () {
-                            //viewModel.actualizarCategoria(indice);
+                            viewModel.actualizarCategoria(indice);
                           },
                           child: Container(
                             padding: const EdgeInsets.symmetric(
@@ -144,15 +145,39 @@ class Entidades4 extends StatelessWidget {
                       itemCount: viewModel.entidadesFiltradas.length,
                       itemBuilder: (BuildContext context, int index) {
                         final entidad = viewModel.entidadesFiltradas[index];
-                        return EntidadesCard(
-                          nomimagen: entidad.imagen,
-                          calificacion: 5,
-                          razonsocial: entidad.razonsocial,
-                          direccion: entidad.direccion,
-                          categoria: entidad.categoria,
-                          precio: double.tryParse(entidad.precio) ?? 0.0,
-                          estado: entidad.estado,
-                          proximidad: 0.08,
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                        DetalleEnt(
+                                  imagen: entidad.imagen,
+                                  razonsocial: entidad.razonsocial,
+                                  ruc: entidad.ruc,
+                                  direccion: entidad.direccion,
+                                  coordenadas: LatLng(
+                                      double.parse(entidad.latitud),
+                                      double.parse(entidad.longitud)),
+                                  categoria: entidad.categoria,
+                                  precio: double.tryParse(entidad.precio),
+                                  proximidad: entidad.proximidad,
+                                  descripcion: entidad.descripcion,
+                                ),
+                              ),
+                            );
+                          },
+                          child: EntidadesCard(
+                            nomimagen: entidad.imagen,
+                            calificacion: 5,
+                            razonsocial: entidad.razonsocial,
+                            direccion: entidad.direccion,
+                            categoria: entidad.categoria,
+                            precio: double.tryParse(entidad.precio) ?? 0.0,
+                            estado: entidad.estado,
+                            proximidad: 0.08,
+                          ),
                         );
                       },
                     ),

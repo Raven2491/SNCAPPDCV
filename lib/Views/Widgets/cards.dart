@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:sncappdcv/Models/entidades.dart';
 
 class CategoriaCard extends StatelessWidget {
   final Image imagen;
