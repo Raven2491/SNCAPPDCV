@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:sncappdcv/Models/entidades.dart';
+import 'package:sncappdcv/Utils/constants.dart';
 
 class EntidadesVM extends ChangeNotifier {
   List<Entidad> todasEntidades = [];
@@ -9,6 +10,7 @@ class EntidadesVM extends ChangeNotifier {
   bool cargandoEntidades = true;
   String filtroSeleccionado = 'A-Z';
   int indiceSeleccionado = 0;
+  String apiUrl = RapiditoApi.baseUrl;
 
   final List<String> opciones = [
     'Todos',
@@ -24,7 +26,7 @@ class EntidadesVM extends ChangeNotifier {
   ];
 
   Future<void> obtenerEntidades() async {
-    const String url = 'https://endpoint2-blond.vercel.app/entidades';
+    const String url = RapiditoApi.baseUrl + RapiditoApi.entidades;
     final response = await http.get(Uri.parse(url));
     try {
       if (response.statusCode == 200) {
