@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:sncappdcv/Utils/constants.dart';
 import 'package:sncappdcv/Views/Paginas/categorias.dart';
 import 'package:sncappdcv/Views/Paginas/categorias2.dart';
 import 'package:sncappdcv/Views/Paginas/entidades4.dart';
@@ -166,7 +167,7 @@ class _PantallaCargaState extends State<PantallaCarga> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red,
+      backgroundColor: RapiditoColors.primaryColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -176,7 +177,7 @@ class _PantallaCargaState extends State<PantallaCarga> {
                     fontFamily: 'Roboto',
                     fontSize: 70,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white)),
+                    color: RapiditoColors.tertiaryTextColor)),
             SizedBox(
               width: 110,
               height: 55,

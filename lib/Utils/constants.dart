@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter/material.dart';
 
 class RapiditoConstants {
   static const String appName = 'Rapidito';
@@ -13,14 +14,14 @@ class RapiditoConstants {
 }
 
 class RapiditoColors {
-  static const Color primaryColor = Color(0xFF1E88E5);
-  static const Color secondaryColor = Color(0xFF64B5F6);
+  static const Color primaryColor = Colors.red;
+  static const Color secondaryColor = Color.fromARGB(255, 246, 100, 100);
   static const Color tertiaryColor = Color(0xFFBBDEFB);
   static const Color primaryTextColor = Color(0xFF212121);
   static const Color secondaryTextColor = Color(0xFF757575);
-  static const Color tertiaryTextColor = Color(0xFF9E9E9E);
-  static const Color primaryButtonColor = Color(0xFF1E88E5);
-  static const Color secondaryButtonColor = Color(0xFF64B5F6);
+  static const Color tertiaryTextColor = Colors.white;
+  static const Color primaryButtonColor = Colors.red;
+  static const Color secondaryButtonColor = Color.fromARGB(255, 246, 100, 100);
   static const Color tertiaryButtonColor = Color(0xFFBBDEFB);
   static const Color primaryButtonTextColor = Color(0xFFFFFFFF);
   static const Color secondaryButtonTextColor = Color(0xFF212121);
