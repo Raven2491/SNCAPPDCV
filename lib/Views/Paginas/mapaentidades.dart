@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
-import 'package:sncappdcv/Views/Widgets/detentidad.dart';
-import 'package:sncappdcv/Views/Widgets/mapaopstr.dart';
+import 'package:sncappdcv/views/Widgets/detentidad.dart';
+import 'package:sncappdcv/views/Widgets/mapaopstr.dart';
 
 class MapaEntidades extends StatefulWidget {
   final LatLng posicionActual;

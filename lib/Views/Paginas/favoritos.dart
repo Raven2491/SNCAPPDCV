@@ -3,7 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sncappdcv/Views/Widgets/detentidad.dart';
+import 'package:sncappdcv/views/Widgets/detentidad.dart';
 
 class FavoritosManager {
   static const String _favoritosKey = 'favoritos';

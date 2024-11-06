@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sncappdcv/Views/Paginas/entidades2.dart';
-import 'package:sncappdcv/Views/Widgets/cards.dart';
+import 'package:sncappdcv/views/Paginas/entidades2.dart';
+import 'package:sncappdcv/views/Widgets/cards.dart';
 
 class Categorias2 extends StatefulWidget {
   final String categoria;

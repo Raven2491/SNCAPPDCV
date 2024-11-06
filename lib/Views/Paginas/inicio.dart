@@ -2,11 +2,11 @@ import 'package:carousel_slider_plus/carousel_slider_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:sncappdcv/Views/Editoriales/editorial1.dart';
-import 'package:sncappdcv/Views/Paginas/categorias2.dart';
-import 'package:sncappdcv/Views/Paginas/entidades2.dart';
-import 'package:sncappdcv/Views/Widgets/cards.dart';
-import 'package:sncappdcv/Views/Widgets/detentidad.dart';
+import 'package:sncappdcv/views/Editoriales/editorial1.dart';
+import 'package:sncappdcv/views/Paginas/categorias2.dart';
+import 'package:sncappdcv/views/Paginas/entidades2.dart';
+import 'package:sncappdcv/views/Widgets/cards.dart';
+import 'package:sncappdcv/views/Widgets/detentidad.dart';
 
 class Inicio2 extends StatefulWidget {
   const Inicio2({super.key});

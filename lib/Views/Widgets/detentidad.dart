@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sncappdcv/Views/Paginas/favoritos.dart';
-import 'package:sncappdcv/Views/Widgets/cards.dart';
+import 'package:sncappdcv/views/Paginas/favoritos.dart';
+import 'package:sncappdcv/views/Widgets/cards.dart';
 //import 'package:sncappdcv/Widgets/mapagoogle.dart';
-import 'package:sncappdcv/Views/Widgets/mapaopstr.dart';
+import 'package:sncappdcv/views/Widgets/mapaopstr.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 

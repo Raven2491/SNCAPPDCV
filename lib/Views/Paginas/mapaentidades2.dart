@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:sncappdcv/Models/entidades.dart';
-import 'package:sncappdcv/Views/Widgets/mapaopstr.dart';
-import 'package:sncappdcv/Views/Widgets/mapaopstr2.dart';
+import 'package:sncappdcv/models/entidades.dart';
+import 'package:sncappdcv/views/Widgets/cards.dart';
+import 'package:sncappdcv/views/Widgets/mapaopstr.dart';
+import 'package:sncappdcv/views/Widgets/mapaopstr2.dart';
 
 class MapaEntidades2 extends StatefulWidget {
   final LatLng posicionActual;
@@ -222,7 +223,8 @@ class _MapaEntidades2State extends State<MapaEntidades2> {
                                     )
                                   : MapaEntidadOpStr2(
                                       ubicacion: widget.posicionActual,
-                                      entidad: entidades),
+                                      entidad: entidades,
+                                    ),
                         ),
                       ),
                     ),

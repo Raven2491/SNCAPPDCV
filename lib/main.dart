@@ -4,13 +4,13 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:sncappdcv/Utils/constants.dart';
-import 'package:sncappdcv/Views/Paginas/categorias.dart';
-import 'package:sncappdcv/Views/Paginas/categorias2.dart';
-import 'package:sncappdcv/Views/Paginas/entidades4.dart';
-import 'package:sncappdcv/Views/Paginas/favoritos.dart';
-import 'package:sncappdcv/Views/Paginas/inicio.dart';
-import 'package:sncappdcv/Views/Paginas/mapaentidades2.dart';
+import 'package:sncappdcv/utils/constants.dart';
+import 'package:sncappdcv/views/Paginas/categorias.dart';
+import 'package:sncappdcv/views/Paginas/categorias2.dart';
+import 'package:sncappdcv/views/Paginas/entidades4.dart';
+import 'package:sncappdcv/views/Paginas/favoritos.dart';
+import 'package:sncappdcv/views/Paginas/inicio.dart';
+import 'package:sncappdcv/views/Paginas/mapaentidades2.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -189,6 +189,12 @@ class _PantallaCargaState extends State<PantallaCarga> {
                 ),
               ),
             ),
+            const Text('v. ${RapiditoConstants.appVersion}',
+                style: TextStyle(
+                  fontFamily: 'Roboto',
+                  fontSize: 18,
+                  color: RapiditoColors.tertiaryTextColor,
+                )),
           ],
         ),
       ),
