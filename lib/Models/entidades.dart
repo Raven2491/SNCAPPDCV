@@ -1,35 +1,37 @@
 class Entidad {
-  final String? distrito;
-  final String ruc;
+  final String imagen;
+  final String? logo;
   final String razonsocial;
+  final String ruc;
+  final String categoria;
   final String direccion;
   final String? departamento;
   final String? provincia;
-  final String estado;
+  final String? distrito;
   final String latitud;
   final String longitud;
-  final String calificacion;
-  final String categoria;
-  final String descripcion;
+  final String estado;
   final String precio;
-  final String imagen;
+  final String descripcion;
+  final String calificacion;
   double? proximidad;
 
   Entidad(
-      {this.distrito,
-      required this.ruc,
+      {required this.imagen,
+      this.logo,
       required this.razonsocial,
+      required this.ruc,
+      required this.categoria,
       required this.direccion,
       this.departamento,
       this.provincia,
-      required this.estado,
+      this.distrito,
       required this.latitud,
       required this.longitud,
-      required this.calificacion,
-      required this.categoria,
-      required this.descripcion,
+      required this.estado,
       required this.precio,
-      required this.imagen,
+      required this.descripcion,
+      required this.calificacion,
       this.proximidad});
 
   factory Entidad.fromJson(Map<String, dynamic> json) {

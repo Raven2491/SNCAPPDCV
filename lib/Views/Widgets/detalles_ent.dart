@@ -12,14 +12,14 @@ class DetalleEnt extends StatefulWidget {
   final Image? logo;
   final String razonsocial;
   final String? ruc;
+  final String? categoria;
   final String? direccion;
   final LatLng? coordenadas;
-  final String? categoria;
-  final double? precio;
-  final double? calificacion;
   final String? estado;
-  final double? proximidad;
+  final double? precio;
   final String? descripcion;
+  final double? calificacion;
+  final double? proximidad;
 
   const DetalleEnt(
       {super.key,
@@ -27,14 +27,14 @@ class DetalleEnt extends StatefulWidget {
       this.logo,
       required this.razonsocial,
       this.ruc,
+      this.categoria,
       this.direccion,
       this.coordenadas,
-      this.categoria,
-      this.precio,
-      this.calificacion,
       this.estado,
-      this.proximidad,
-      this.descripcion});
+      this.precio,
+      this.descripcion,
+      this.calificacion,
+      this.proximidad});
   @override
   _DetalleEntState createState() => _DetalleEntState();
 }

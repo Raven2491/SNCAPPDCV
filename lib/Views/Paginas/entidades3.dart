@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:sncappdcv/models/entidades.dart';
 import 'package:sncappdcv/views/Widgets/cards.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:sncappdcv/views/Widgets/detentidad.dart';
+import 'package:sncappdcv/views/Widgets/detalles_ent.dart';
 
 class Entidades3 extends StatefulWidget {
   final String categoria;

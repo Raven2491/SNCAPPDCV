@@ -1,5 +1,3 @@
-// lib/services/entidad_service.dart
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:sncappdcv/models/entidades.dart';

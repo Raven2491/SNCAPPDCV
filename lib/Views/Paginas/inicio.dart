@@ -6,7 +6,7 @@ import 'package:sncappdcv/views/Editoriales/editorial1.dart';
 import 'package:sncappdcv/views/Paginas/categorias2.dart';
 import 'package:sncappdcv/views/Paginas/entidades2.dart';
 import 'package:sncappdcv/views/Widgets/cards.dart';
-import 'package:sncappdcv/views/Widgets/detentidad.dart';
+import 'package:sncappdcv/views/Widgets/detalles_ent.dart';
 
 class Inicio2 extends StatefulWidget {
   const Inicio2({super.key});
