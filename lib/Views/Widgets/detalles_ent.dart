@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sncappdcv/repository/favoritos_repository.dart';
-import 'package:sncappdcv/views/Paginas/favoritos.dart';
 import 'package:sncappdcv/views/Widgets/cards.dart';
 //import 'package:sncappdcv/Widgets/mapagoogle.dart';
 import 'package:sncappdcv/views/Widgets/mapaopstr.dart';
@@ -79,7 +78,6 @@ class _DetalleEntState extends State<DetalleEnt> {
         ),
       );
     }
-    print(tarjetaFavorita);
   }
 
   void _actualizarRating(double rating) {

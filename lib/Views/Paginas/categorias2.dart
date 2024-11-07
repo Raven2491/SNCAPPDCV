@@ -14,6 +14,7 @@ class Categorias2 extends StatefulWidget {
 
 class _Categorias2State extends State<Categorias2> {
   int _indiceFselec = 0;
+  int _indiceBselec = 3;
   late List<CategoriaCard> categoriasFiltradas;
   late List<CategoriaCard> todasCategorias;
 
@@ -351,6 +352,51 @@ class _Categorias2State extends State<Categorias2> {
                   ),
                 ),
               ],
+            ),
+          ),
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: NavigationBar(
+              destinations: const [
+                NavigationDestination(
+                  icon: Icon(
+                    FontAwesomeIcons.heart,
+                  ),
+                  label: 'Favoritos',
+                ),
+                NavigationDestination(
+                  icon: Icon(
+                    FontAwesomeIcons.mapLocation,
+                  ),
+                  label: 'Mapa',
+                ),
+                NavigationDestination(
+                  icon: Icon(
+                    FontAwesomeIcons.house,
+                  ),
+                  label: 'Inicio',
+                ),
+                NavigationDestination(
+                  icon: Icon(
+                    FontAwesomeIcons.list,
+                  ),
+                  label: 'Lista',
+                ),
+                NavigationDestination(
+                  icon: Icon(
+                    FontAwesomeIcons.magnifyingGlass,
+                  ),
+                  label: 'Buscar',
+                ),
+              ],
+              selectedIndex: _indiceBselec,
+              onDestinationSelected: (int index) {
+                setState(() {
+                  _indiceBselec = index;
+                });
+              },
+              animationDuration: const Duration(milliseconds: 200),
+              backgroundColor: Colors.grey[200],
             ),
           ),
         ),

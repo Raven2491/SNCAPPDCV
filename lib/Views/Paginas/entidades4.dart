@@ -11,7 +11,7 @@ import 'package:sncappdcv/repository/entidad_repository.dart';
 class Entidades4 extends StatelessWidget {
   final String categoria;
 
-  Entidades4({super.key, required this.categoria});
+  const Entidades4({super.key, required this.categoria});
 
   @override
   Widget build(BuildContext context) {
@@ -127,9 +127,19 @@ class Entidades4 extends StatelessWidget {
                     }),
                   ),
                 ),
-
                 const SizedBox(height: 16),
-
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Entidades',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Roboto',
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
                 // Lista de Entidades
                 if (viewModel.cargandoEntidades)
                   const Center(
@@ -166,6 +176,19 @@ class Entidades4 extends StatelessWidget {
                                   descripcion: entidad.descripcion,
                                   proximidad: entidad.proximidad,
                                 ),
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  var begin = const Offset(1, 0);
+                                  var end = Offset.zero;
+
+                                  var tween = Tween(begin: begin, end: end);
+
+                                  return SlideTransition(
+                                    position: animation.drive(tween),
+                                    child: FadeTransition(
+                                        opacity: animation, child: child),
+                                  );
+                                },
                               ),
                             );
                           },

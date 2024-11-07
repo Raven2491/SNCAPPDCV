@@ -21,12 +21,6 @@ class _PaginaFavoritosState extends State<PaginaFavoritos> {
     _cargarFavoritos();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _cargarFavoritos();
-  }
-
   Future<void> _cargarFavoritos() async {
     _favoritos = await FavoritosRepository().obtenerFavoritos();
     setState(() {
