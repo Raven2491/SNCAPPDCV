@@ -2,31 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sncappdcv/views/Widgets/detalles_ent.dart';
-
-class FavoritosManager {
-  static const String _favoritosKey = 'favoritos';
-
-  Future<List<String>?> obtenerFavoritos() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getStringList(_favoritosKey);
-  }
-
-  Future<void> guardarFavoritos(List<String> favoritos) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList(_favoritosKey, favoritos);
-  }
-
-  Future<void> quitarFavorito(String favorito) async {
-    List<String>? favoritos = await obtenerFavoritos();
-
-    if (favoritos != null) {
-      favoritos.remove(favorito); // Elimina el favorito
-      await guardarFavoritos(favoritos); // Guarda la lista actualizada
-    }
-  }
-}
+import 'package:sncappdcv/repository/favoritos_repository.dart';
 
 class PaginaFavoritos extends StatefulWidget {
   const PaginaFavoritos({super.key});
@@ -51,14 +28,14 @@ class _PaginaFavoritosState extends State<PaginaFavoritos> {
   }
 
   Future<void> _cargarFavoritos() async {
-    _favoritos = await FavoritosManager().obtenerFavoritos();
+    _favoritos = await FavoritosRepository().obtenerFavoritos();
     setState(() {
       _favoritos = _favoritos ?? [];
     });
   }
 
   Future<void> _quitarFavorito(String favorito) async {
-    await FavoritosManager().quitarFavorito(favorito);
+    await FavoritosRepository().quitarFavorito(favorito);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Entidad quitada de favoritos'),

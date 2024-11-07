@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:sncappdcv/repository/favoritos_repository.dart';
 import 'package:sncappdcv/views/Paginas/favoritos.dart';
 import 'package:sncappdcv/views/Widgets/cards.dart';
 //import 'package:sncappdcv/Widgets/mapagoogle.dart';
@@ -53,7 +54,7 @@ class _DetalleEntState extends State<DetalleEnt> {
   }
 
   Future<void> _cargarFavoritos() async {
-    final FavoritosManager manager = FavoritosManager();
+    final FavoritosRepository manager = FavoritosRepository();
     List<String>? favoritosActuales = await manager.obtenerFavoritos() ?? [];
     setState(() {
       favoritos = favoritosActuales;
@@ -61,7 +62,7 @@ class _DetalleEntState extends State<DetalleEnt> {
   }
 
   void agregarAFavoritos() async {
-    final FavoritosManager manager = FavoritosManager();
+    final FavoritosRepository manager = FavoritosRepository();
 
     final String tarjetaFavorita =
         '${widget.imagen}|${widget.razonsocial}|${widget.direccion}|${widget.estado}|$ratingnuevo|$proximidad|${widget.precio}|${widget.categoria}|${widget.ruc}|${widget.coordenadas}';
@@ -242,6 +243,11 @@ class _DetalleEntState extends State<DetalleEnt> {
                       ),
                     )
                   ],
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: const Text('Agregar favoritos'),
                 ),
                 const SizedBox(height: 16),
                 DetalleEntCard(
