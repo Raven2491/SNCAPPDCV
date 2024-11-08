@@ -20,8 +20,7 @@ class Entidades2 extends StatefulWidget {
 class _Entidades2State extends State<Entidades2> {
   int _indiceSeleccionado = 0;
   int _indiceBselec = 4;
-  String _filtroSeleccionado = 'A-Z';
-  late List<EntidadesCard> entidadesFiltradas;
+  late final List<EntidadesCard> entidadesFiltradas;
   late List<EntidadesCard> todasEntidades;
 
   List<EntidadesCard> entidadesBusqueda = [];
@@ -29,109 +28,15 @@ class _Entidades2State extends State<Entidades2> {
   final TextEditingController _buscarController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
-  final List<EntidadesCard> entidades = [
-    const EntidadesCard(
-        nomimagen: 'ecsal_1.jpg',
-        razonsocial: 'Brevetes Salud S.A.C',
-        direccion: 'Jr. Antenor Orrego 1978',
-        categoria: 'Centros médicos',
-        precio: 24.0,
-        calificacion: 5,
-        estado: 'CON AUTORIZACION',
-        proximidad: 0.08,
-        coordenadas: LatLng(-12.058232, -77.060769)),
-    const EntidadesCard(
-        nomimagen: 'ecsal_1.jpg',
-        razonsocial: 'Cala Center S.A.C',
-        direccion: 'Jr. Antenor Orrego 1954',
-        categoria: 'Centros médicos',
-        precio: 22.0,
-        calificacion: 5,
-        estado: 'CON AUTORIZACION',
-        proximidad: 1.05,
-        coordenadas: LatLng(-12.081128, -77.048400)),
-    const EntidadesCard(
-        nomimagen: 'ecsal_1.jpg',
-        razonsocial: 'Centro Médico Victor Manuel',
-        direccion: 'Av. Naciones Unidas N° 1759',
-        categoria: 'Centros médicos',
-        precio: 28.0,
-        calificacion: 5,
-        estado: 'CON AUTORIZACION',
-        proximidad: 2.23,
-        coordenadas: LatLng(-12.054520, -77.061687)),
-    const EntidadesCard(
-        nomimagen: 'esc_cond.jpg',
-        razonsocial:
-            'Escuela integral de conductores de transporte terrestre Jesus S.A.C.',
-        direccion: 'Av. Alfonso Ugarte N° 1346',
-        categoria: 'Escuelas de conductores',
-        precio: 26.5,
-        calificacion: 4,
-        estado: 'Inhabilitado',
-        proximidad: 2.5,
-        coordenadas: LatLng(-12.057023, -77.041969)),
-    const EntidadesCard(
-        nomimagen: 'esc_cond.jpg',
-        razonsocial: 'JQJQ & Asociados S.A.C.',
-        direccion: 'Jr. Breña Urb. Chacra Colorada 145',
-        categoria: 'Escuelas de conductores',
-        precio: 450.0,
-        calificacion: 4,
-        estado: 'CON AUTORIZACION',
-        proximidad: 2.6,
-        coordenadas: LatLng(-12.059280, -77.055324)),
-    const EntidadesCard(
-        nomimagen: 'cent_eval.jpg',
-        razonsocial: 'TOURING',
-        direccion: 'Av. César Vallejo 638',
-        categoria: 'Centros de evaluación',
-        precio: 35.0,
-        calificacion: 4,
-        estado: 'CON AUTORIZACION',
-        proximidad: 2.6,
-        coordenadas: LatLng(-12.089276, -77.038640)),
-    const EntidadesCard(
-        nomimagen: 'CITV.jpg',
-        razonsocial:
-            'Centro de inspecciones técnico vehiculares grupo J&J S.A.C.',
-        direccion: 'Av. Ruiseñores N°361-393 sub lote A4-1',
-        categoria: 'Centros de ITV',
-        precio: 400.0,
-        calificacion: 4,
-        estado: 'CON AUTORIZACION',
-        proximidad: 2.6,
-        coordenadas: LatLng(-12.044755, -77.056625)),
-  ];
-
-  final List<String> opciones = [
-    'Todas',
-    'Centros médicos',
-    'Escuelas de conductores',
-    'Centros de evaluación',
-    'Centros de ITV',
-    'Talleres de conversion GNV/GLP',
-    'Certificadoras GNV/GLP',
-    'Entidad verificadora',
-    'Centros de RPC',
-    'Entidad CVC'
-  ];
-
   @override
   void initState() {
+    final EntidadService entidadService = EntidadService();
+    final viewModel = EntidadesVM(
+        entidadRepository: EntidadRepository(entidadService: entidadService));
     super.initState();
     _indiceSeleccionado =
-        opciones.indexWhere((opcion) => opcion == widget.categoria);
+        viewModel.opciones.indexWhere((opcion) => opcion == widget.categoria);
     if (_indiceSeleccionado == -1) _indiceSeleccionado = 0;
-
-    todasEntidades = entidades;
-    entidadesFiltradas = widget.categoria != 'Todas'
-        ? entidades
-            .where((entidad) => entidad.categoria == widget.categoria)
-            .toList()
-        : todasEntidades;
-
-    entidadesBusqueda = entidades;
   }
 
   @override
@@ -304,9 +209,10 @@ class _Entidades2State extends State<Entidades2> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 5, vertical: 2),
                                   decoration: BoxDecoration(
-                                    color: _indiceSeleccionado == indice
-                                        ? Colors.red
-                                        : Colors.white,
+                                    color:
+                                        viewModel.indiceSeleccionado == indice
+                                            ? Colors.red
+                                            : Colors.white,
                                     border: Border.all(
                                       color: Colors.red,
                                       width: 2,
@@ -314,13 +220,14 @@ class _Entidades2State extends State<Entidades2> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Text(
-                                    opciones[indice],
+                                    viewModel.opciones[indice],
                                     style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.normal,
-                                      color: _indiceSeleccionado == indice
-                                          ? Colors.white
-                                          : Colors.black,
+                                      color:
+                                          viewModel.indiceSeleccionado == indice
+                                              ? Colors.white
+                                              : Colors.black,
                                     ),
                                   ),
                                 ),
