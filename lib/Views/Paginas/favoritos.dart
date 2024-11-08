@@ -166,20 +166,36 @@ class _PaginaFavoritosState extends State<PaginaFavoritos> {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                    builder: (context) => DetalleEnt(
-                                      imagen: partes[0],
-                                      razonsocial: partes[1],
-                                      direccion: partes[2],
-                                      estado: partes[3],
-                                      calificacion: double.parse(partes[4]),
-                                      proximidad: 0.08,
-                                      precio: double.parse(partes[6]),
-                                      categoria: partes[7],
-                                      ruc: partes[8],
-                                      coordenadas: LatLng(lat, lon),
-                                    ),
-                                  ),
+                                  PageRouteBuilder(
+                                      pageBuilder: (context, animation,
+                                              secondaryAnimation) =>
+                                          DetalleEnt(
+                                            imagen: partes[0],
+                                            razonsocial: partes[1],
+                                            direccion: partes[2],
+                                            estado: partes[3],
+                                            calificacion:
+                                                double.parse(partes[4]),
+                                            proximidad: 0.08,
+                                            precio: double.parse(partes[6]),
+                                            categoria: partes[7],
+                                            ruc: partes[8],
+                                            coordenadas: LatLng(lat, lon),
+                                          ),
+                                      transitionsBuilder: (context, animation,
+                                          secondaryAnimation, child) {
+                                        var begin = const Offset(1, 0);
+                                        var end = Offset.zero;
+
+                                        var tween =
+                                            Tween(begin: begin, end: end);
+
+                                        return SlideTransition(
+                                          position: animation.drive(tween),
+                                          child: FadeTransition(
+                                              opacity: animation, child: child),
+                                        );
+                                      }),
                                 );
                               },
                             ),

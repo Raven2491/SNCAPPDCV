@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:sncappdcv/views/Widgets/detalles_ent.dart';
@@ -61,6 +62,13 @@ class _MapaEntidadesState extends State<MapaEntidades> {
   double? proximidad;
   String descripcion = '';
 
+  int _indiceFselec = 0;
+
+  final List<String> opciones = [
+    'Todas',
+    'Licencias de conducir',
+    'Otras entidades'
+  ];
   @override
   void initState() {
     super.initState();
@@ -222,424 +230,510 @@ class _MapaEntidadesState extends State<MapaEntidades> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Mapa de entidades',
-              style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Roboto'),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            title: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Rapidito',
+                    style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold)),
+                Text(
+                  '¡Tus entidades a un toque y al toque!',
+                  style: TextStyle(fontSize: 14, fontFamily: 'Roboto'),
+                ),
+              ],
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          const Text(
-            'Con esta opción podrás visualizar las entidades cercanas a tu ubicación actual. Selecciona una entidad, elige tu ubicación y presiona el botón "Buscar".',
-            textAlign: TextAlign.justify,
-            style: TextStyle(fontSize: 14, fontFamily: 'Roboto'),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Seleccione una entidad:',
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Roboto'),
-            ),
-          ),
-          DropdownButtonFormField<String>(
-            onChanged: (value) {
-              setState(() {
-                selectedEntidad = value;
-                departamentosCargado = value != null;
-              });
-            },
-            decoration: InputDecoration(
-              isDense: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Colors.grey),
+            backgroundColor: Colors.white,
+            actions: [
+              Builder(
+                builder: (context) => IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    Scaffold.of(context).openEndDrawer();
+                  },
+                ),
               ),
-            ),
-            items: entidades.map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            hint: const Text(
-              "Seleccione una entidad...",
-              style: TextStyle(fontSize: 14),
-            ),
-            isExpanded: true,
+            ],
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Seleccione ubicación:',
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Roboto'),
+          endDrawer: Drawer(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: <Widget>[
+                Container(
+                  height: 80,
+                  color: Colors.red,
+                  child: const Center(
+                    child: Text(
+                      'Entidades',
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(FontAwesomeIcons.idCard),
+                  title: const Text('Licencias de conducir'),
+                  onTap: () {
+                    setState(() {
+                      _indiceFselec = opciones.indexOf('Licencias de conducir');
+                      Navigator.of(context).pop();
+                    });
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(FontAwesomeIcons.building),
+                  title: const Text('Otras entidades'),
+                  onTap: () {
+                    setState(() {
+                      _indiceFselec = opciones.indexOf('Otras entidades');
+                      Navigator.of(context).pop();
+                    });
+                  },
+                ),
+              ],
             ),
           ),
-          Row(
+          body: Column(
             children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    DropdownButtonFormField<String>(
-                      value: selectedDepartamento,
-                      onChanged: departamentosCargado
-                          ? (value) {
-                              setState(() {
-                                selectedDepartamento = value;
-                                indDep = departamentos
-                                        .indexOf(selectedDepartamento!) +
-                                    1;
-
-                                if (selectedDepartamento == null) {
-                                  codDep = '';
-                                } else {
-                                  codDep = (indDep < 10)
-                                      ? '0$indDep'
-                                      : indDep.toString();
-                                }
-
-                                provincias = [];
-                                selectedProvincia = null;
-                                distritos = [];
-                                selectedDistrito = null;
-
-                                if (codDep.isNotEmpty) {
-                                  _obtenerProvincias(codDep);
-                                }
-                                //print(codDep);
-                                //print(selectedDepartamento);
-                              });
-                            }
-                          : null,
-                      decoration: InputDecoration(
-                        isDense: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                      items: (departamentos.cast<String>()).map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value,
-                              style: const TextStyle(
-                                  fontSize: 14,
-                                  overflow: TextOverflow.ellipsis)),
-                        );
-                      }).toList(),
-                      hint: const Text(
-                        "Departamento",
-                        style: TextStyle(
-                            fontSize: 14, overflow: TextOverflow.ellipsis),
-                      ),
-                      isExpanded: false,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    DropdownButtonFormField<String>(
-                      value: selectedProvincia,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedProvincia = value;
-                          indProv = provincias.indexOf(selectedProvincia!) + 1;
-
-                          if (selectedProvincia == null) {
-                            codProv = '';
-                          } else {
-                            codProv = (indProv < 10)
-                                ? '${codDep}0$indProv'
-                                : '$codDep$indProv';
-                          }
-
-                          selectedDistrito = null;
-                          distritos = [];
-                          if (codProv.isNotEmpty) {
-                            _obtenerDistritos(codDep, codProv);
-                          }
-                          //print(codProv);
-                        });
-                      },
-                      decoration: InputDecoration(
-                        isDense: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                      items: (provincias.cast<String>()).map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value,
-                              style: const TextStyle(
-                                  fontSize: 14,
-                                  overflow: TextOverflow.ellipsis)),
-                        );
-                      }).toList(),
-                      hint: const Text(
-                        "Provincia",
-                        style: TextStyle(
-                            fontSize: 14, overflow: TextOverflow.ellipsis),
-                      ),
-                      isExpanded: false,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    DropdownButtonFormField<String>(
-                      value: selectedDistrito,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedDistrito = value;
-                          indDist = distritos.indexOf(selectedDistrito!) + 1;
-
-                          if (selectedDistrito == null) {
-                            codDist = '';
-                          } else {
-                            codDist = (indDist < 10)
-                                ? '${codProv}0$indDist'
-                                : '$codProv$indDist';
-                          }
-
-                          //print(codDist);
-                        });
-                      },
-                      decoration: InputDecoration(
-                        isDense: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: const BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                      items: (distritos.cast<String>()).map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value,
-                              style: const TextStyle(
-                                  fontSize: 14,
-                                  overflow: TextOverflow.ellipsis)),
-                        );
-                      }).toList(),
-                      hint: const Text(
-                        "Distrito",
-                        style: TextStyle(
-                            fontSize: 14, overflow: TextOverflow.ellipsis),
-                      ),
-                      isExpanded: false,
-                    ),
-                  ],
+              const SizedBox(
+                height: 10,
+              ),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Búsqueda avanzada de entidades',
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Roboto'),
                 ),
               ),
               const SizedBox(
-                width: 10,
+                height: 10,
               ),
-              Column(
+              const Text(
+                'Aqui puedes buscar las entidades más cercanas a tu ubicación actual. Selecciona un tipo de entidad, elige tu ubicación y presiona el botón "Buscar".',
+                textAlign: TextAlign.justify,
+                style: TextStyle(fontSize: 14, fontFamily: 'Roboto'),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Seleccione una entidad:',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Roboto'),
+                ),
+              ),
+              DropdownButtonFormField<String>(
+                onChanged: (value) {
+                  setState(() {
+                    selectedEntidad = value;
+                    departamentosCargado = value != null;
+                  });
+                },
+                decoration: InputDecoration(
+                  isDense: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: const BorderSide(color: Colors.grey),
+                  ),
+                ),
+                items: entidades.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                hint: const Text(
+                  "Seleccione una entidad...",
+                  style: TextStyle(fontSize: 14),
+                ),
+                isExpanded: true,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Seleccione ubicación:',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Roboto'),
+                ),
+              ),
+              Row(
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      if (selectedDepartamento == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            duration: Duration(seconds: 1),
-                            content: Text(
-                                'Debe seleccionar un departamento para realizar la búsqueda.'),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        DropdownButtonFormField<String>(
+                          value: selectedDepartamento,
+                          onChanged: departamentosCargado
+                              ? (value) {
+                                  setState(() {
+                                    selectedDepartamento = value;
+                                    indDep = departamentos
+                                            .indexOf(selectedDepartamento!) +
+                                        1;
+
+                                    if (selectedDepartamento == null) {
+                                      codDep = '';
+                                    } else {
+                                      codDep = (indDep < 10)
+                                          ? '0$indDep'
+                                          : indDep.toString();
+                                    }
+
+                                    provincias = [];
+                                    selectedProvincia = null;
+                                    distritos = [];
+                                    selectedDistrito = null;
+
+                                    if (codDep.isNotEmpty) {
+                                      _obtenerProvincias(codDep);
+                                    }
+                                    //print(codDep);
+                                    //print(selectedDepartamento);
+                                  });
+                                }
+                              : null,
+                          decoration: InputDecoration(
+                            isDense: true,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: Colors.grey),
+                            ),
                           ),
-                        );
-                        return;
-                      }
-                      String provincia = '';
-                      String distrito = '';
+                          items: (departamentos.cast<String>())
+                              .map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      overflow: TextOverflow.ellipsis)),
+                            );
+                          }).toList(),
+                          hint: const Text(
+                            "Departamento",
+                            style: TextStyle(
+                                fontSize: 14, overflow: TextOverflow.ellipsis),
+                          ),
+                          isExpanded: false,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        DropdownButtonFormField<String>(
+                          value: selectedProvincia,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedProvincia = value;
+                              indProv =
+                                  provincias.indexOf(selectedProvincia!) + 1;
 
-                      if (selectedProvincia != null) {
-                        provincia = selectedProvincia!;
-                      }
+                              if (selectedProvincia == null) {
+                                codProv = '';
+                              } else {
+                                codProv = (indProv < 10)
+                                    ? '${codDep}0$indProv'
+                                    : '$codDep$indProv';
+                              }
 
-                      if (selectedDistrito != null) {
-                        distrito = selectedDistrito!;
-                      }
-                      ecsalesnom = [];
-                      print(
-                          '$selectedDepartamento $selectedProvincia $selectedDistrito');
-                      _obtenerEcsales(
-                          selectedDepartamento!, provincia, distrito);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text(
-                      'Buscar',
-                      style: TextStyle(color: Colors.white),
+                              selectedDistrito = null;
+                              distritos = [];
+                              if (codProv.isNotEmpty) {
+                                _obtenerDistritos(codDep, codProv);
+                              }
+                              //print(codProv);
+                            });
+                          },
+                          decoration: InputDecoration(
+                            isDense: true,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: Colors.grey),
+                            ),
+                          ),
+                          items:
+                              (provincias.cast<String>()).map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      overflow: TextOverflow.ellipsis)),
+                            );
+                          }).toList(),
+                          hint: const Text(
+                            "Provincia",
+                            style: TextStyle(
+                                fontSize: 14, overflow: TextOverflow.ellipsis),
+                          ),
+                          isExpanded: false,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        DropdownButtonFormField<String>(
+                          value: selectedDistrito,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedDistrito = value;
+                              indDist =
+                                  distritos.indexOf(selectedDistrito!) + 1;
+
+                              if (selectedDistrito == null) {
+                                codDist = '';
+                              } else {
+                                codDist = (indDist < 10)
+                                    ? '${codProv}0$indDist'
+                                    : '$codProv$indDist';
+                              }
+
+                              //print(codDist);
+                            });
+                          },
+                          decoration: InputDecoration(
+                            isDense: true,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: const BorderSide(color: Colors.grey),
+                            ),
+                          ),
+                          items: (distritos.cast<String>()).map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      overflow: TextOverflow.ellipsis)),
+                            );
+                          }).toList(),
+                          hint: const Text(
+                            "Distrito",
+                            style: TextStyle(
+                                fontSize: 14, overflow: TextOverflow.ellipsis),
+                          ),
+                          isExpanded: false,
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(
-                    height: 5,
+                    width: 10,
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        selectedDepartamento = null;
-                        selectedProvincia = null;
-                        selectedDistrito = null;
-                        indDep = 0;
-                        indProv = 0;
-                        indDist = 0;
-                        codDep = '';
-                        codProv = '';
-                        codDist = '';
-                        ecsalesnom = [];
-                        ecsalespos = [];
-                      });
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                    ),
-                    child: const Text(
-                      'Limpiar',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          if (selectedDepartamento == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                duration: Duration(seconds: 1),
+                                content: Text(
+                                    'Debe seleccionar un departamento para realizar la búsqueda.'),
+                              ),
+                            );
+                            return;
+                          }
+                          String provincia = '';
+                          String distrito = '';
+
+                          if (selectedProvincia != null) {
+                            provincia = selectedProvincia!;
+                          }
+
+                          if (selectedDistrito != null) {
+                            distrito = selectedDistrito!;
+                          }
+                          ecsalesnom = [];
+                          print(
+                              '$selectedDepartamento $selectedProvincia $selectedDistrito');
+                          _obtenerEcsales(
+                              selectedDepartamento!, provincia, distrito);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                        ),
+                        child: const Text(
+                          'Buscar',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            selectedDepartamento = null;
+                            selectedProvincia = null;
+                            selectedDistrito = null;
+                            indDep = 0;
+                            indProv = 0;
+                            indDist = 0;
+                            codDep = '';
+                            codProv = '';
+                            codDist = '';
+                            ecsalesnom = [];
+                            ecsalespos = [];
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                        ),
+                        child: const Text(
+                          'Limpiar',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Column(
-            children: [
-              if (ecsalesnom.isNotEmpty) ...[
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Establecimientos encontrados:',
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Roboto'),
-                  ),
-                ),
-                DropdownButtonFormField<String>(
-                  onChanged: (value) {
-                    setState(() {
-                      selectedEcsal = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    isDense: true,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: const BorderSide(color: Colors.grey),
+              const SizedBox(
+                height: 10,
+              ),
+              Column(
+                children: [
+                  if (ecsalesnom.isNotEmpty) ...[
+                    const Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Establecimientos encontrados:',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Roboto'),
+                      ),
                     ),
-                  ),
-                  items: ecsalesnom.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                      onTap: () {
-                        print(value);
-                        _ubicarEcsal(value);
+                    DropdownButtonFormField<String>(
+                      onChanged: (value) {
+                        setState(() {
+                          selectedEcsal = value;
+                        });
                       },
-                    );
-                  }).toList(),
-                  hint: const Text(
-                    "Seleccione un establecimiento",
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  isExpanded: true,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(color: Colors.grey),
+                        ),
+                      ),
+                      items: ecsalesnom.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                          onTap: () {
+                            print(value);
+                            _ubicarEcsal(value);
+                          },
+                        );
+                      }).toList(),
+                      hint: const Text(
+                        "Seleccione un establecimiento",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      isExpanded: true,
+                    ),
+                  ]
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 300,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-              ]
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  child: ecsalespos.isNotEmpty
+                      ? MapaEntidadOpStr(
+                          ubicacion: ecsalespos.first,
+                        )
+                      : widget.posicionActual.latitude == 0 &&
+                              widget.posicionActual.longitude == 0
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : MapaEntidadOpStr(
+                              ubicacion: widget.posicionActual,
+                            ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: selectedEcsal != null
+                    ? () async {
+                        await _mostrarEcsal(selectedEcsal!);
+                        Navigator.push(
+                            context,
+                            PageRouteBuilder(
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                        DetalleEnt(
+                                          //imagen: entidad.nomimagen,
+                                          razonsocial: razonsocial,
+                                          ruc: ruc,
+                                          direccion: direccion,
+                                          coordenadas: coordenadas,
+                                          estado: estado,
+                                          //calificacion: entidad.calificacion,
+                                          //categoria: entidad.categoria,
+                                          //precio: entidad.precio,
+                                          //proximidad: ,
+                                          descripcion: descripcion,
+                                        ),
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  var begin = const Offset(1, 0);
+                                  var end = Offset.zero;
+
+                                  var tween = Tween(begin: begin, end: end);
+
+                                  return SlideTransition(
+                                    position: animation.drive(tween),
+                                    child: FadeTransition(
+                                        opacity: animation, child: child),
+                                  );
+                                }));
+                      }
+                    : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                ),
+                child: const Text(
+                  'Más información',
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ],
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          Container(
-            height: 300,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              child: ecsalespos.isNotEmpty
-                  ? MapaEntidadOpStr(
-                      ubicacion: ecsalespos.first,
-                    )
-                  : widget.posicionActual.latitude == 0 &&
-                          widget.posicionActual.longitude == 0
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : MapaEntidadOpStr(
-                          ubicacion: widget.posicionActual,
-                        ),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          ElevatedButton(
-            onPressed: selectedEcsal != null
-                ? () async {
-                    await _mostrarEcsal(selectedEcsal!);
-                    Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    DetalleEnt(
-                                      //imagen: entidad.nomimagen,
-                                      razonsocial: razonsocial,
-                                      ruc: ruc,
-                                      direccion: direccion,
-                                      coordenadas: coordenadas,
-                                      estado: estado,
-                                      //calificacion: entidad.calificacion,
-                                      //categoria: entidad.categoria,
-                                      //precio: entidad.precio,
-                                      //proximidad: ,
-                                      descripcion: descripcion,
-                                    )));
-                  }
-                : null,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-            ),
-            child: const Text(
-              'Más información',
-              style: TextStyle(color: Colors.white),
-            ),
-          ),
-          ElevatedButton(
-              onPressed: selectedEcsal != null
-                  ? () => _mostrarEcsal(selectedEcsal!)
-                  : null,
-              child: const Text('Mostrar')),
-        ],
+        ),
       ),
     );
   }

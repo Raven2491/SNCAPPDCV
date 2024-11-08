@@ -243,11 +243,6 @@ class _DetalleEntState extends State<DetalleEnt> {
                   ],
                 ),
                 const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Agregar favoritos'),
-                ),
-                const SizedBox(height: 16),
                 DetalleEntCard(
                     razonsocial: widget.razonsocial,
                     ruc: widget.ruc != null

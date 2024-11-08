@@ -8,8 +8,12 @@ import 'package:sncappdcv/models/entidades.dart';
 class MapaEntidadOpStr2 extends StatefulWidget {
   final LatLng ubicacion;
   final List<Entidad> entidad;
+  final String categoria;
   const MapaEntidadOpStr2(
-      {super.key, required this.ubicacion, required this.entidad});
+      {super.key,
+      required this.ubicacion,
+      required this.entidad,
+      required this.categoria});
 
   @override
   State<MapaEntidadOpStr2> createState() => MapaEntidadOpStr2State();

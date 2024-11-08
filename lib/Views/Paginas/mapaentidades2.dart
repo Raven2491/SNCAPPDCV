@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:sncappdcv/Views/Paginas/mapaentidades.dart';
 import 'package:sncappdcv/models/entidades.dart';
 import 'package:sncappdcv/views/Widgets/mapaopstr.dart';
 import 'package:sncappdcv/views/Widgets/mapaopstr2.dart';
@@ -28,14 +29,14 @@ class _MapaEntidades2State extends State<MapaEntidades2> {
     'Entidad CVC'
   ];
 
-  String? selectedEntidad;
+  String? selectedEntidad = 'TODAS';
   List<LatLng> ecsalespos = [];
   List<Entidad> entidades = [];
   List<Entidad> entidadesfiltradas = [];
   late Future<List<Entidad>>
       futureEntidades; // Nueva variable para almacenar el futuro de las entidades
 
-  final Distance distancia = Distance();
+  final Distance distancia = const Distance();
   double proximidad = 0.0;
 
   @override
@@ -223,6 +224,7 @@ class _MapaEntidades2State extends State<MapaEntidades2> {
                                   : MapaEntidadOpStr2(
                                       ubicacion: widget.posicionActual,
                                       entidad: entidades,
+                                      categoria: selectedEntidad!,
                                     ),
                         ),
                       ),
@@ -243,10 +245,23 @@ class _MapaEntidades2State extends State<MapaEntidades2> {
           onPressed: () {
             Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => MapaEntidades2(
+                PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        MapaEntidades(
                           posicionActual: widget.posicionActual,
-                        )));
+                        ),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      var begin = const Offset(1, 0);
+                      var end = Offset.zero;
+
+                      var tween = Tween(begin: begin, end: end);
+
+                      return SlideTransition(
+                        position: animation.drive(tween),
+                        child: FadeTransition(opacity: animation, child: child),
+                      );
+                    }));
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.red,

@@ -152,7 +152,14 @@ class Entidades4 extends StatelessWidget {
                 else
                   Expanded(
                     child: ListView.builder(
-                      itemCount: viewModel.entidadesFiltradas.length,
+                      //itemCount: viewModel.entidadesFiltradas.length,
+                      itemCount: () {
+                        if (viewModel.entidadesFiltradas.length > 5) {
+                          return 5;
+                        } else {
+                          return viewModel.entidadesFiltradas.length;
+                        }
+                      }(),
                       itemBuilder: (BuildContext context, int index) {
                         final entidad = viewModel.entidadesFiltradas[index];
                         return GestureDetector(
