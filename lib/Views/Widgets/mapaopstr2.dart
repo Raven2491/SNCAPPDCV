@@ -136,10 +136,7 @@ class MapaEntidadOpStr2State extends State<MapaEntidadOpStr2> {
                       color: const Color.fromARGB(255, 224, 42, 42),
                       size: 30.0,
                     ),
-                    point: LatLng(
-                      double.parse(entidad.latitud),
-                      double.parse(entidad.longitud),
-                    ),
+                    point: LatLng(entidad.latitud, entidad.longitud),
                   ),
             ],
           ),

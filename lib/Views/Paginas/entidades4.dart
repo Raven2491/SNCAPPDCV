@@ -152,14 +152,14 @@ class Entidades4 extends StatelessWidget {
                 else
                   Expanded(
                     child: ListView.builder(
-                      //itemCount: viewModel.entidadesFiltradas.length,
-                      itemCount: () {
+                      itemCount: viewModel.entidadesFiltradas.length,
+                      /*itemCount: () {
                         if (viewModel.entidadesFiltradas.length > 5) {
                           return 5;
                         } else {
                           return viewModel.entidadesFiltradas.length;
                         }
-                      }(),
+                      }(),*/
                       itemBuilder: (BuildContext context, int index) {
                         final entidad = viewModel.entidadesFiltradas[index];
                         return GestureDetector(
@@ -175,11 +175,10 @@ class Entidades4 extends StatelessWidget {
                                   ruc: entidad.ruc,
                                   categoria: entidad.categoria,
                                   direccion: entidad.direccion,
-                                  coordenadas: LatLng(
-                                      double.parse(entidad.latitud),
-                                      double.parse(entidad.longitud)),
+                                  coordenadas:
+                                      LatLng(entidad.latitud, entidad.longitud),
                                   estado: entidad.estado,
-                                  precio: double.tryParse(entidad.precio),
+                                  precio: entidad.precio,
                                   descripcion: entidad.descripcion,
                                   proximidad: entidad.proximidad,
                                 ),
@@ -205,7 +204,7 @@ class Entidades4 extends StatelessWidget {
                             razonsocial: entidad.razonsocial,
                             direccion: entidad.direccion,
                             categoria: entidad.categoria,
-                            precio: double.tryParse(entidad.precio) ?? 0.0,
+                            precio: entidad.precio ?? 0.0,
                             estado: entidad.estado,
                             proximidad: 0.08,
                           ),

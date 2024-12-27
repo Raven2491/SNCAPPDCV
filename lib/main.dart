@@ -229,7 +229,7 @@ class _SNCAPPState extends State<SNCAPP> {
       /*const Entidades3(
         categoria: 'Todas',
       ),*/
-      Entidades4(
+      const Entidades4(
         categoria: 'Todas',
       ),
     ];

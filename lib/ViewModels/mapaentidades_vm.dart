@@ -29,9 +29,7 @@ class MapaEntidadesVM extends ChangeNotifier {
     entidades = mapaEntidadesRepository.obtenerEntidades() as List<Entidad>;
     for (var entidad in entidades) {
       entidad.proximidad = _calcularDistancia(
-          posicionActual,
-          LatLng(
-              double.parse(entidad.latitud), double.parse(entidad.longitud)));
+          posicionActual, LatLng(entidad.latitud, entidad.longitud));
     }
     return entidades;
   }

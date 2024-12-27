@@ -34,6 +34,17 @@ class RapiditoColors {
 }
 
 class RapiditoApi {
-  static const String baseUrl = 'https://endpoint2-blond.vercel.app';
-  static const String entidades = '/entidades';
+  //static const String baseUrl = 'https://endpoint2-blond.vercel.app';
+  static const String insertarEnt =
+      'http://localhost:5000/api/Entidades/InsertAsync/';
+  static const String actualizarEnt =
+      'http://localhost:5000/api/Entidades/UpdateAsync/';
+  static const String eliminarEnt =
+      'http://localhost:5000/api/Entidades/DeleteAsync/';
+  static const String listarEnt =
+      'http://localhost:5000/api/Entidades/GetAllAsync/';
+  static const String listarEntxruc =
+      'http://localhost:5000/api/Entidades/GetAsync/';
+
+  //static const String entidades = '/entidades';
 }

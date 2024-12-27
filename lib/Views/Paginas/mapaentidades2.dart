@@ -61,9 +61,7 @@ class _MapaEntidades2State extends State<MapaEntidades2> {
 
         for (var entidad in entidades) {
           entidad.proximidad = _calcularDistancia(
-              widget.posicionActual,
-              LatLng(double.parse(entidad.latitud),
-                  double.parse(entidad.longitud)));
+              widget.posicionActual, LatLng(entidad.latitud, entidad.longitud));
         }
         return entidades;
       } else {

@@ -274,16 +274,14 @@ class _Entidades3State extends State<Entidades3> {
                             razonsocial: entidad.razonsocial,
                             ruc: entidad.ruc,
                             direccion: entidad.direccion,
-                            coordenadas: LatLng(double.parse(entidad.latitud),
-                                double.parse(entidad.longitud)),
+                            coordenadas:
+                                LatLng(entidad.latitud, entidad.longitud),
                             estado: entidad.estado,
                             calificacion: double.tryParse(
                               entidad.calificacion,
                             ),
                             categoria: entidad.categoria,
-                            precio: double.tryParse(
-                              entidad.precio,
-                            ),
+                            precio: entidad.precio,
                             proximidad: entidad.proximidad,
                             descripcion: entidad.descripcion,
                           ),
@@ -306,7 +304,7 @@ class _Entidades3State extends State<Entidades3> {
                       razonsocial: entidad.razonsocial,
                       direccion: entidad.direccion,
                       categoria: entidad.categoria,
-                      precio: double.tryParse(entidad.precio) ?? 0.0,
+                      precio: entidad.precio ?? 0.0,
                       estado: entidad.estado,
                       proximidad: 0.08,
                     ),

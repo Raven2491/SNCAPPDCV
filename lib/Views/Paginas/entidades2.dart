@@ -288,10 +288,9 @@ class _Entidades2State extends State<Entidades2> {
                                         categoria: entidad.categoria,
                                         direccion: entidad.direccion,
                                         coordenadas: LatLng(
-                                            double.parse(entidad.latitud),
-                                            double.parse(entidad.longitud)),
+                                            entidad.latitud, entidad.longitud),
                                         estado: entidad.estado,
-                                        precio: double.tryParse(entidad.precio),
+                                        precio: entidad.precio,
                                         descripcion: entidad.descripcion,
                                         proximidad: entidad.proximidad,
                                       ),
@@ -318,8 +317,7 @@ class _Entidades2State extends State<Entidades2> {
                                   razonsocial: entidad.razonsocial,
                                   direccion: entidad.direccion,
                                   categoria: entidad.categoria,
-                                  precio:
-                                      double.tryParse(entidad.precio) ?? 0.0,
+                                  precio: entidad.precio ?? 0.0,
                                   estado: entidad.estado,
                                   proximidad: 0.08,
                                 ),

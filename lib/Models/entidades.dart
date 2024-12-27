@@ -8,10 +8,10 @@ class Entidad {
   final String? departamento;
   final String? provincia;
   final String? distrito;
-  final String latitud;
-  final String longitud;
+  final double latitud;
+  final double longitud;
   final String estado;
-  final String precio;
+  final double precio;
   final String descripcion;
   final String calificacion;
   double? proximidad;
@@ -36,19 +36,26 @@ class Entidad {
 
   factory Entidad.fromJson(Map<String, dynamic> json) {
     return Entidad(
-        distrito: json['distrito'],
-        ruc: json['ruc'],
-        razonsocial: json['razonsocial'],
-        direccion: json['direccion'],
-        departamento: json['departamento'],
-        provincia: json['provincia'],
-        estado: json['estado'],
-        latitud: json['latitud'],
-        longitud: json['longitud'],
-        calificacion: json['calificacion'],
-        categoria: json['categoria'],
-        descripcion: json['descripcion'],
-        precio: json['precio'] ?? '',
-        imagen: json['imagen'] ?? '');
+      distrito: json['distrito'],
+      ruc: json['ruc'],
+      razonsocial: json['razonsocial'],
+      direccion: json['direccion'],
+      departamento: json['departamento'],
+      provincia: json['provincia'],
+      estado: json['estado'],
+      latitud: (json['latitud'] is int || json['latitud'] is double)
+          ? json['latitud'].toDouble()
+          : double.parse(json['latitud'].toString()),
+      longitud: (json['longitud'] is int || json['longitud'] is double)
+          ? json['longitud'].toDouble()
+          : double.parse(json['longitud'].toString()),
+      calificacion: json['calificacion'],
+      categoria: json['categoria'],
+      descripcion: json['descripcion'],
+      precio: (json['precio'] is int || json['precio'] is double)
+          ? json['precio'].toDouble()
+          : double.parse(json['precio'].toString()),
+      imagen: json['imagen'] ?? '',
+    );
   }
 }
